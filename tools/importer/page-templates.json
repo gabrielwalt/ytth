@@ -1,0 +1,10 @@
+{
+  "templates": [
+    {
+      "name": "design",
+      "description": "Pages and fragments whose content comes from the redesign PDFs (nav, footer, homepage, Benefits & coverage, MMCP). The source is migration-work/design-source/*.html.",
+      "urls": [],
+      "blocks": []
+    }
+  ]
+}

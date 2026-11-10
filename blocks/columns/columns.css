@@ -31,3 +31,94 @@
     order: unset;
   }
 }
+
+/* variants below are scoped by variant class; their order is independent of the base rules */
+/* stylelint-disable no-descending-specificity */
+
+/* ---------- intro: lead text left, "Available through" partner logos right (MMCP) ---------- */
+.columns.intro > div {
+  gap: 26.3px;
+}
+
+.columns.intro > div > div > :first-child {
+  margin-top: 0;
+}
+
+.columns.intro p {
+  margin: 0;
+}
+
+.columns.intro > div > div:first-child p {
+  color: var(--color-black);
+  font-size: var(--body-font-size-xl);
+  font-weight: var(--lead-font-weight);
+  line-height: var(--body-line-height-xl);
+}
+
+.columns.intro > div > div:last-child > p:first-child {
+  color: var(--color-black);
+  font-weight: var(--font-weight-medium);
+}
+
+.columns.intro .columns-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 27.6px;
+  margin-top: 3.5px;
+}
+
+.columns.intro img {
+  width: auto;
+  max-width: 100%;
+}
+
+/* ---------- terms: four definition columns (MMCP "Common terms") ---------- */
+.columns.terms > div {
+  gap: 35.7px;
+}
+
+.columns.terms :is(h3, h4, h5) {
+  margin: 0 0 16.3px;
+}
+
+.columns.terms p {
+  margin: 0;
+  line-height: 22px;
+}
+
+.columns.terms p + p {
+  margin-top: 22px;
+}
+
+main > .section > .columns-wrapper:has(.columns.terms) {
+  margin-top: 10px;
+}
+
+main > .section > .columns-wrapper:has(.columns.terms) + div {
+  margin-top: 65.7px;
+}
+
+@media (width >= 900px) {
+  .columns.intro > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    align-items: start;
+    gap: 96px;
+  }
+
+  .columns.intro > div > div:last-child {
+    margin-top: -6px;
+  }
+
+  .columns.terms > div {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: start;
+    gap: 47px;
+  }
+
+  main > .section > .columns-wrapper:has(.columns.terms) {
+    margin-top: 20px;
+  }
+}

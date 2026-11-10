@@ -1,0 +1,262 @@
+/* benefit cards: measured from the Benefits & coverage design (1440 / 425 px) */
+main > .section > .benefit-cards-wrapper {
+  margin-top: 26px;
+}
+
+main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
+  margin-top: 32px;
+}
+
+.benefit-cards .benefit-cards-list {
+  display: grid;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.benefit-cards .benefit-card {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  border: var(--border);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+/* header: grey band with title, subtitle and button */
+.benefit-cards .benefit-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 25.8px 24px 24.5px;
+  background: var(--color-surface-2);
+}
+
+.benefit-cards .benefit-card-title :is(h2, h3, h4) {
+  margin: 0;
+  font-size: var(--heading-font-size-l);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-l);
+}
+
+.benefit-cards .benefit-card-title p {
+  margin: 0;
+}
+
+.benefit-cards .benefit-card-subtitle {
+  margin-top: 8px;
+  color: var(--color-text-muted);
+}
+
+.benefit-cards .benefit-card-action p {
+  margin: 0;
+}
+
+/* body */
+.benefit-cards .benefit-card-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 26px;
+  padding: 31.5px 24px 41.5px;
+}
+
+/* icon + link */
+.benefit-cards .benefit-icon-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.benefit-cards .benefit-icon-link .icon {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.benefit-cards .benefit-card-body > * {
+  margin: 0;
+}
+
+.benefit-cards .benefit-card-body > * + * {
+  margin-top: 26px;
+}
+
+/* check list */
+.benefit-cards .benefit-checklist {
+  padding: 0;
+  list-style: none;
+}
+
+.benefit-cards .benefit-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.benefit-cards .benefit-checklist li + li {
+  margin-top: 10px;
+}
+
+.benefit-cards .benefit-checklist li::before {
+  content: '';
+  flex: 0 0 20px;
+  height: 20px;
+  margin-top: 2px;
+  background: url('../../icons/check-circle.svg') center / contain no-repeat;
+}
+
+/* fact lists: no bullets, 30px rhythm; columns when items hold several lines */
+.benefit-cards .benefit-facts {
+  padding: 0;
+  list-style: none;
+  line-height: 30px;
+}
+
+.benefit-cards .benefit-facts li + li {
+  margin-top: 0;
+}
+
+.benefit-cards .benefit-facts-columns {
+  display: grid;
+  gap: 24px;
+}
+
+.benefit-cards .benefit-facts strong {
+  font-weight: var(--font-weight-bold);
+}
+
+/* aside: partner logo + contact */
+.benefit-cards .benefit-card-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.benefit-cards .benefit-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--color-text-muted);
+}
+
+.benefit-cards .benefit-contact-logo {
+  line-height: 0;
+}
+
+.benefit-cards .benefit-contact-logo img {
+  max-width: 100%;
+  height: auto;
+}
+
+.benefit-cards .benefit-contact-details > * {
+  margin: 0;
+}
+
+.benefit-cards .benefit-contact-details > .benefit-phone-line {
+  margin-top: 2px;
+}
+
+.benefit-cards a.benefit-phone:any-link {
+  color: var(--color-navy);
+  font-size: var(--phone-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--phone-line-height);
+  text-decoration: none;
+}
+
+.benefit-cards a.benefit-phone:hover {
+  text-decoration: underline;
+}
+
+/* body rhythm */
+.benefit-cards .benefit-card-body > * + ul {
+  margin-top: 24px;
+}
+
+.benefit-cards .benefit-card-body > ul + * {
+  margin-top: 12px;
+}
+
+.benefit-cards .benefit-card-body > * + .benefit-icon-link {
+  margin-top: 35px;
+}
+
+/* a closing fact list sits closer to the card edge */
+.benefit-cards .benefit-card-body > .benefit-facts:last-child {
+  margin-bottom: -11px;
+}
+
+@media (width >= 900px) {
+  .benefit-cards .benefit-card-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 109px;
+  }
+
+  .benefit-cards .benefit-card-action {
+    flex: 0 0 auto;
+  }
+
+  /* full width: text left, contact right-aligned */
+  .benefit-cards .benefit-card-main {
+    display: grid;
+    grid-template-columns: minmax(0, 836px) 1fr;
+    gap: 40px;
+    padding-right: 36px;
+  }
+
+  .benefit-cards .benefit-card-main > .benefit-card-aside {
+    grid-column: 2;
+    grid-row: 1;
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .benefit-cards .benefit-card-main > .benefit-card-body {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .benefit-cards .benefit-card-aside .benefit-contact-logo {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .benefit-cards .benefit-facts-columns {
+    grid-template-columns: repeat(2, max-content);
+    column-gap: 26px;
+  }
+
+  /* two-up: two columns, contact (logo beside details) above the text */
+  .benefit-cards.two-up .benefit-cards-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .benefit-cards.two-up .benefit-card-main {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 26px;
+    padding-right: 28px;
+  }
+
+  .benefit-cards.two-up .benefit-card-aside {
+    align-items: stretch;
+    text-align: left;
+  }
+
+  .benefit-cards.two-up .benefit-contact {
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+
+  .benefit-cards.two-up .benefit-contact-logo {
+    flex: 0 0 192px;
+    justify-content: flex-start;
+  }
+}

@@ -10,43 +10,144 @@
  * governing permissions and limitations under the License.
  */
 
+/*
+ * Your Track to Health: design system
+ * Values are measured from the vector design files (Figma export, 1440 / 425 px artboards).
+ * Spec: PROJECT_DESIGN_SYSTEM.md
+ */
+
 :root {
-  /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  /* ---------- brand palette ---------- */
+  --color-navy: #1c355e;
+  --color-teal: #007e80;
+  --color-teal-light: #1e8f90;
+  --color-mint: #c5e0da;
+  --color-indigo: #4752ae;
+  --color-indigo-dark: #293682;
+  --color-lavender: #9da1c3;
+  --color-lime: #a4c02f;
+  --color-sand: #e5e2d9;
+  --color-white: #fff;
+  --color-black: #000;
 
-  /* fonts */
+  /* neutrals */
+  --color-text: #414042;
+  --color-text-muted: #6c6c6c;
+  --color-text-subtle: #979795;
+  --color-border: #cbcac6;
+  --color-divider: #e8e7e3;
+  --color-surface-2: #eeeeed;
+  --color-surface-1: #f7f7f7;
+  --color-border-on-navy: #8ea4cd; /* homepage quick-link tiles */
+
+  /* gradients */
+  --gradient-badge: linear-gradient(135deg, var(--color-lime) 0%, var(--color-teal-light) 100%);
+
+  /* ---------- semantic colors (boilerplate names kept for blocks) ---------- */
+  --background-color: var(--color-white);
+  --light-color: var(--color-surface-1);
+  --dark-color: var(--color-navy);
+  --text-color: var(--color-text);
+  --heading-color: var(--color-navy);
+  --link-color: var(--color-teal);
+  --link-hover-color: var(--color-navy);
+  --focus-color: var(--color-teal);
+
+  /* ---------- typography ---------- */
   --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --heading-font-family: var(--body-font-family);
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
 
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
+  /* body sizes (same at every breakpoint) */
+  --body-font-size-xl: 18px; /* lead (mobile) */
+  --body-font-size-l: 18px;
+  --body-font-size-m: 16px;
+  --body-font-size-s: 14px;
+  --body-font-size-xs: 12px;
+  --body-line-height-xl: 27px;
+  --body-line-height-l: 27px;
+  --body-line-height-m: 24px;
+  --body-line-height-s: 20px;
+  --body-line-height-xs: 16px;
+  --lead-font-weight: 400;
 
-  /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
+  /* heading sizes: mobile (425 px artboards) */
+  --display-font-size: 32px;
+  --display-line-height: 34px;
+  --heading-font-size-xxl: 24px; /* h1 */
+  --heading-line-height-xxl: 28px;
+  --heading-font-size-xl: 28px; /* h2 */
+  --heading-line-height-xl: 32px;
+  --heading-font-size-l: 24px; /* h3 */
+  --heading-line-height-l: 28px;
+  --heading-font-size-m: 20px; /* h4 */
+  --heading-line-height-m: 28px;
+  --heading-font-size-s: 20px; /* h5 */
+  --heading-line-height-s: 28px;
+  --heading-font-size-xs: 18px; /* h6 */
+  --heading-line-height-xs: 26px;
 
-  /* nav height */
-  --nav-height: 64px;
+  /* special type */
+  --price-font-size: 30px;
+  --price-line-height: 36px;
+  --phone-font-size: 24px;
+  --phone-line-height: 28px;
+  --eyebrow-font-size: 12px;
+  --eyebrow-line-height: 16px;
+  --eyebrow-letter-spacing: 0.1em;
+  --button-font-size: 12px;
+  --button-line-height: 16px;
+  --button-letter-spacing: 0.05em;
+
+  /* ---------- layout ---------- */
+  --page-max-width: 1440px;
+  --container-wide: 1320px;
+  --container: 1220px;
+  --container-text: 860px;
+  --gutter: 20px;
+
+  /* spacing scale */
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-s: 16px;
+  --space-m: 24px;
+  --space-l: 32px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 80px;
+  --section-spacing: 40px;
+  --heading-spacing-after: 8px;
+  --paragraph-spacing: 24px;
+
+  /* ---------- shape ---------- */
+  --radius-xs: 4px;
+  --radius-s: 8px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+  --radius-header: 12px;
+
+  /* "leaf" corner: top-left + bottom-right rounded */
+  --radius-leaf-s: var(--radius-s) 0;
+  --radius-leaf-l: var(--radius-l) 0;
+  --border-width: 1px;
+  --border: var(--border-width) solid var(--color-border);
+  --border-accent: var(--border-width) solid var(--color-lavender);
+  --border-on-dark: var(--border-width) solid rgb(255 255 255 / 50%);
+  --shadow-header: 0 2px 10px rgb(0 0 0 / 27%);
+  --shadow-card: 0 2px 8px rgb(0 0 0 / 8%);
+
+  /* ---------- components ---------- */
+  --button-height: 37px;
+  --button-padding-inline: 20px;
+  --header-offset: 22px;
+  --header-height: 54px;
+  --header-inset: 16px;
+  --nav-height: calc(var(--header-offset) + var(--header-height));
 }
 
-/* fallback fonts */
-@font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
-  src: local('Arial');
-}
-
+/* fallback font: metric-matched Arial */
 @font-face {
   font-family: roboto-fallback;
   size-adjust: 99.529%;
@@ -55,19 +156,28 @@
 
 @media (width >= 900px) {
   :root {
-    /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
-
-    /* heading sizes */
-    --heading-font-size-xxl: 45px;
+    --body-font-size-xl: 20px; /* lead */
+    --body-line-height-xl: 28px;
+    --lead-font-weight: 500;
+    --display-font-size: 48px;
+    --display-line-height: 50px;
+    --heading-font-size-xxl: 44px;
+    --heading-line-height-xxl: 52px;
     --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
+    --heading-line-height-xl: 44px;
+    --gutter: 40px;
+    --section-spacing: 64px;
+    --header-offset: 30px;
+    --header-height: 70px;
+    --radius-header: var(--radius-m);
   }
+}
+
+/* ---------- base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
@@ -77,7 +187,11 @@ body {
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
-  line-height: 1.6;
+  font-weight: var(--font-weight-regular);
+  line-height: var(--body-line-height-m);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
 }
 
 body.appear {
@@ -85,7 +199,16 @@ body.appear {
 }
 
 header {
-  height: var(--nav-height);
+  height: 0;
+}
+
+/* the header floats over the page; heroes sit underneath it, other pages start below it */
+main {
+  padding-top: calc(var(--nav-height) + var(--space-xl));
+}
+
+main:has(> .section:first-child .hero) {
+  padding-top: 0;
 }
 
 header .header,
@@ -98,35 +221,116 @@ footer .footer[data-block-status="loaded"] {
   visibility: visible;
 }
 
+/* ---------- headings ---------- */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  margin: 0 0 var(--heading-spacing-after);
+  color: var(--heading-color);
   font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
-  scroll-margin: 40px;
+  scroll-margin: calc(var(--nav-height) + 16px);
 }
 
-h1 { font-size: var(--heading-font-size-xxl); }
-h2 { font-size: var(--heading-font-size-xl); }
-h3 { font-size: var(--heading-font-size-l); }
-h4 { font-size: var(--heading-font-size-m); }
-h5 { font-size: var(--heading-font-size-s); }
-h6 { font-size: var(--heading-font-size-xs); }
+h1 {
+  font-size: var(--heading-font-size-xxl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--heading-line-height-xxl);
+}
 
+h2 {
+  font-size: var(--heading-font-size-xl);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--heading-line-height-xl);
+}
+
+h3 {
+  font-size: var(--heading-font-size-l);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-l);
+}
+
+h4 {
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-m);
+}
+
+h5 {
+  font-size: var(--heading-font-size-s);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--heading-line-height-s);
+}
+
+h6 {
+  font-size: var(--heading-font-size-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-xs);
+}
+
+/* space above a heading that follows other content */
+:is(p, ul, ol, dl, pre, blockquote, table, picture, div) + :is(h2, h3) {
+  margin-top: var(--space-xl);
+}
+
+:is(p, ul, ol, dl, pre, blockquote, table, picture, div) + :is(h4, h5, h6) {
+  margin-top: var(--space-l);
+}
+
+:is(h1, h2, h3, h4, h5, h6) + :is(h2, h3, h4, h5, h6) {
+  margin-top: var(--space-m);
+}
+
+h2 + :is(h3, h4) {
+  margin-top: var(--space-l);
+}
+
+/* ---------- text ---------- */
 p,
 dl,
 ol,
 ul,
 pre,
 blockquote {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  margin: 0 0 var(--paragraph-spacing);
+}
+
+:is(p, dl, ol, ul, pre, blockquote):last-child {
+  margin-bottom: 0;
+}
+
+ul,
+ol {
+  padding-inline-start: 24px;
+}
+
+li + li {
+  margin-top: var(--space-xs);
+}
+
+strong,
+b {
+  font-weight: var(--font-weight-bold);
+}
+
+/* footnote markers must not change the line height */
+sup,
+sub {
+  line-height: 0;
+}
+
+small {
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-line-height-s);
+}
+
+hr {
+  height: 0;
+  margin: var(--space-l) 0;
+  border: 0;
+  border-top: var(--border-width) solid var(--color-divider);
 }
 
 code,
@@ -136,14 +340,10 @@ pre {
 
 pre {
   padding: 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-s);
   background-color: var(--light-color);
   overflow-x: auto;
   white-space: pre;
-}
-
-main > div {
-  margin: 40px 16px;
 }
 
 input,
@@ -153,42 +353,154 @@ button {
   font: inherit;
 }
 
-/* links */
+/* typographic utilities (usable by blocks and section styles) */
+.text-lead {
+  font-size: var(--body-font-size-xl);
+  font-weight: var(--lead-font-weight);
+  line-height: var(--body-line-height-xl);
+}
+
+.text-small {
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-line-height-s);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.eyebrow {
+  font-size: var(--eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--eyebrow-line-height);
+  letter-spacing: var(--eyebrow-letter-spacing);
+  text-transform: uppercase;
+}
+
+.display {
+  font-size: var(--display-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--display-line-height);
+}
+
+.price {
+  color: var(--color-text);
+  font-size: var(--price-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--price-line-height);
+}
+
+.phone {
+  color: var(--color-navy);
+  font-size: var(--phone-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--phone-line-height);
+}
+
+/* ---------- links ---------- */
 a:any-link {
   color: var(--link-color);
-  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
   overflow-wrap: break-word;
 }
 
 a:hover {
   color: var(--link-hover-color);
+}
+
+/* bold links (authored **link** inside a sentence) are emphasized, not underlined */
+strong a:any-link,
+a:any-link strong {
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+strong a:hover,
+a:hover strong {
   text-decoration: underline;
 }
 
-/* buttons */
+:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+/* arrow link: "View options ▸" */
+a.link-arrow:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-indigo);
+  text-decoration: none;
+}
+
+a.link-arrow::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-block: 4px solid transparent;
+  border-inline-start: 4px solid currentcolor;
+}
+
+a.link-arrow:hover {
+  color: var(--color-navy);
+  text-decoration: underline;
+}
+
+/* ---------- buttons ---------- */
+
+/* authoring: **link** = primary (teal), _link_ = secondary (white), **_link_** = accent (navy) */
 p.button-wrapper {
-  margin: 12px 0;
+  margin: var(--space-m) 0;
+}
+
+p.button-wrapper:first-child {
+  margin-top: 0;
+}
+
+p.button-wrapper:last-child {
+  margin-bottom: 0;
+}
+
+/* stacked buttons sit 16px apart */
+p.button-wrapper:has(+ p.button-wrapper) {
+  margin-bottom: var(--space-s);
+}
+
+p.button-wrapper + p.button-wrapper {
+  margin-top: var(--space-s);
 }
 
 a.button:any-link,
 button.button {
-  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   max-width: 100%;
+  min-height: var(--button-height);
   margin: 0;
-  border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
-  font: inherit;
-  font-weight: 500;
-  line-height: 1.25;
+  border: 0;
+  border-radius: var(--radius-leaf-s);
+  padding: 0 var(--button-padding-inline);
+  background-color: var(--color-teal);
+  color: var(--color-white);
+  font-family: var(--body-font-family);
+  font-size: var(--button-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--button-line-height);
+  letter-spacing: var(--button-letter-spacing);
+  text-align: center;
   text-decoration: none;
+  text-transform: uppercase;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
 a.button[aria-disabled="true"],
@@ -197,87 +509,62 @@ button.button:disabled {
   pointer-events: none;
 }
 
+/* primary: teal */
 a.button.primary,
 button.button.primary {
-  border-color: var(--text-color);
-  background-color: var(--text-color);
-  color: var(--background-color);
+  background-color: var(--color-teal);
+  color: var(--color-white);
 }
 
 a.button.primary:hover,
 a.button.primary:focus-visible,
 button.button.primary:hover,
 button.button.primary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  background-color: var(--color-navy);
+  color: var(--color-white);
 }
 
-a.button.primary[aria-disabled="true"],
-a.button.primary[aria-disabled="true"]:hover,
-a.button.primary[aria-disabled="true"]:focus-visible,
-button.button.primary:disabled,
-button.button.primary:disabled:hover,
-button.button.primary:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
-}
-
+/* secondary: white with navy label (e.g. "Register") */
 a.button.secondary,
 button.button.secondary {
-  border-color: var(--text-color);
-  background-color: transparent;
-  color: var(--text-color);
+  background-color: var(--color-white);
+  box-shadow: inset 0 0 0 1px var(--color-navy);
+  color: var(--color-navy);
 }
 
 a.button.secondary:hover,
 a.button.secondary:focus-visible,
 button.button.secondary:hover,
 button.button.secondary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--light-color);
-  color: var(--dark-color);
+  background-color: var(--color-surface-2);
+  color: var(--color-navy);
 }
 
-a.button.secondary[aria-disabled="true"],
-a.button.secondary[aria-disabled="true"]:hover,
-a.button.secondary[aria-disabled="true"]:focus-visible,
-button.button.secondary:disabled,
-button.button.secondary:disabled:hover,
-button.button.secondary:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
-}
-
-/* high-impact call-to-action */
+/* accent: navy (e.g. "Sign in • Register") */
 a.button.accent,
 button.button.accent {
-  border-color: var(--link-color);
-  background-color: var(--link-color);
-  color: var(--background-color);
+  background-color: var(--color-navy);
+  color: var(--color-white);
 }
 
 a.button.accent:hover,
 a.button.accent:focus-visible,
 button.button.accent:hover,
 button.button.accent:focus-visible {
-  border-color: var(--link-hover-color);
-  background-color: var(--link-hover-color);
+  background-color: var(--color-teal);
+  color: var(--color-white);
 }
 
-a.button.accent[aria-disabled="true"],
-a.button.accent[aria-disabled="true"]:hover,
-a.button.accent[aria-disabled="true"]:focus-visible,
-button.button.accent:disabled,
-button.button.accent:disabled:hover,
-button.button.accent:disabled:focus-visible {
-  background-color: var(--light-color);
-  border-color: var(--light-color);
-  color: var(--dark-color);
+a.button[aria-disabled="true"],
+button.button:disabled,
+a.button[aria-disabled="true"]:hover,
+button.button:disabled:hover {
+  background-color: var(--color-surface-2);
+  box-shadow: none;
+  color: var(--color-text-subtle);
 }
 
+/* ---------- media & icons ---------- */
 main img {
   max-width: 100%;
   width: auto;
@@ -295,31 +582,177 @@ main img {
   width: 100%;
 }
 
-/* sections */
+/* ---------- sections ---------- */
 main > .section {
-  margin: 40px 0;
+  margin: var(--section-spacing) 0;
 }
 
 main > .section > div {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 24px;
+  max-width: calc(var(--container-wide) + (2 * var(--gutter)));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+main > .section > div + div {
+  margin-top: var(--space-l);
 }
 
 main > .section:first-of-type {
   margin-top: 0;
 }
 
+/* 1288 px content column (homepage card rows) */
+main > .section.medium > div {
+  max-width: calc(1288px + (2 * var(--gutter)));
+}
+
+/* narrower 1220 px content column (MMCP-style pages) */
+main > .section.narrow > div {
+  max-width: calc(var(--container) + (2 * var(--gutter)));
+}
+
+/* "inset": mobile text column with 30px gutters (MMCP mobile design) */
+main > .section.inset > div {
+  padding: 0 30px;
+}
+
+/* section backgrounds (section metadata "Style") */
+main > .section:is(.light, .highlight, .grey, .sand, .navy) {
+  margin: 0;
+  padding: var(--section-spacing) 0;
+}
+
+main > .section:is(.light, .highlight) {
+  background-color: var(--color-surface-1);
+}
+
+main > .section.grey {
+  background-color: var(--color-surface-2);
+}
+
+main > .section.sand {
+  background-color: var(--color-sand);
+}
+
+main > .section.navy {
+  --text-color: var(--color-white);
+  --heading-color: var(--color-white);
+  --link-color: var(--color-white);
+  --link-hover-color: var(--color-mint);
+  --focus-color: var(--color-mint);
+
+  background-color: var(--color-navy);
+  color: var(--text-color);
+}
+
+/* buttons on navy: secondary stays white/navy, primary uses the lighter teal */
+main > .section.navy a.button.primary {
+  background-color: var(--color-teal-light);
+}
+
+main > .section.navy a.button.primary:hover,
+main > .section.navy a.button.primary:focus-visible {
+  background-color: var(--color-white);
+  color: var(--color-navy);
+}
+
+main > .section.navy a.button.secondary {
+  box-shadow: none;
+}
+
+/* "small-heading": section titles at block-title size (24/28 bold), e.g. "Medical plans" */
+main > .section.small-heading h2 {
+  font-size: var(--heading-font-size-l);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-l);
+}
+
+/* intro text keeps a measure that leaves room for block captions on the right */
+main > .section.small-heading .default-content-wrapper > p {
+  max-width: 1050px;
+}
+
+/* decorative backgrounds */
+main > .section.hexagons {
+  margin: 0;
+  padding: var(--section-spacing) 0;
+  background: url('images/bg-hexagons.svg') center top / 1440px auto no-repeat;
+}
+
+/* "shaded" / "shaded-light": soft left-to-right grey wash (homepage card rows) */
+main > .section.shaded {
+  background-color: #f3f3f3;
+  background-image: linear-gradient(90deg, #ececec 0%, #fafafa 100%);
+}
+
+main > .section.shaded-light {
+  background-color: #fafaf8;
+  background-image: linear-gradient(90deg, #f4f5f0 0%, #fff 100%);
+}
+
+main > .section.hexagons:is(.shaded, .shaded-light) {
+  background-position: center top, 0 0;
+  background-repeat: no-repeat;
+  background-size: 1440px auto, auto;
+}
+
+main > .section.hexagons.shaded {
+  background-image: url('images/bg-hexagons.svg'), linear-gradient(90deg, #ececec 0%, #fafafa 100%);
+}
+
+main > .section.hexagons.shaded-light {
+  background-image: url('images/bg-hexagons.svg'), linear-gradient(90deg, #f4f5f0 0%, #fff 100%);
+}
+
+/* section padding presets (used where the design deviates from the default rhythm) */
+main > .section.padding-s {
+  margin: 0;
+  padding: 60px 0 49px;
+}
+
+main > .section.padding-l {
+  margin: 0;
+  padding: 48px 0 72px;
+}
+
+main > .section.padding-xl {
+  margin: 0;
+  padding: 64px 0 72px;
+}
+
+main > .section.padding-xxl {
+  margin: 0;
+  padding: 46px 0 48px;
+}
+
 @media (width >= 900px) {
-  main > .section > div {
-    padding: 0 32px;
+  main > .section.inset > div {
+    padding: 0 var(--gutter);
+  }
+
+  main > .section.padding-s {
+    padding: 56px 0 80px;
+  }
+
+  main > .section.padding-l {
+    padding: 72px 0 108px;
+  }
+
+  main > .section.padding-xl {
+    padding: 100px 0 108px;
+  }
+
+  main > .section.padding-xxl {
+    padding: 110px 0 111px;
   }
 }
 
-/* section metadata */
-main .section.light,
-main .section.highlight {
-  background-color: var(--light-color);
-  margin: 0;
-  padding: 40px 0;
+/* centered section heading ("Additional plan resources") */
+main > .section.center .default-content-wrapper {
+  text-align: center;
+}
+
+/* keep default text at a readable measure inside wide containers */
+main > .section.readable .default-content-wrapper {
+  max-width: var(--container-text);
 }

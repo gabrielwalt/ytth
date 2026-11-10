@@ -10,6 +10,8 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
+  toClassName,
+  toCamelCase,
 } from './aem.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
@@ -143,11 +145,87 @@ function decorateButtons(main) {
 }
 
 /**
+ * Turns authored `:icon-name:` text into icon spans. Edge Delivery does this when it renders
+ * a document; this covers content that reaches the page unconverted (e.g. local preview).
+ * @param {Element} main The container element
+ */
+function decorateIconTokens(main) {
+  const token = /(^|\s):([a-z][a-z0-9-]*):(?=\s|$)/g;
+  const walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) {
+    if (walker.currentNode.nodeValue.includes(':')) nodes.push(walker.currentNode);
+  }
+  nodes.forEach((node) => {
+    const text = node.nodeValue;
+    if (!token.test(text)) return;
+    token.lastIndex = 0;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    text.replace(token, (match, space, name, offset) => {
+      frag.append(text.slice(last, offset) + space);
+      const span = document.createElement('span');
+      span.className = `icon icon-${name}`;
+      frag.append(span);
+      last = offset + match.length;
+      return match;
+    });
+    frag.append(text.slice(last));
+    node.replaceWith(frag);
+  });
+}
+
+/**
+ * Applies Section Metadata and page Metadata tables that reach the page unprocessed
+ * (Edge Delivery turns them into section classes and head meta tags; the local preview
+ * serves documents as authored).
+ * @param {Element} main The main element
+ */
+function applyUnprocessedMetadata(main) {
+  const readTable = (block) => [...block.children].map((row) => {
+    const [key, value] = [...row.children];
+    return [key?.textContent.trim().toLowerCase() || '', value];
+  });
+  main.querySelectorAll(':scope > div > div.section-metadata').forEach((block) => {
+    const section = block.parentElement;
+    readTable(block).forEach(([key, value]) => {
+      const text = value?.textContent.trim() || '';
+      if (key === 'style') {
+        text.split(',').map((s) => toClassName(s.trim())).filter(Boolean)
+          .forEach((cls) => section.classList.add(cls));
+      } else if (key) {
+        section.dataset[toCamelCase(key)] = text;
+      }
+    });
+    block.remove();
+  });
+  main.querySelectorAll(':scope > div > div.metadata').forEach((block) => {
+    readTable(block).forEach(([key, value]) => {
+      const text = value?.textContent.trim() || '';
+      if (!key || !text) return;
+      if (key === 'title') document.title = text;
+      const name = toClassName(key);
+      if (!document.head.querySelector(`meta[name="${name}"]`)) {
+        const meta = document.createElement('meta');
+        meta.name = name;
+        meta.content = text;
+        document.head.append(meta);
+      }
+    });
+    const section = block.parentElement;
+    block.remove();
+    if (!section.children.length) section.remove();
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
+  applyUnprocessedMetadata(main);
+  decorateIconTokens(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);

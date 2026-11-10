@@ -1,0 +1,368 @@
+/* plan details: the MMCP benefits table (1440 / 425 px designs) */
+main > .section > .plan-details-wrapper {
+  margin-top: 48px;
+}
+
+/* on mobile the table card is wider than the narrow text column (20 vs 30px gutters) */
+main > .section.inset > .plan-details-wrapper {
+  padding: 0 20px;
+}
+
+/* the design leaves a wider gap below the plan table than the default section rhythm */
+main > .section:has(> .plan-details-wrapper) {
+  margin-bottom: 60px;
+}
+
+.plan-details .plan-details-card {
+  border: var(--border);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+/* header */
+.plan-details .plan-details-header {
+  min-height: 88px;
+  padding: 20px 16px 16px;
+  background: var(--color-navy);
+  color: var(--color-white);
+}
+
+.plan-details .plan-details-header > * {
+  margin: 0;
+}
+
+.plan-details .plan-details-eyebrow {
+  margin-bottom: 8px;
+  color: var(--color-mint);
+  font-size: var(--eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--eyebrow-line-height);
+  letter-spacing: var(--eyebrow-letter-spacing);
+  text-transform: uppercase;
+}
+
+.plan-details .plan-details-header :is(h2, h3) {
+  color: var(--color-white);
+  font-size: var(--heading-font-size-l);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--heading-line-height-l);
+}
+
+/* summary stats: desktop only (mobile design goes straight to the table, which repeats these values) */
+.plan-details .plan-details-stats {
+  display: none;
+}
+
+.plan-details .plan-details-stat {
+  position: relative;
+  padding: 0 16px;
+}
+
+.plan-details .plan-details-stat > * {
+  margin: 0;
+}
+
+.plan-details .plan-details-stat :is(h3, h4) {
+  min-height: 42px;
+  color: var(--color-text);
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: 21px;
+}
+
+.plan-details .plan-details-stat p {
+  margin-top: 19.6px;
+  font-size: var(--body-font-size-l);
+  line-height: 19px;
+}
+
+.plan-details .icon-info {
+  width: 20px;
+  height: 20px;
+  margin-left: 8px;
+  vertical-align: -3px;
+}
+
+.plan-details .plan-details-stat .icon-info {
+  margin-left: 12px;
+}
+
+/* group bars */
+.plan-details .plan-details-group {
+  display: flex;
+  align-items: center;
+  min-height: 43px;
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  background: var(--color-navy);
+  color: var(--color-white);
+  font-weight: var(--font-weight-medium);
+  line-height: 17px;
+}
+
+.plan-details .plan-details-group.navy {
+  margin-bottom: 0;
+}
+
+.plan-details .plan-details-group.teal {
+  background: var(--color-teal-light);
+}
+
+.plan-details .plan-details-group > * {
+  margin: 0;
+}
+
+.plan-details .plan-details-columns {
+  display: none;
+}
+
+/* rows (mobile: stacked) */
+.plan-details .plan-details-row {
+  padding: 11.2px 16px 20px;
+}
+
+.plan-details .plan-details-major {
+  padding-bottom: 26px;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.plan-details .plan-details-major + .plan-details-row {
+  margin-top: 18px;
+}
+
+.plan-details .plan-details-label > * {
+  margin: 0;
+}
+
+.plan-details .plan-details-label :is(h3, h4, h5) {
+  color: var(--color-text);
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: 24px;
+}
+
+.plan-details .plan-details-label :is(h3, h4, h5) + p {
+  margin-top: 7.8px;
+  color: var(--color-text-subtle);
+  font-weight: var(--font-weight-medium);
+  line-height: 17px;
+}
+
+.plan-details .plan-details-value {
+  margin-top: 19px;
+  line-height: 23px;
+}
+
+.plan-details .plan-details-label + .plan-details-value {
+  margin-top: 19px;
+}
+
+.plan-details .plan-details-value-label {
+  display: block;
+  font-weight: var(--font-weight-bold);
+}
+
+.plan-details .plan-details-value-text > * {
+  margin: 0;
+}
+
+.plan-details .plan-details-value-text {
+  display: block;
+  padding-top: 3px;
+  font-weight: var(--font-weight-medium);
+  line-height: 17px;
+}
+
+.plan-details .plan-details-item {
+  padding: 25.6px 16px 29px;
+}
+
+.plan-details .plan-details-item .plan-details-value {
+  margin-top: 15px;
+}
+
+.plan-details .plan-details-item .plan-details-label + .plan-details-value {
+  margin-top: 11.4px;
+}
+
+.plan-details .plan-details-item .plan-details-value-text {
+  font-weight: var(--font-weight-regular);
+}
+
+.plan-details .plan-details-label-only {
+  padding: 31.2px 16px 18.8px;
+}
+
+.plan-details .plan-details-label-only .plan-details-label {
+  font-size: var(--heading-font-size-m);
+  line-height: 24px;
+}
+
+.plan-details .plan-details-item.striped {
+  background: var(--color-surface-2);
+}
+
+/* footnotes */
+.plan-details .plan-details-footnotes {
+  margin-top: 22px;
+  border-top: 2px solid var(--color-border);
+  padding: 18.7px 16px 42.5px 20px;
+  font-size: var(--body-font-size-s);
+  line-height: 15px;
+}
+
+.plan-details .plan-details-footnotes ol {
+  margin: 0;
+  padding-left: 17px;
+}
+
+.plan-details .plan-details-footnotes li + li {
+  margin-top: 11px;
+}
+
+@media (width >= 900px) {
+  main > .section:has(> .plan-details-wrapper) {
+    margin-bottom: 72px;
+  }
+
+  main > .section.inset > .plan-details-wrapper {
+    padding: 0 var(--gutter);
+  }
+
+  .plan-details .plan-details-group {
+    min-height: 59px;
+    padding: 8px 16px;
+  }
+
+  .plan-details .plan-details-label :is(h3, h4, h5) + p {
+    margin-top: 4px;
+  }
+
+  /* stats: 4 columns of 300px with 1x83 dividers */
+  .plan-details .plan-details-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    gap: 0;
+    padding: 48.7px 0;
+  }
+
+  .plan-details .plan-details-stat {
+    padding: 0 32px 0 28px;
+  }
+
+  .plan-details .plan-details-stat + .plan-details-stat::before {
+    content: '';
+    position: absolute;
+    top: 3.3px;
+    left: -4px;
+    width: 1px;
+    height: 83px;
+    background: var(--color-border);
+  }
+
+  /* table grid: label 454 / in-network 382 / out-of-network 382 */
+  .plan-details :is(.plan-details-columns, .plan-details-row) {
+    display: grid;
+    grid-template-columns: 454fr 382fr 382fr;
+    align-items: center;
+  }
+
+  .plan-details .plan-details-columns {
+    min-height: 44px;
+    border-bottom: 2px solid var(--color-border);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .plan-details .plan-details-row {
+    margin-top: 9px;
+    padding: 11.2px 0 25px;
+  }
+
+  .plan-details .plan-details-label {
+    padding: 0 24px;
+  }
+
+  .plan-details .plan-details-value,
+  .plan-details .plan-details-item .plan-details-value,
+  .plan-details .plan-details-row .plan-details-label + .plan-details-value,
+  .plan-details .plan-details-item .plan-details-label + .plan-details-value {
+    margin: 0;
+    padding-right: 24px;
+    line-height: inherit;
+  }
+
+  .plan-details .plan-details-major + .plan-details-row {
+    margin-top: 9px;
+  }
+
+  .plan-details .plan-details-value-label {
+    display: none;
+  }
+
+  .plan-details .plan-details-value-text {
+    padding-top: 0;
+    line-height: inherit;
+  }
+
+  .plan-details .plan-details-major .plan-details-value-text {
+    font-weight: var(--font-weight-bold);
+  }
+
+  .plan-details .plan-details-subheading {
+    padding-bottom: 13px;
+  }
+
+  .plan-details .plan-details-subheading .plan-details-label {
+    grid-column: 1 / -1;
+  }
+
+  .plan-details .plan-details-item {
+    min-height: 44px;
+    margin-top: 10px;
+    padding: 5px 0;
+    line-height: 17px;
+  }
+
+  .plan-details .plan-details-item .plan-details-label {
+    padding-left: 46px;
+  }
+
+  .plan-details .plan-details-item .plan-details-value-text {
+    font-weight: var(--font-weight-regular);
+  }
+
+  .plan-details .plan-details-group + .plan-details-row {
+    margin-top: 0;
+  }
+
+  .plan-details .plan-details-group-end {
+    margin-bottom: 32px;
+  }
+
+  /* rows in the later (navy) groups sit on a slightly looser 56px rhythm */
+  .plan-details .plan-details-group.navy ~ .plan-details-item {
+    margin-top: 12px;
+  }
+
+  .plan-details .plan-details-group.navy ~ .plan-details-group-end {
+    margin-bottom: 42px;
+  }
+
+  .plan-details .plan-details-label-only .plan-details-label {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .plan-details .plan-details-footnotes {
+    padding: 46px 24px 37px 42px;
+  }
+
+  .plan-details .plan-details-footnotes ol {
+    padding-left: 21px;
+  }
+
+  .plan-details .plan-details-footnotes li + li {
+    margin-top: 16px;
+  }
+}

@@ -1,37 +1,391 @@
-.hero-container .hero-wrapper {
-  max-width: unset;
+/* hero: full-bleed, sits under the floating header */
+main > .section:has(> .hero-wrapper) {
+  --hero-spacing: 42px;
+
+  margin-top: 0;
+  margin-bottom: var(--hero-spacing);
+}
+
+main > .section:has(> .hero-wrapper) + .section {
+  margin-top: 42px;
+}
+
+main > .section > .hero-wrapper {
+  max-width: none;
   padding: 0;
 }
 
 .hero {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  overflow: hidden;
 }
 
-.hero h1 {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
+.hero .hero-content {
+  position: relative;
+  max-width: calc(var(--container) + (2 * var(--gutter)));
+  margin: 0 auto;
+  padding: 0 var(--gutter);
 }
 
-.hero picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+.hero .hero-text > :last-child {
+  margin-bottom: 0;
 }
 
-.hero img {
-  object-fit: cover;
+.hero .hero-badge {
+  margin: 0;
+  line-height: 0;
+}
+
+.hero .hero-eyebrow {
+  margin: 0 0 8px;
+  font-size: var(--body-font-size-m);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--body-line-height-m);
+}
+
+.hero .hero-media picture,
+.hero .hero-media img {
+  display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- split: Benefits & coverage ---------- */
+.hero.split {
+  min-height: 509px;
+  background: var(--color-sand);
+}
+
+.hero.split .hero-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* mobile: the photo is a faded background */
+.hero.split .hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(118deg, rgb(228 225 222 / 92%) 0%, rgb(228 225 222 / 82%) 100%);
+}
+
+/* photo crop from the design: the image is zoomed and offset inside the media box */
+.hero.split .hero-media picture {
+  position: absolute;
+  inset: 0;
+}
+
+.hero.split .hero-media img {
+  position: absolute;
+  top: -2.02%;
+  left: -65.62%;
+  width: 227.25%;
+  max-width: none;
+  height: auto;
+}
+
+.hero.split .hero-content {
+  padding: 131.8px 28px 48px 26.1px;
+}
+
+.hero.split .hero-text {
+  max-width: 217px;
+  color: var(--color-navy);
+}
+
+.hero.split .hero-badge .icon {
+  width: 51px;
+  height: 45px;
+}
+
+.hero.split h1 {
+  margin: 20.3px 0 0;
+  padding-left: 1.9px;
+  font-size: var(--heading-font-size-l);
+  font-weight: var(--font-weight-bold);
+  line-height: 25px;
+}
+
+.hero.split h1 + p,
+.hero.split .hero-text > p:not(.hero-badge) {
+  margin: 12px 0 0;
+  padding-left: 1.9px;
+  font-weight: var(--font-weight-medium);
+}
+
+/* ---------- navy: plan detail pages ---------- */
+.hero.navy {
+  background: var(--color-navy) url('../../styles/images/bg-tracks-navy.svg') center top / 1440px auto no-repeat;
+  color: var(--color-white);
+}
+
+.hero.navy .hero-content {
+  padding: 147.6px 30px 98px;
+}
+
+.hero.navy .hero-eyebrow {
+  margin-bottom: 12.2px;
+}
+
+main > .section:has(> .hero-wrapper .hero.navy) + .section {
+  margin-top: 57px;
+}
+
+.hero.navy .hero-text {
+  max-width: 560px;
+}
+
+.hero.navy h1 {
+  margin: 0;
+  color: var(--color-white);
 }
 
 @media (width >= 900px) {
-  .hero {
-    padding: 40px 32px;
+  main > .section:has(> .hero-wrapper) {
+    --hero-spacing: 62px;
   }
+
+  main > .section:has(> .hero-wrapper) + .section {
+    margin-top: 62px;
+  }
+
+  main > .section:has(> .hero-wrapper .hero.navy) + .section {
+    margin-top: 73px;
+  }
+
+  /* split: light panel left (two-tone gradient), photo right 40.4% */
+  .hero.split {
+    min-height: 553px;
+    background: linear-gradient(90deg, #e4e1df 25.7%, #d2d6d9 55.6%);
+  }
+
+  .hero.split .hero-media {
+    left: auto;
+    width: 40.417%;
+  }
+
+  .hero.split .hero-media::after {
+    content: none;
+  }
+
+  .hero.split .hero-media img {
+    top: -14.03%;
+    left: -148.27%;
+    width: 258.74%;
+  }
+
+  .hero.split .hero-content {
+    padding: 188px var(--gutter) 60px;
+  }
+
+  .hero.split .hero-text {
+    max-width: 440px;
+    margin-left: -2px;
+  }
+
+  .hero.split .hero-badge .icon {
+    width: 67px;
+    height: 59px;
+  }
+
+  .hero.split h1 {
+    margin-top: 19.5px;
+    padding-left: 2px;
+    font-size: var(--heading-font-size-xxl);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--heading-line-height-xxl);
+  }
+
+  .hero.split h1 + p,
+  .hero.split .hero-text > p:not(.hero-badge) {
+    margin-top: 8px;
+    padding-left: 2px;
+  }
+
+  .hero.navy {
+    min-height: 392px;
+  }
+
+  .hero.navy .hero-content {
+    padding: 155px var(--gutter) 92px;
+  }
+
+  .hero.navy .hero-eyebrow {
+    margin-bottom: 8px;
+  }
+}
+
+/* variants are scoped by variant class; their order is independent of the rules above */
+/* stylelint-disable no-descending-specificity */
+
+/* ---------- home: full-bleed photo, display heading, search field (homepage design) ---------- */
+.hero.home {
+  min-height: 682px;
+  background: var(--color-navy);
+  color: var(--color-white);
+}
+
+.hero.home .hero-media {
+  position: absolute;
+  inset: 0;
+}
+
+.hero.home .hero-media img {
+  object-position: 70% center;
+}
+
+/* keeps the white text readable on any photo */
+.hero.home .hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 15%) 0%, rgb(0 0 0 / 55%) 100%);
+}
+
+.hero.home .hero-content {
+  max-width: calc(var(--container-wide) + (2 * var(--gutter)));
+  padding: 243.8px 30px 30px;
+}
+
+.hero.home .hero-text {
+  max-width: 250px;
+}
+
+.hero.home h1 {
+  margin: 0;
+  color: var(--color-white);
+  font-size: var(--display-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--display-line-height);
+}
+
+.hero.home h1 + p {
+  margin: 8px 0 0;
+}
+
+.hero.home .hero-text .button-wrapper {
+  margin: 20px 0 0;
+}
+
+.hero.home .hero-search {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  margin: 52px -10px 0;
+  padding: 0 14px 0 13px;
+  border-radius: var(--radius-s);
+  background: var(--color-white);
+  box-shadow: 0 2px 10px rgb(0 0 0 / 15%);
+}
+
+.hero.home .hero-search-icon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+}
+
+.hero.home .hero-search input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  margin: 0 0 0 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--body-font-size-m);
+}
+
+.hero.home .hero-search input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.hero.home .hero-search input:focus {
+  outline: none;
+}
+
+.hero.home .hero-search:focus-within {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+.hero.home .hero-search button {
+  display: flex;
+  flex: 0 0 32px;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: var(--color-surface-2);
+  cursor: pointer;
+}
+
+.hero.home .hero-search button:hover {
+  background: var(--color-divider);
+}
+
+@media (width >= 900px) {
+  .hero.home {
+    min-height: 672px;
+  }
+
+  .hero.home .hero-media img {
+    object-position: center 25%;
+  }
+
+  .hero.home .hero-media::after {
+    background: linear-gradient(90deg, rgb(0 0 0 / 55%) 0%, rgb(0 0 0 / 15%) 55%, rgb(0 0 0 / 0%) 100%);
+  }
+
+  .hero.home .hero-content {
+    position: static;
+    padding: 193px var(--gutter) 0;
+  }
+
+  .hero.home .hero-text {
+    position: relative;
+    max-width: 520px;
+  }
+
+  .hero.home h1 + p {
+    margin-top: 17px;
+  }
+
+  .hero.home .hero-text .button-wrapper {
+    margin-top: 26px;
+  }
+
+  .hero.home .hero-search {
+    position: absolute;
+    bottom: 39px;
+    left: 50%;
+    width: 770px;
+    height: 70px;
+    margin: 0;
+    padding: 0 17px 0 18px;
+    transform: translateX(-50%);
+  }
+
+  .hero.home .hero-search-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .hero.home .hero-search input {
+    margin-left: 15px;
+    font-size: 21px;
+  }
+}
+
+/* the homepage hero sits directly on the quick-links band */
+main > .section:has(> .hero-wrapper .hero.home) {
+  margin-bottom: 0;
 }

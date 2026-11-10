@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Style guide | Your Track to Health</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script nonce="aem" src="/scripts/aem.js" type="module"></script>
+  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="/styles/styles.css">
+  <style>
+    .sg-swatches, .sg-row { list-style: none; padding: 0; margin: 0 0 24px; }
+    li.sg-swatch, li.sg-box { margin: 0; }
+    .sg-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+    .sg-swatch { border: 1px solid var(--color-border); border-radius: var(--radius-leaf-s); overflow: hidden; font-size: 12px; line-height: 16px; }
+    .sg-swatch span { display: block; height: 64px; }
+    .sg-swatch code { display: block; padding: 8px; font-size: 12px; }
+    .sg-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+    .sg-box { width: 160px; height: 96px; display: grid; place-items: center; background: var(--color-white); font-size: 12px; }
+    .sg-label { color: var(--color-text-subtle); font-size: 12px; line-height: 16px; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <header></header>
+  <main>
+    <div>
+      <p class="eyebrow">Design system</p>
+      <h1>Your Track to Health style guide</h1>
+      <p class="text-lead">Tokens and base styles extracted from the redesign PDFs. Everything below uses the site's global stylesheet only.</p>
+    </div>
+
+    <div>
+      <h2>Color</h2>
+      <h4>Brand</h4>
+      <ul class="sg-swatches">
+        <li class="sg-swatch"><span style="background:var(--color-navy)"></span><code>--color-navy #1c355e</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-teal)"></span><code>--color-teal #007e80</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-teal-light)"></span><code>--color-teal-light #1e8f90</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-mint)"></span><code>--color-mint #c5e0da</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-indigo)"></span><code>--color-indigo #4752ae</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-indigo-dark)"></span><code>--color-indigo-dark #293682</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-lavender)"></span><code>--color-lavender #9da1c3</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-sand)"></span><code>--color-sand #e5e2d9</code></li>
+        <li class="sg-swatch"><span style="background:var(--gradient-badge)"></span><code>--gradient-badge</code></li>
+      </ul>
+      <h4>Neutrals</h4>
+      <ul class="sg-swatches">
+        <li class="sg-swatch"><span style="background:var(--color-text)"></span><code>--color-text #414042</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-text-muted)"></span><code>--color-text-muted #6c6c6c</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-text-subtle)"></span><code>--color-text-subtle #979795</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-border)"></span><code>--color-border #cbcac6</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-divider)"></span><code>--color-divider #e8e7e3</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-surface-2)"></span><code>--color-surface-2 #eeeeed</code></li>
+        <li class="sg-swatch"><span style="background:var(--color-surface-1)"></span><code>--color-surface-1 #f7f7f7</code></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>Typography</h2>
+      <p class="sg-label">Display: 48/50 Medium (mobile 32/34)</p>
+      <p class="display" style="color:var(--color-navy)">Get the help, coverage information and tools you need</p>
+      <p class="sg-label">H1: 44/52 Medium (mobile 24/28)</p>
+      <h1>Benefits &amp; coverage</h1>
+      <p class="sg-label">H2: 36/44 Medium (mobile 28/32)</p>
+      <h2>Additional plan resources</h2>
+      <p class="sg-label">H3: 24/28 Bold</p>
+      <h3>Medical plans</h3>
+      <p class="sg-label">H4: 20/28 Bold</p>
+      <h4>Common Terms</h4>
+      <p class="sg-label">H5: 20/28 Medium</p>
+      <h5>Deductible</h5>
+      <p class="sg-label">H6: 18/26 Bold</p>
+      <h6>What happens if I see a doctor who is out-of-network?</h6>
+      <p class="sg-label">Lead: 20/28 Medium (mobile 18/27 Regular)</p>
+      <p class="text-lead">The Managed Medical Care Program (MMCP) offers comprehensive benefits and may be a good fit for members who want to support their families.</p>
+      <p class="sg-label">Body: 16/24 Regular, with a link, a bold link and bold text</p>
+      <p>Optum Rx® works with your plan to help you get the medication you need. Use your online account to find a nearby network pharmacy, set up home delivery, view your ID card and more. <strong>Note that prescription drug plans vary per plan,</strong> <a href="#">View Options</a>. To see what's available to you, log in to <strong><a href="#">MyAccount</a></strong>.</p>
+      <p class="sg-label">Small: 14/20</p>
+      <p class="text-small">This is the amount you pay each year for eligible health care services before the Plan starts to pay.</p>
+      <p class="sg-label">Muted</p>
+      <p class="text-muted">Railroad Employees Prescription Drug Plan with Aetna</p>
+      <p class="sg-label">Eyebrow: 12/16 Bold, uppercase, 0.1em</p>
+      <p class="eyebrow" style="color:var(--color-navy)">Individual &amp; family coverage</p>
+      <p class="sg-label">Price: 30/36 Bold · Phone: 24/28 Bold</p>
+      <p><span class="price">$350</span> <span class="text-small">Individual</span></p>
+      <p class="phone">1-844-368-8736</p>
+      <p class="sg-label">Arrow link</p>
+      <p><a class="link-arrow" href="#">View options</a></p>
+      <p class="sg-label">Lists</p>
+      <ul>
+        <li>Find a network doctor</li>
+        <li>Schedule annual preventive care</li>
+        <li>Learn about maternity and newborn support</li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>Buttons</h2>
+      <p class="sg-label">Primary (authored <code>**link**</code>), secondary (<code>_link_</code>) and accent (<code>**_link_**</code>). All buttons are 37 px tall, 12/16 Medium uppercase with 0.05em spacing, 0/20 px padding and a leaf radius of 8 px.</p>
+      <p><strong><a href="#">View plan details</a></strong></p>
+      <p><em><a href="#">Register</a></em></p>
+      <p><strong><em><a href="#">Sign in • Register</a></em></strong></p>
+    </div>
+
+    <div class="navy">
+      <h2>Buttons on navy</h2>
+      <p>A section with the <code>navy</code> style switches the text, headings and links to white.</p>
+      <p><strong><a href="#">Sign in</a></strong></p>
+      <p><em><a href="#">Register</a></em></p>
+      <p>Inline <a href="#">link on navy</a>.</p>
+    </div>
+
+    <div class="light">
+      <h2>Light section</h2>
+      <p>The <code>light</code> style gives a #f7f7f7 background (used by "How the plan works" and "Additional plan resources").</p>
+      <p><strong><a href="#">Find your doctor</a></strong></p>
+    </div>
+
+    <div class="sand">
+      <h2>Sand section</h2>
+      <p>The <code>sand</code> style gives a #e5e2d9 background.</p>
+    </div>
+
+    <div class="light center">
+      <h2>Additional plan resources</h2>
+      <p>The <code>light, center</code> styles combined.</p>
+    </div>
+
+    <div>
+      <h2>Shape</h2>
+      <ul class="sg-row">
+        <li class="sg-box" style="border:var(--border);border-radius:var(--radius-leaf-s)">leaf-s 8px</li>
+        <li class="sg-box" style="border:var(--border);border-radius:var(--radius-leaf-l)">leaf-l 16px</li>
+        <li class="sg-box" style="border:var(--border);border-radius:var(--radius-l)">radius-l 16px</li>
+        <li class="sg-box" style="border:var(--border-accent);border-radius:var(--radius-leaf-s)">border-accent</li>
+        <li class="sg-box" style="border-radius:var(--radius-header);box-shadow:var(--shadow-header)">shadow-header</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Medical plans</h3>
+      <p style="max-width:1060px">See how the plans work at a glance. Plans and benefits vary by railroad and labor union. To see what's available to you, log in to <strong><a href="#">MyAccount</a></strong> or use the <strong><a href="#">Summary of Benefits Lookup</a></strong> tool.</p>
+      <p class="sg-label">Reference specimen: Benefits &amp; coverage, desktop y 600–700</p>
+    </div>
+
+    <div class="narrow">
+      <h2>Need to make updates to your plan?</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent varius id sapien a elementum. Suspendisse feugiat, sapien a vulputate facilisis, risus metus bibendum dui, eget iaculis sapien urna in lacus.</p>
+    </div>
+  </main>
+  <footer></footer>
+</body>
+</html>

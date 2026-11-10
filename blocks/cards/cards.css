@@ -1,27 +1,259 @@
+/* cards: measured from the redesign (1440 / 425 px) */
 .cards > ul {
-  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  list-style: none;
 }
 
 .cards > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
-}
-
-.cards .cards-card-body {
-  margin: 16px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
 }
 
 .cards .cards-card-image {
   line-height: 0;
 }
 
-.cards > ul > li img {
+.cards .cards-card-image img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+}
+
+.cards .cards-card-icon {
+  line-height: 0;
+}
+
+.cards .cards-card-icon .icon {
+  width: 68.5px;
+  height: 59.6px;
+  margin: -1px;
+}
+
+.cards .cards-card-body > * {
+  margin: 0;
+}
+
+.cards .cards-card-body :is(h2, h3, h4) {
+  color: var(--color-text);
+  font-size: var(--heading-font-size-l);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--heading-line-height-l);
+}
+
+.cards .cards-card-body > p {
+  font-weight: var(--font-weight-medium);
+}
+
+.cards .cards-card-body > :is(h2, h3, h4) + p {
+  margin-top: 17.7px;
+}
+
+/* ---------- resource: borderless icon cards (on a grey section) ---------- */
+main > .section > .cards-wrapper:has(.cards.resource) {
+  margin-top: 56px;
+}
+
+@media (width >= 900px) {
+  main > .section > .cards-wrapper:has(.cards.resource) {
+    margin-top: 82px;
+  }
+}
+
+.cards.resource > ul {
+  gap: 40px;
+}
+
+.cards.resource .cards-card-body {
+  margin-top: 17.3px;
+}
+
+.cards.resource .cards-card-body > p + p {
+  margin-top: 27px;
+}
+
+.cards.resource a.link-arrow:any-link {
+  color: var(--color-indigo);
+}
+
+/* ---------- outline: lavender border, leaf corners ---------- */
+main > .section > div + .cards-wrapper:has(.cards.outline) {
+  margin-top: 28.5px;
+}
+
+.cards.outline > ul {
+  gap: 36px;
+}
+
+.cards.outline > ul > li {
+  border-radius: var(--radius-leaf-s);
+  padding: 29.5px 31px 31px;
+  background: var(--color-white);
+  box-shadow: 0 0 0 1px var(--color-lavender);
+}
+
+.cards.outline .cards-card-body {
+  margin-top: 17.3px;
+}
+
+.cards.outline .cards-card-body > p.button-wrapper {
+  margin-top: 29.5px;
+}
+
+@media (width >= 900px) {
+  .cards > ul {
+    grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
+  }
+
+  /* 3 columns of 322.7 px in a 1160 px row */
+  .cards.resource > ul {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 95.95px;
+    padding: 0 30px;
+  }
+
+  .cards.outline > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---------- feature: homepage photo card + navy and sand cards (1440 / 425 px) ---------- */
+main > .section:has(> .cards-wrapper .cards.feature) {
+  margin: 0;
+  padding: 53px 0 50px;
+}
+
+.cards.feature > ul {
+  gap: 21px;
+}
+
+.cards.feature > ul > li {
+  overflow: hidden;
+  border-radius: var(--radius-leaf-l);
+}
+
+.cards.feature .cards-card-body :is(h2, h3) {
+  font-size: var(--heading-font-size-l);
+  line-height: 25px;
+}
+
+.cards.feature .cards-card-body > p.button-wrapper {
+  margin-top: 23px;
+}
+
+/* photo card */
+.cards.feature > ul > li:first-child {
+  border: var(--border);
+  background: var(--color-white);
+}
+
+.cards.feature > ul > li:first-child .cards-card-image img {
+  height: 222px;
+  aspect-ratio: auto;
+}
+
+.cards.feature > ul > li:first-child .cards-card-body {
+  padding: 25px 19px 20px;
+}
+
+.cards.feature > ul > li:first-child .cards-card-body > :is(h2, h3) + p {
+  margin-top: 10px;
+}
+
+.cards.feature > ul > li:first-child .cards-card-body > p.button-wrapper {
+  margin-top: 15px;
+}
+
+/* navy and sand cards: content centred, both as tall as the taller one */
+.cards.feature > ul > li:not(:first-child) {
+  justify-content: center;
+  min-height: 336px;
+  padding: 28px 28px 27px;
+}
+
+.cards.feature > ul > li:nth-child(even) {
+  background: var(--color-navy);
+  color: var(--color-white);
+}
+
+.cards.feature > ul > li:nth-child(even) .cards-card-body :is(h2, h3) {
+  color: var(--color-white);
+}
+
+.cards.feature > ul > li:nth-child(odd):not(:first-child) {
+  background: var(--color-sand);
+}
+
+.cards.feature > ul > li:nth-child(odd):not(:first-child) .cards-card-body :is(h2, h3) {
+  color: var(--color-navy);
+}
+
+.cards.feature > ul > li:not(:first-child) .cards-card-body {
+  margin-top: 25px;
+}
+
+.cards.feature > ul > li:not(:first-child) .cards-card-body :is(h2, h3) {
+  font-weight: var(--font-weight-bold);
+}
+
+.cards.feature > ul > li:not(:first-child) .cards-card-body > :is(h2, h3) + p {
+  margin-top: 20px;
+}
+
+@media (width >= 900px) {
+  main > .section:has(> .cards-wrapper .cards.feature) {
+    padding: 70px 0 68px;
+  }
+
+  .cards.feature > ul {
+    grid-template-columns: 632fr 620fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 37px 36px;
+  }
+
+  .cards.feature > ul > li:first-child {
+    grid-row: 1 / span 2;
+  }
+
+  .cards.feature > ul > li:first-child .cards-card-image img {
+    height: 460px;
+  }
+
+  .cards.feature > ul > li:first-child .cards-card-body {
+    padding: 40px 40px 41px;
+  }
+
+  .cards.feature > ul > li:first-child .cards-card-body :is(h2, h3) {
+    font-size: var(--heading-font-size-xl);
+    line-height: var(--heading-line-height-xl);
+  }
+
+  .cards.feature > ul > li:first-child .cards-card-body > :is(h2, h3) + p {
+    margin-top: 14.7px;
+  }
+
+  .cards.feature > ul > li:first-child .cards-card-body > p.button-wrapper {
+    margin-top: 24px;
+  }
+
+  .cards.feature .cards-card-body :is(h2, h3) {
+    line-height: var(--heading-line-height-l);
+  }
+
+  .cards.feature > ul > li:not(:first-child) {
+    min-height: 0;
+    padding: 0 28px;
+  }
+
+  .cards.feature > ul > li:not(:first-child) .cards-card-body > :is(h2, h3) + p {
+    margin-top: 18px;
+  }
+
+  .cards.feature > ul > li:not(:first-child) .cards-card-body > p.button-wrapper {
+    margin-top: 24px;
+  }
 }

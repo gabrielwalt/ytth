@@ -1,0 +1,182 @@
+/* quick links: homepage navy band (1440 / 425 px designs) */
+main > .section.quick-links-container {
+  margin: 0;
+  padding: 0;
+}
+
+/* the band sits directly under the hero */
+main > .section:has(> .hero-wrapper) + .section.quick-links-container {
+  margin-top: 0;
+}
+
+main > .section > .quick-links-wrapper {
+  padding: 0;
+}
+
+.quick-links {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- tiles ---------- */
+.quick-links .quick-links-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 38px 30px 41px;
+  list-style: none;
+}
+
+.quick-links .quick-links-list li {
+  margin: 0;
+}
+
+.quick-links a.quick-links-tile:any-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 104px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border-on-navy);
+  border-radius: var(--radius-leaf-s);
+  color: var(--color-white);
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.quick-links a.quick-links-tile:hover,
+.quick-links a.quick-links-tile:focus-visible {
+  border-color: var(--color-white);
+  background-color: rgb(255 255 255 / 8%);
+}
+
+.quick-links .quick-links-tile .icon {
+  width: 32px;
+  height: 32px;
+}
+
+.quick-links .quick-links-label {
+  font-weight: var(--font-weight-medium);
+  line-height: 18px;
+}
+
+/* ---------- intro: "Manage your benefits" ---------- */
+.quick-links .quick-links-intro {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  column-gap: 16px;
+  order: 1;
+  padding: 34.4px 30px 34px;
+  border-top: 1px solid var(--color-border-on-navy);
+  text-align: center;
+}
+
+.quick-links .quick-links-badge {
+  margin: 0;
+  line-height: 0;
+}
+
+.quick-links .quick-links-badge .icon {
+  width: 45px;
+  height: 39px;
+}
+
+/* mobile: the badge sits beside the heading, the text runs below both */
+.quick-links .quick-links-text {
+  display: contents;
+}
+
+.quick-links .quick-links-text :is(h2, h3) {
+  margin: 0;
+  color: var(--color-white);
+  font-size: var(--heading-font-size-l);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--heading-line-height-l);
+  text-align: left;
+}
+
+.quick-links .quick-links-text p {
+  flex: 0 0 100%;
+  margin: 18.6px 0 0;
+}
+
+.quick-links .quick-links-cta {
+  flex: 0 0 100%;
+  margin: 18px auto 0;
+  width: 100%;
+  max-width: 300px;
+}
+
+.quick-links .quick-links-cta a.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.quick-links .quick-links-cta .icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+}
+
+@media (width >= 900px) {
+  .quick-links {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 168px;
+    max-width: calc(var(--container-wide) + (2 * var(--gutter)));
+    margin: 0 auto;
+    padding: 0 calc(var(--gutter) + 33px);
+  }
+
+  .quick-links .quick-links-list {
+    display: flex;
+    gap: 16px;
+    padding: 0;
+  }
+
+  .quick-links .quick-links-list li {
+    width: 180px;
+  }
+
+  .quick-links a.quick-links-tile:any-link {
+    height: 94px;
+    padding: 0 20px;
+  }
+
+  .quick-links .quick-links-tile .icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .quick-links .quick-links-intro {
+    display: flex;
+    gap: 21px;
+    order: 0;
+    padding: 0 24px 0 0;
+    border: 0;
+    text-align: left;
+  }
+
+  .quick-links .quick-links-text {
+    display: block;
+  }
+
+  .quick-links .quick-links-text p {
+    margin-top: 4px;
+    line-height: 22px;
+  }
+
+  /* desktop signs in from the header */
+  .quick-links .quick-links-cta {
+    display: none;
+  }
+}
