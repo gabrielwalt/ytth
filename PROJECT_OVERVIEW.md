@@ -7,6 +7,7 @@ This project migrates https://www.yourtracktohealth.com/ to AEM Edge Delivery Se
 | File | What it covers |
 |---|---|
 | `PROJECT_OVERVIEW.md` | This file: goals, decisions, status, open items |
+| `PROJECT_PLAN.md` | Every remaining task, by phase, with its status and the progress log |
 | `PROJECT_DESIGN_SYSTEM.md` | Tokens (color, type, layout, shape), section styles, buttons, icons |
 | `PROJECT_BLOCKS.md` | The block library: what each block is for, how to author it, its variants |
 | `PROJECT_CONTENT_IMPORT.md` | How content gets into `content/`: design-source pages, importers, assets |
@@ -38,14 +39,37 @@ Use the same commit as the change. `.hlxignore` keeps the files off the site.
 - **Copy comes from the PDFs** for the three designed pages. Never invent benefit facts. Mark missing copy as a placeholder in square brackets, for example `[Answer to be provided by the benefits team.]`.
 - Where the desktop and mobile artboards carry different copy (homepage), the desktop copy is used.
 
+Decided 2026-11-10 (Phase 1 of `PROJECT_PLAN.md`):
+- **Information architecture:**
+  - Old "Benefits" and "Coverage" merge into **Benefits & coverage** (`/benefits-coverage/…`).
+  - "Healthy Living" becomes **Health programs** (`/health-programs/…`). The 2013–2017 wellness articles go under `/health-programs/articles/…`.
+  - "Retirement" stays **Retirement** (`/retirement/…`).
+  - "Contact Us" becomes **Contact & forms** (`/contact-forms/…`).
+  - News pages go to `/news/…`, linked from the footer.
+- **Side menu:**
+  - Replaced by an "In this section" list of sibling pages at the end of inner pages.
+  - No breadcrumbs and no print button.
+- **PDFs** stay on the current server.
+  - For now, links point to `https://www.yourtracktohealth.com/PDF_Files/…`, the same as today.
+  - Before launch, all PDF links are switched in one rewrite to the final legacy address, which is not chosen yet.
+  - Viewer links (`/Common/PDFViewer.aspx?fileName=…`) are rewritten to direct file links.
+- **PDF-only pages** (13): no page. The old address redirects straight to the PDF, and links point to the PDF.
+- **New hire:** a page in the new design with clearly marked placeholder text, for the benefits team to fill in.
+- **Tools:** the medical benefit lookup and the FSA calculator are rebuilt now as native blocks. This needs the lookup data from the current system.
+- **Redirects:** CDN rules that match the old path plus its `MenuId`/`MenuName` and redirect to the new path. We generate the rule list; the owner's IT team applies it.
+- **Health programs › Managing heart health:** a new page built from the Railroad Heart Health Guide PDF. The Cardiac Care Program page stays under Benefits & coverage.
+- **24/7 nurses & telemedicine:** one page. The current "24/7 Nurses & Health Specialists" and "24/7 Telemedicine" pages are merged.
+- **Forms and the plan-document (SPD) library** move under Contact & forms.
+- **Nav "Important announcements"** (Retirement) links straight to its PDF, because that page held only a PDF.
+- **"Additional plan benefits and support"** (Life insurance) holds 3 PDFs. It stays a short document-list page, an exception to the PDF redirect rule.
+
 ## Status
 
 | Step | Scope | Status |
 |---|---|---|
 | 1 | Design system: tokens, base styles, buttons, section styles, style guide (`/drafts/style-guide.html`) | Done |
 | 2 | Header and footer, plus the blocks and content of Homepage, Benefits & coverage and MMCP | Done. All three pages match their PDFs at 1440 and 425 px within a few pixels |
-| 3 | Catalog and import the remaining ~175 pages into the new blocks | Next |
-| 4 | Information architecture, redirects from the old `.aspx` URLs, PDF handling | Later |
+| 3+ | Decisions, URL map, the missing blocks, import of the remaining ~175 pages, assets, SEO and redirects, QA, launch, handover | See `PROJECT_PLAN.md` |
 
 Pages built so far, each with its document path:
 - Homepage: `/index`
@@ -66,5 +90,7 @@ Pages built so far, each with its document path:
 3. **MMCP FAQ:** three answers are placeholders, waiting on the benefits team.
 4. **MMCP mobile line:** the mobile design has an extra line under "How the plan works" (the names of the two health and welfare plans). Desktop doesn't have it, so it is left out.
 5. **"New hire"** has no dropdown children in the nav yet.
-6. **Images for DA:** pictures are referenced from `migration-work/assets/`. Upload them to DA media before the pages go to DA.
-7. **Homepage mobile header:** the mobile design hides "Sign in" in the header on the homepage only. We keep it, for consistency with the inner pages.
+6. **Final PDF address:** links point to `www.yourtracktohealth.com/PDF_Files/…` until the legacy address is chosen. That must happen before the domain switches.
+7. **Lookup data:** the railroad / union / ZIP → plan document data for the benefit lookup tool. Extract it from the current form, or get an export from the owner.
+8. **Images for DA:** pictures are referenced from `migration-work/assets/`. Upload them to DA media before the pages go to DA.
+9. **Homepage mobile header:** the mobile design hides "Sign in" in the header on the homepage only. We keep it, for consistency with the inner pages.

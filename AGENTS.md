@@ -19,5 +19,5 @@ Edge Delivery Services. Read a block first. Omissions are in the repo or known.
 - Merging `main` ships code; content publishes separately.
 - A PR without a `{branch}--ytth--gabrielwalt.aem.page/{path}` link is rejected.
 - All committed files are served. Use `.hlxignore`.
-- Project docs are `PROJECT_*.md` in the repo root (overview, design system, blocks, content import). Update the matching file in the same change whenever tokens, blocks, authoring, import workflow, decisions or open items change. New project docs follow the same naming.
+- Project docs are `PROJECT_*.md` in the repo root (overview, plan, design system, blocks, content import). `PROJECT_PLAN.md` is the task list: tick tasks, add new ones and log progress after every work session. Update the matching file in the same change whenever tokens, blocks, authoring, import workflow, decisions or open items change. New project docs follow the same naming.
 - Skills: `/plugin marketplace add adobe/skills`, then `aem-edge-delivery-services` (24 skills, incl. `docs-search`).

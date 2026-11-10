@@ -35,7 +35,22 @@ The importer:
   - `urls-design-home.txt`
 - Reports go to `tools/importer/reports/`.
 
-## 2. Pages from the current site (step 3, next)
+## 2. URL map and redirects
+
+`migration-work/url-map/build-url-map.cjs` builds the map from the site inventory. It applies the section rules and the explicit overrides it lists, then writes:
+- `url-map.json` / `url-map.csv`: one row per old page (plus new pages without a source). Each row has its action:
+  - `page`: migrate as a page
+  - `merge`: the content goes into another page and the old URL redirects
+  - `pdf`: no page, redirect to the PDF
+  - `new`: a page with no single source
+  - `done`: built from the designs
+  - `external`: no page; the address stays an external link
+  - `none`: no page; redirect only
+- `redirects.csv`: CDN rules (old path + query → target). The owner's IT team applies them.
+
+Regenerate the map after every change to its rules. Run `check-targets.cjs` to confirm that every internal link in the designs has a page. Importers rewrite old links with `url-map.json`.
+
+## 3. Pages from the current site (next)
 
 - The inventory of the current site is `migration-work/site-inventory.json`. It lists 178 pages with their old URL, title, structure, components and PDF links. The old site's pages are identified by `MenuId`.
 - The plan:
