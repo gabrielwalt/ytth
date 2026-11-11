@@ -55,6 +55,12 @@ const FRAGMENTS = [
     text: 'This service is available at no additional cost to you. Your personal information and use of this service is confidential and will never be shared with your Railroad employer or Labor Union.',
   },
   {
+    // referenced by the site importer itself (the Retirement side box), listed for the report
+    path: '/fragments/retirement-specialist-contact',
+    select: 'p',
+    text: 'Contact a retirement specialist today with questions 1-800-842-5252',
+  },
+  {
     path: '/fragments/fsa-tax-disclaimer',
     select: 'p',
     starts: '*For educational purposes only. Dollar amounts and savings will differ depending on income, state tax rules, city tax rules and other factors.',

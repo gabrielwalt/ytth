@@ -122,8 +122,8 @@ var CustomImportScript = (() => {
       "focus": "50%"
     },
     "/retirement": {
-      "src": "/migration-work/assets/heroes/hero-retiree-smiling.jpg",
-      "focus": "40%"
+      "src": "/migration-work/assets/heroes/hero-retirement-specialist.jpg",
+      "focus": "50%"
     },
     "/health-programs/healthy-habits": {
       "src": "/migration-work/assets/heroes/hero-friends-walking.jpg",
@@ -132,6 +132,14 @@ var CustomImportScript = (() => {
     "/benefits-coverage/dependents": {
       "src": "/migration-work/assets/heroes/hero-family-walk.jpg",
       "focus": "55%"
+    },
+    "/retirement/forms": {
+      "src": "/migration-work/assets/heroes/hero-retirement-specialist.jpg",
+      "focus": "50%"
+    },
+    "/retirement/coverage-options": {
+      "src": "/migration-work/assets/heroes/hero-retiree-smiling.jpg",
+      "focus": "40%"
     }
   };
 
@@ -1002,6 +1010,12 @@ var CustomImportScript = (() => {
       } = findContent(document);
       if (h1El && root.contains(h1El)) h1El.remove();
       root.querySelectorAll('.h2PageHeader, [id$="PageCntnt_divHeader"]').forEach((el) => el.remove());
+      let retirementContact = false;
+      root.querySelectorAll('[id$="RetirementSidebar"]').forEach((side) => {
+        if (/retirement specialist/i.test(side.textContent)) retirementContact = true;
+        side.remove();
+      });
+      root.querySelectorAll('.implinkimgback, .implinkimgtop, img[src*="linkimgbk" i]').forEach((el) => el.remove());
       document.querySelectorAll(".webfeedback").forEach((box) => {
         if (root.contains(box) || box.contains(root)) return;
         const out = document.createElement("div");
@@ -1145,6 +1159,12 @@ var CustomImportScript = (() => {
         body.append(block("Article list", [["Folder", folder], ["Limit", "12"]], document));
       }
       main.append(body);
+      if (retirementContact) {
+        const a = document.createElement("a");
+        a.href = "/fragments/retirement-specialist-contact";
+        a.textContent = a.getAttribute("href");
+        body.append(block("Fragment", [[a]], document));
+      }
       if (!merged) main.append(block("Section nav", [], document));
       main.append(WebImporter.DOMUtils.createTable([["Section Metadata"], ["Style", "narrow"]], document));
       const sentence = (ps) => ps.map((p) => p.textContent.replace(/\s+/g, " ").trim()).find((t) => t.length > 60);

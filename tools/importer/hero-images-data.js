@@ -94,8 +94,8 @@ export default {
   "focus": "50%"
  },
  "/retirement": {
-  "src": "/migration-work/assets/heroes/hero-retiree-smiling.jpg",
-  "focus": "40%"
+  "src": "/migration-work/assets/heroes/hero-retirement-specialist.jpg",
+  "focus": "50%"
  },
  "/health-programs/healthy-habits": {
   "src": "/migration-work/assets/heroes/hero-friends-walking.jpg",
@@ -104,5 +104,13 @@ export default {
  "/benefits-coverage/dependents": {
   "src": "/migration-work/assets/heroes/hero-family-walk.jpg",
   "focus": "55%"
+ },
+ "/retirement/forms": {
+  "src": "/migration-work/assets/heroes/hero-retirement-specialist.jpg",
+  "focus": "50%"
+ },
+ "/retirement/coverage-options": {
+  "src": "/migration-work/assets/heroes/hero-retiree-smiling.jpg",
+  "focus": "40%"
  }
 };

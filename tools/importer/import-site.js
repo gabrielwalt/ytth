@@ -968,6 +968,16 @@ export default {
     // `webfeedback` class and wraps the content root; treating it as a side box moved every bold
     // phone number and panel-title link out of the panels, and the accordion then dropped all 15
     // topics with their hours and claim addresses (regression test: qa/test-importer-contact.mjs)
+    // the Retirement side box (on every Retirement page): a decorative gradient image, a
+    // call-center photo (now a header photo, see migration-work/heroes) and the specialists'
+    // phone line, which is shared content: /fragments/retirement-specialist-contact
+    let retirementContact = false;
+    root.querySelectorAll('[id$="RetirementSidebar"]').forEach((side) => {
+      if (/retirement specialist/i.test(side.textContent)) retirementContact = true;
+      side.remove();
+    });
+    // side-box decoration of the old layout: the gradient behind a photo, and the photo itself
+    root.querySelectorAll('.implinkimgback, .implinkimgtop, img[src*="linkimgbk" i]').forEach((el) => el.remove());
     document.querySelectorAll('.webfeedback').forEach((box) => {
       if (root.contains(box) || box.contains(root)) return;
       const out = document.createElement('div');
@@ -1128,6 +1138,12 @@ export default {
       body.append(block('Article list', [['Folder', folder], ['Limit', '12']], document));
     }
     main.append(body);
+    if (retirementContact) {
+      const a = document.createElement('a');
+      a.href = '/fragments/retirement-specialist-contact';
+      a.textContent = a.getAttribute('href');
+      body.append(block('Fragment', [[a]], document));
+    }
     if (!merged) main.append(block('Section nav', [], document));
     main.append(WebImporter.DOMUtils.createTable([['Section Metadata'], ['Style', 'narrow']], document));
 
