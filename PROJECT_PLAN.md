@@ -59,7 +59,7 @@ Decided 2026-11-10. The details are in `PROJECT_OVERVIEW.md` → Decisions.
   - Contact Us → `/contact-forms`
   - News → `/news`, linked from the footer
 - [x] **New hire:** a placeholder page in the new design.
-- [x] **Side menu:** "In this section" sibling links at the end of the page; no breadcrumbs, no print button.
+- [x] **Side menu:** first "In this section" links at the end of the page. Revised 2026-11-11 to a full section menu (see Phase 3). No breadcrumb bar, no print button.
 - [x] **PDFs:** they stay on the current server and links keep `www.yourtracktohealth.com/PDF_Files/…` for now. Choose the final legacy address before launch (Phase 9).
 - [x] **PDF-only pages (13):** no page; redirect to the PDF.
 - [x] **Interactive tools:** rebuild the benefit lookup and the FSA calculator now as native blocks.
@@ -102,7 +102,11 @@ Built 2026-11-10. These derive from the existing tokens and are documented in `P
 - [x] **Document list** (`documents`): PDF icon, title, file-type tag and optional description; heading rows group the documents.
 - [x] **Video** (`videos`): thumbnail cards with a play button that open the video in a new tab, plus a transcript link.
 - [x] **Infographic article:** no new block. The importer writes the image plus a link list made from the image-map areas, and long-form styles cover it (Phase 4).
-- [x] **"In this section"** (`section-nav`): authored links, or built from the page index (sub-pages, else sibling pages).
+- [x] **Section menu** (`section-nav`, revised 2026-11-11): reads the `/fragments/section-nav` tree.
+  - Desktop: sticky left column. Smaller screens: collapsible bar.
+  - The current branch is open, with "On this page" jump links and the hero eyebrow linking to the section.
+  - Replaces the old side menu, breadcrumbs, "Resources for" and "Jump to".
+- [x] **Footer:** added News, Video library, Site map and Accessibility (the old footer's utility links).
 - [x] **Article list** (`article-list`): built from the page index. Takes a folder and a limit; newest first; "Show more" button.
 - [x] **Search** (`search`): reads `?q=`, scores title, description and path, highlights the matches.
 - [x] **Contact directory:** no new block. It reuses `benefit-cards` (logo, phone, hours) and `accordion` for the service topics.
@@ -238,3 +242,4 @@ See `PROJECT_OVERVIEW.md` → Open items:
 | 2026-11-10 | Design QA pass on Homepage, Benefits & coverage and MMCP (1440, 1280, 1024, 768, 425, 375 px). The header and footer now load under any preview address. The header and footer use their mobile layouts below 1200 px; the full desktop versions overflowed between 900 and 1250 px. Fixed: the quick-links intro layout, plus a new tablet layout; the redrawn syringe icon; bigger tile icons; the MMCP summary figures at narrow desktop widths; the mobile footer bottom spacing; the mobile Benefits spacing (gap after the plan cards, card headers, contact panels, body text width). Remaining differences come from the designs themselves: the mobile artboards carry different copy, and some mobile text runs past the card edge. |
 | 2026-11-10 | Phase 3 built: section-nav, table, documents, videos, search, article-list, fsa-calculator, benefit-lookup, the 404 page, auto phone links, external and PDF link markers, long-form styles, and an inner-page hero intro. Test page `/drafts/phase3-blocks.html`. Waiting on the owner for: lookup data, FSA values, the feedback-form backend. |
 | 2026-11-11 | Phases 4–5. Site importer built and piloted; all 163 remaining current pages imported, plus 7 new pages (CHCB, HDHP, heart health, fitness memberships, savings & spending accounts, New hire placeholder, search). Finding: PDFs only work through the old viewer page, so every PDF link was switched to it. Telemedicine merged into 24/7 nurses & telemedicine. QA: 0 missing pages, 0 broken links, 0 render issues on 173 pages at 1440/425 px. |
+| 2026-11-11 | Navigation audit: the old site's side menu (160 pages), breadcrumbs (155), "Resources for" (wellness), "Jump to" / "Go to top" (video library) and footer utility links had no full replacement. Built the section menu (sticky tree on desktop, collapsible bar on small screens, "On this page" links, eyebrow link to the section) from the `/fragments/section-nav` document (111 entries, generated from the URL map, editable in DA). Added News, Video library, Site map and Accessibility to the footer. Fixed sentence casing of possessives ("Aetna’s") and re-imported all pages. |

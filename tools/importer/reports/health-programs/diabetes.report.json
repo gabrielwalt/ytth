@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/WellnessPageContent.aspx?menuname=Diabetes",
   "path": "health-programs/diabetes",
-  "timestamp": "2026-11-11T06:49:02.279Z",
+  "timestamp": "2026-11-11T09:23:47.950Z",
   "source": "https://yourtracktohealth.com/WellnessPageContent.aspx?menuname=Diabetes",
   "template": "wellness article",
   "merged": false,
   "title": "Managing diabetes and prediabetes",
-  "importScript": "2a828fb01494"
+  "importScript": "fefc0ec60d3c"
 }

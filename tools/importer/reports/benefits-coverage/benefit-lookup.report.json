@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/BenefitLookup.aspx?menuid=28",
   "path": "benefits-coverage/benefit-lookup",
-  "timestamp": "2026-11-11T06:47:54.457Z",
+  "timestamp": "2026-11-11T09:22:41.692Z",
   "source": "https://yourtracktohealth.com/BenefitLookup.aspx?menuid=28",
   "template": "interactive tool / lookup",
   "merged": false,
   "title": "Medical benefit and Summary of Benefits & Coverage (SBC) lookup",
-  "importScript": "2a828fb01494"
+  "importScript": "fefc0ec60d3c"
 }

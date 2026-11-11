@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/PageContent.aspx?menuid=414",
   "path": "benefits-coverage/healthcare-transparency",
-  "timestamp": "2026-11-11T06:48:27.555Z",
+  "timestamp": "2026-11-11T09:23:14.500Z",
   "source": "https://yourtracktohealth.com/PageContent.aspx?menuid=414",
   "template": "article / program detail",
   "merged": false,
   "title": "Healthcare transparency",
-  "importScript": "2a828fb01494"
+  "importScript": "fefc0ec60d3c"
 }

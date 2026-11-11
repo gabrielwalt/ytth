@@ -146,12 +146,22 @@ The page header is `hero (navy)`:
 - the H1
 - an optional intro sentence
 
-### Section nav (`section-nav`) — "In this section"
-Replaces the current site's side menu. Put it at the end of the page.
-- Leave the block empty to build it from the page index: it lists the pages below the current page, or the pages next to it.
-- Or author a list of links.
+### Section nav (`section-nav`) — the side menu of inner pages
+Replaces the current site's left-hand menu, its breadcrumbs, the wellness "Resources for" list and the video library's "Jump to" links. The importer puts an empty `Section nav` block on every inner page; the block moves itself in front of the content.
 
-The current page is shown in bold without an arrow. The block removes itself when it has no links.
+**Source:** the `/fragments/section-nav` document, one section per site section, each a nested list (authored like the header nav). Generate the first version with `node migration-work/url-map/build-section-nav.cjs` and import it, then edit it in DA.
+
+**What it shows:**
+- the tree of the section the page belongs to, with the current branch open and the other branches collapsed (teal chevron toggles)
+- the current page highlighted. A page that isn't listed (for example a health article) highlights its closest listed parent ("Health articles").
+- **On this page:** under the current page, links to its main H2 headings when there are 3 or more. The heading in view is marked as you scroll.
+- the hero eyebrow (section name) becomes a link to the section's main page
+
+**Layout:**
+- **Desktop (1200 px and up):** a sticky 280 px column left of the 860 px text column (280 + 80 + 860 = the 1220 px container).
+- **Smaller screens:** a collapsible bar above the content ("In this section" + the current page, plus/minus icon). It opens into the same tree.
+
+**Options:** a list of links in the block replaces the fragment. `Source | /other-fragment` reads another document. The block removes itself on pages outside every section (utility pages).
 
 ### Table (`table`)
 One row per table row; the first row is the header.

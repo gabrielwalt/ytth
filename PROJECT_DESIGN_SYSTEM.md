@@ -151,6 +151,19 @@ The live pipeline renders Section Metadata as classes on the section. The local 
 - External and PDF links open in a new tab. They get a 12 px trailing icon (`external.svg` or `file-pdf.svg`, drawn in the link colour) and screen-reader text.
 - `.visually-hidden` hides text visually but keeps it for screen readers.
 
+## Navigation patterns
+
+Built from the existing tokens; no new colours or sizes.
+
+| Pattern | Where | Design |
+|---|---|---|
+| Header bar | Every page | Floating white bar; dropdowns with teal chevrons; hamburger below 1200 px |
+| Section menu | Inner pages | Section name as an eyebrow (12/16 bold, uppercase, 0.1em, navy) over a 2 px `--color-border` rule. Items are 16/22 (500 on level 1, 400 below) with `--color-divider` lines between level-1 items, and they indent 16 px per level (level 3 at 14/20). Open-branch ancestors are navy. The current page is navy bold on `--color-surface-1`, with a 3 px teal inset bar and leaf corners. Teal chevron toggles, as in the header |
+| Section menu, small screens | Inner pages below 1200 px | A bar in `--color-surface-1` with a 1 px border and leaf corners. Eyebrow "In this section" (muted) over the current page (18/26 bold navy); plus/minus circle icon as on the accordion |
+| On this page | Under the current menu item | Eyebrow "On this page" (muted). 14/20 links with a 1 px `--color-border` rule on the left; the heading in view turns teal and bold |
+| Eyebrow link | Navy hero | The section name links to the section's main page (white, underline on hover) — breadcrumb information without a breadcrumb bar |
+| Footer | Every page | The first column has New hire, Retirement, then Contact & forms, News and Video library. The meta row has © and "Last updated", plus Site map and Accessibility links at its end |
+
 ## Icons
 
 SVGs live in `/icons`. In documents, write them as `:name:` text; `decorateIconTokens` in `scripts/scripts.js` turns that text into an icon.

@@ -101,7 +101,8 @@ var CustomImportScript = (() => {
     const result = base.split(" ").map((w) => {
       const bare = w.replace(/^[("“'‘]+|[)"”'’.,:;!?]+$/g, "");
       let out = w;
-      if (!afterBreak && /^[A-Z][a-z’']+$/.test(bare) && !KEEP_CAPS.has(bare)) out = w.toLowerCase();
+      const stem = bare.replace(/[’']s$/, "");
+      if (!afterBreak && /^[A-Z][a-z’']+$/.test(bare) && !KEEP_CAPS.has(bare) && !KEEP_CAPS.has(stem)) out = w.toLowerCase();
       const up = bare.toUpperCase();
       if (allCaps && KEEP_CAPS.has(up) && up.length > 1 && /^[A-Z0-9&-]+$/.test(up)) out = w.replace(bare, up);
       afterBreak = /[:?!.]$/.test(w);

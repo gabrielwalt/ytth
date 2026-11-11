@@ -46,9 +46,12 @@ Decided 2026-11-10 (Phase 1 of `PROJECT_PLAN.md`):
   - "Retirement" stays **Retirement** (`/retirement/…`).
   - "Contact Us" becomes **Contact & forms** (`/contact-forms/…`).
   - News pages go to `/news/…`, linked from the footer.
-- **Side menu:**
-  - Replaced by an "In this section" list of sibling pages at the end of inner pages.
-  - No breadcrumbs and no print button.
+- **Side menu (revised 2026-11-11):** inner pages get a section menu again, built on the brand.
+  - Desktop: a sticky left column with the section tree, the current branch open and an "On this page" list.
+  - Smaller screens: a collapsible "In this section" bar above the content.
+  - No breadcrumb bar: the open branch shows every parent of the current page, and the hero eyebrow links to the section.
+  - No print button.
+- **Footer** adds the old site's utility links (Video library, Site map, Accessibility) and News.
 - **PDFs** stay on the current server.
   - For now, links point to `https://www.yourtracktohealth.com/PDF_Files/…`, the same as today.
   - Before launch, all PDF links are switched in one rewrite to the final legacy address, which is not chosen yet.
