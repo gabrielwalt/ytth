@@ -83,7 +83,9 @@ After every import:
 1. Run `node tools/importer/merge-pages.cjs` (merges 24/7 Telemedicine into the 24/7 nurses & telemedicine page).
 2. Run `node migration-work/url-map/check-content.cjs` (missing pages, broken internal links, links left on the old site).
 3. Run `node migration-work/url-map/build-search-index.cjs` (refreshes `/search-index.json`, the page index search uses until the query index exists).
-4. When pages were added or renamed, regenerate the section menu with `node migration-work/url-map/build-section-nav.cjs`, then import `section-nav.html` with the design importer. After that it is maintained in DA (`/fragments/section-nav`).
+4. When pages were added or renamed, regenerate the section menu with `node migration-work/url-map/build-section-nav.cjs` and then the site map with `node migration-work/url-map/build-sitemap.cjs`. Import both with the design importer (`--urls tools/importer/urls-design-nav.txt`, which also re-imports nav and footer). After launch they are maintained in DA (`/fragments/section-nav`, `/sitemap`).
+   - The section menu's order follows the header groups in `design-source/nav.html`; pages that belong under another page than their folder (`PARENTS`, e.g. the prediabetes pages under Prediabetes & diabetes) are set in the script.
+5. Run `node migration-work/url-map/check-navigation.cjs`: which pages the header, footer and section menu reach, which are only linked from content, and which are linked from nowhere.
 
 Pages with no single source are design-source pages too:
 - `chcb.html` and `hdhp.html`: MMCP layout, from the "How the plan works: at a glance" tables. The HDHP explainer and FAQ are merged in.
@@ -97,11 +99,10 @@ These are imported with `urls-design-new.txt`.
 
 ## Assets
 
-- **Homepage photos** come from the current site, never from the homepage PDF raster:
-  - `home-hero-worker.jpg`: `images/linkimg1.jpg`, 599 px
-  - `home-open-enrollment.jpg`: `images/linkimg2.jpg`, 599 px
+- **Homepage photos** never come from the homepage PDF raster:
+  - `home-hero-workers.jpg` (hero, since 2026-11-11): two workers in hard hats and safety vests reviewing plans, 2880 × 1920. Stock photo by Ronnakorn Triraganon on Unsplash (https://unsplash.com/photos/IvEYfb-3B70), free under the Unsplash License (commercial use, no attribution required). Chosen because the current site has no high-resolution photo that fits a full-width hero (its carousel and page banners have text baked in or only ~1260 px of clean photo). It matches the design's hard-hat worker, and the subjects sit right of the headline. Desktop crop: `object-position: center top`. The earlier stand-in `home-hero-worker.jpg` (`images/linkimg1.jpg`, 599 px) is no longer used.
+  - `home-open-enrollment.jpg`: `images/linkimg2.jpg`, 599 px; still needs a high-resolution replacement.
   - `home-retiring.jpg`: cropped from the Retirement banner, 962 × 700
-  - The two 599 px photos need high-resolution replacements.
 - **Benefits & coverage hero:** `benefits-hero-family.jpg`.
 - **Partner logos:** in `partners/` (originals) and `partners/2x/`.
 - Every image must be uploaded to DA media before the pages go to DA.

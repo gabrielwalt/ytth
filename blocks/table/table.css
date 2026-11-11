@@ -62,8 +62,3 @@ main > .section > .table-wrapper {
   }
 }
 
-/* article and content pages keep tables at the text measure */
-body:is(.content, .article) main > .section > .table-wrapper {
-  max-width: calc(var(--container-text) + (2 * var(--gutter)));
-  margin-left: max(0px, calc((100% - var(--container) - (2 * var(--gutter))) / 2));
-}

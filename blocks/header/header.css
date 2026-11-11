@@ -430,6 +430,21 @@ header .nav-tools a.nav-link:hover {
   }
 }
 
+/* narrow desktops: the bar keeps the 40 px page gutter, so the menu tightens to fit */
+@media (width >= 1200px) and (width < 1320px) {
+  header .nav-sections {
+    margin-left: 24px;
+  }
+
+  header .nav-menu {
+    gap: 22px;
+  }
+
+  header .nav-tools .default-content-wrapper {
+    gap: 16px;
+  }
+}
+
 /* small phones: tighten the gaps so logo, sign in, search and menu fit in one row */
 @media (width < 420px) {
   header nav {

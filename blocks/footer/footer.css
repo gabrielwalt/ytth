@@ -6,9 +6,9 @@ footer {
 }
 
 footer .footer-inner {
-  max-width: calc(var(--container-wide) + (2 * var(--gutter-footer, 30px)));
+  max-width: calc(var(--container-wide) + (2 * var(--gutter)));
   margin: 0 auto;
-  padding: 45px var(--gutter-footer, 30px) 80px;
+  padding: 45px var(--gutter) 80px;
 }
 
 footer ul {
@@ -178,10 +178,6 @@ footer .footer-meta .footer-meta-link a:hover {
 }
 
 @media (width >= 1200px) {
-  footer {
-    --gutter-footer: var(--gutter);
-  }
-
   footer .footer-inner {
     padding-top: 47.4px;
     padding-bottom: 48.8px;
@@ -216,10 +212,16 @@ footer .footer-meta .footer-meta-link a:hover {
     background-color: var(--color-teal);
   }
 
-  /* columns at x 60 / 340.6 / 563.6 / 920 / 1162 of a 1320 px container */
+  /*
+   * columns at x 60 / 340.6 / 563.6 / 920 / 1162 of a 1320 px container. The last column fits
+   * its links and ends on the frame's right edge; the others share the rest in the design's
+   * proportions and never get narrower than their links (no overflow at 1200 px).
+   */
   footer .footer-nav {
     display: grid;
-    grid-template-columns: 21.26% 16.89% 27.01% 18.33% 1fr;
+    grid-template-columns:
+      minmax(max-content, 21.26fr) minmax(max-content, 16.89fr) minmax(max-content, 27.01fr)
+      minmax(max-content, 18.33fr) max-content;
     align-items: start;
     margin-top: 43px;
   }

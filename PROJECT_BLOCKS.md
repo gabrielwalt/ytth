@@ -15,6 +15,7 @@ The header is a white bar floating over the page. On mobile it becomes a hamburg
 The `/nav` document has three sections:
 1. **Brand:** `:logo: Your Track to Health`, linked to `/`. The link text becomes the accessible name, and only the logo shows.
 2. **Sections:** a list of top-level links. A nested list turns its item into a dropdown. The panel shows an "X overview" arrow link and the child links; more than 5 children are shown in columns.
+   - **Groups:** when a child item is plain text with its own nested list (`Benefits` → links), the panel shows labelled groups: a teal eyebrow label above each list. On desktop the groups sit side by side, one column each, under a divider; on mobile they stack inside the opened section. Plain links next to groups share an untitled group.
 3. **Tools:**
    - a `Search` link (shown as an icon)
    - `Sign in • Register`, an accent button. The part after "•" is hidden on mobile.
@@ -162,7 +163,7 @@ Replaces the current site's left-hand menu, its breadcrumbs, the wellness "Resou
 - the hero eyebrow (section name) becomes a link to the section's main page
 
 **Layout:**
-- **Desktop (1200 px and up):** a sticky 280 px column left of the 860 px text column (280 + 80 + 860 = the 1220 px container).
+- **Desktop (1200 px and up):** a sticky 280 px column, an 80 px gap and the content column, together the 1320 px content frame. Text keeps its 860 px measure; blocks run to the frame's right edge.
 - **Smaller screens:** a collapsible bar above the content ("In this section" + the current page, plus/minus icon). It opens into the same tree.
 
 **Options:** a list of links in the block replaces the fragment. `Source | /other-fragment` reads another document. The block removes itself on pages outside every section (utility pages).

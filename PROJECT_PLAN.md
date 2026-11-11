@@ -184,7 +184,8 @@ QA results:
 ## Phase 6: assets
 
 - [ ] Upload every image under `migration-work/assets/` and every imported page image to DA media, and replace the local references.
-- [ ] Replace the homepage hero and teaser photos with high-resolution versions (supplied by the owner).
+- [x] Homepage hero: replaced with a 2880 px stock photo (Unsplash License), 2026-11-11. Owner to confirm or supply a brand photo.
+- [ ] Replace the homepage open-enrollment teaser photo (599 px) with a high-resolution version.
 - [ ] PDFs stay on the current server. Before launch the owner chooses the legacy address (for example `docs.yourtracktohealth.com`), its IT team sets it up, and we rewrite every PDF link once and verify it.
 - [ ] Favicon and social share image (`og:image`).
 
@@ -251,3 +252,11 @@ See `PROJECT_OVERVIEW.md` → Open items:
 - Internal links and search fields now work in the `/content/` preview, and search and the article lists fall back to a generated page index.
 - Tooltip click/tap behaviour fixed.
 - Clicked through all 48 links of the three pages in the preview: all resolve. |
+| 2026-11-11 | Navigation restructure (old site menus vs the designs):
+- Header dropdowns now list every first-level page, in labelled groups: Benefits / Coverage & enrollment, Programs / Health topics (header reaches 45 pages, was 30). Grouped panels added to the header block (desktop columns, mobile stacked).
+- Section menu reordered by the header groups; the prediabetes pages are nested under Prediabetes & diabetes.
+- New generated site map (every page by section, health articles, utility pages, an Archive for the 2014 campaign pages) replaces the imported old tree widget; the old Site map URL redirects to it.
+- Footer: added Notice of privacy practices.
+- check-navigation: every page is reachable from a menu or the site map except the feedback thank-you page (by design). check-content: 0 missing pages, 0 broken links. Checked the dropdowns at 1440, 1200 and 425. |
+| 2026-11-11 | Homepage hero photo: the 599 px stand-in was blurry at full width and the face sat behind the headline. Checked every current-site image (carousel banners 5833 px but with baked-in text and hexagon crops; 26 page banners 2800 × 700 with only ~1260 px of clean photo, families/doctors). Chose a free-licensed Unsplash photo (2880 × 1920) of two workers in hard hats and safety vests, close to the design's worker; subjects right of the headline. Desktop crop set to the top of the photo. Checked at 1440, 1024 and 425. |
+| 2026-11-11 | Alignment pass: one content frame (the header bar: 1320 px max, `--gutter` 20/40 on the sides) for header, every section, block and footer. Removed the 1288 px (`medium`), 1220 px (`narrow`) and 30 px mobile (`inset`) offsets; quick links, hero text and search, teaser card and resource cards sit on the frame; footer columns end on the right edge (no overflow at 1200); desktop header menu tightened between 1200 and 1319 px. Side-menu layout now 280 + 80 + content column = 1320. Measured every page in the index (168) at 1440, 1200, 1024, 768 and 425: no block edges off the frame except deliberate ones (list indents, text measure, narrow images). Side-menu current page restyled (straight teal bar, gap to dividers). |

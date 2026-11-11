@@ -84,14 +84,13 @@ Blocks override sizes where the design does, for example the hero split H1 24/25
 | Token | Value |
 |---|---|
 | `--page-max-width` | 1440 |
-| `--container-wide` | 1320 (60 px side space at 1440): header, hero text, benefit cards |
-| `--container` | 1220 (`narrow` sections, 110 px at 1440) |
-| `medium` section | 1288 (homepage card rows, 76 px at 1440) |
+| `--container-wide` | 1320 (60 px side space at 1440): **the content frame**. The header bar, every section, every block and the footer share its edges at all breakpoints (decision 2026-11-11; the PDFs had 1288 and 1220 px columns and a 16 px mobile header margin, which left edges a few pixels apart) |
+| `--container` | same as `--container-wide` (was 1220) |
 | `--container-text` | 860 (`readable`) |
 | `--gutter` | 20 mobile / 40 desktop |
 | `--section-spacing` | 40 mobile / 64 desktop |
 | Spacing scale | `--space-2xs` 4, `-xs` 8, `-s` 16, `-m` 24, `-l` 32, `-xl` 40, `-2xl` 64, `-3xl` 80 |
-| Header | `--header-offset` 22 / 30, `--header-height` 54 / 70, `--header-inset` 16 (mobile) |
+| Header | `--header-offset` 22 / 30, `--header-height` 54 / 70, `--header-inset` = `--gutter` (the bar sits on the content frame) |
 
 `main` is padded by the header height plus 40. A page that starts with a hero has no top padding, so the floating header sits over the hero.
 
@@ -129,9 +128,7 @@ Set them with Section Metadata "Style". Several can be combined, for example `li
 | `navy` | Navy background, white text, links and headings |
 | `hexagons` | Faint hexagon line art (`styles/images/bg-hexagons.svg`) |
 | `shaded`, `shaded-light` | Soft grey wash from left to right (homepage card rows); combine with `hexagons` |
-| `narrow` | 1220 content column |
-| `medium` | 1288 content column |
-| `inset` | 30 px side padding on mobile (MMCP, homepage outline cards). The plan details table keeps 20 |
+| `narrow`, `medium`, `inset` | No longer change the width (kept so authored pages stay valid): every section uses the content frame |
 | `center` | Centered default content |
 | `readable` | Default content limited to 860 |
 | `small-heading` | `h2` at 24/28 bold; intro text max 1050 |
@@ -146,7 +143,7 @@ The live pipeline renders Section Metadata as classes on the section. The local 
 
 - Content images are block-level and never wider than their column. An image followed by an italic paragraph shows that paragraph as a caption (14/20, muted).
 - Blockquotes have a 4 px teal left rule and lead text size. List bullets are teal.
-- On `content` and `article` pages, default text and tables keep an 860 px width (`--container-text`).
+- On `content` and `article` pages, default text keeps an 860 px measure (`--container-text`); blocks (tables, accordions, documents, cards) fill the column up to the frame's right edge.
 - Phone numbers in running text become `tel:` links (bold, no underline).
 - External and PDF links open in a new tab. They get a 12 px trailing icon (`external.svg` or `file-pdf.svg`, drawn in the link colour) and screen-reader text.
 - `.visually-hidden` hides text visually but keeps it for screen readers.
@@ -158,7 +155,7 @@ Built from the existing tokens; no new colours or sizes.
 | Pattern | Where | Design |
 |---|---|---|
 | Header bar | Every page | Floating white bar; dropdowns with teal chevrons; hamburger below 1200 px |
-| Section menu | Inner pages | Section name as an eyebrow (12/16 bold, uppercase, 0.1em, navy) over a 2 px `--color-border` rule. Items are 16/22 (500 on level 1, 400 below) with `--color-divider` lines between level-1 items, and they indent 16 px per level (level 3 at 14/20). Open-branch ancestors are navy. The current page is navy bold on `--color-surface-1`, with a 3 px teal inset bar and leaf corners. Teal chevron toggles, as in the header |
+| Section menu | Inner pages | Section name as an eyebrow (12/16 bold, uppercase, 0.1em, navy) over a 2 px `--color-border` rule. Items are 16/22 (500 on level 1, 400 below) with `--color-divider` lines between level-1 items, and they indent 16 px per level (level 3 at 14/20). Open-branch ancestors are navy. The current page is navy bold on a `--color-surface-1` tab: square left edge with a straight 3 px teal bar, 4 px rounded right corners. Every row keeps a 3 px gap (2 px below level 1) to the divider lines, so the highlight never touches a rule. Teal chevron toggles, as in the header |
 | Section menu, small screens | Inner pages below 1200 px | A bar in `--color-surface-1` with a 1 px border and leaf corners. Eyebrow "In this section" (muted) over the current page (18/26 bold navy); plus/minus circle icon as on the accordion |
 | On this page | Under the current menu item | Eyebrow "On this page" (muted). 14/20 links with a 1 px `--color-border` rule on the left; the heading in view turns teal and bold |
 | Eyebrow link | Navy hero | The section name links to the section's main page (white, underline on hover) — breadcrumb information without a breadcrumb bar |

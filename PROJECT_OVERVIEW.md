@@ -35,7 +35,7 @@ Use the same commit as the change. `.hlxignore` keeps the files off the site.
   - "Leaf" corners (top-left and bottom-right rounded) on cards, tiles and buttons.
   - Mobile layouts follow the 425 px artboards.
 - **Migrate everything:** all ~178 pages of the current site, including old wellness articles, image-only infographics and PDF-only pages.
-- **Homepage photos come from the current site.** Never crop them from the homepage PDF raster.
+- **Homepage photos come from the current site.** Never crop them from the homepage PDF raster. Exception (2026-11-11, on request): the hero uses a free-licensed stock photo, because the current site has no suitable high-resolution image (see `PROJECT_CONTENT_IMPORT.md`, Assets).
 - **Copy comes from the PDFs** for the three designed pages. Never invent benefit facts. Mark missing copy as a placeholder in square brackets, for example `[Answer to be provided by the benefits team.]`.
 - Where the desktop and mobile artboards carry different copy (homepage), the desktop copy is used.
 
@@ -51,11 +51,17 @@ Decided 2026-11-10 (Phase 1 of `PROJECT_PLAN.md`):
   - Smaller screens: a collapsible "In this section" bar above the content.
   - No breadcrumb bar: the open branch shows every parent of the current page, and the hero eyebrow links to the section.
   - No print button.
-- **Footer** adds the old site's utility links (Video library, Site map, Accessibility) and News.
+- **Header menus (revised 2026-11-11):** the designs showed 10 Benefits & coverage and 8 Health programs links. The old site had 18 Benefits, 11 Coverage and 8 Healthy Living menu entries, so the dropdowns now list every first-level page in two labelled groups:
+  - Benefits & coverage: **Benefits** (the 9 design items plus Cardiac Care Program) and **Coverage & enrollment** (Coverage & eligibility, How the plans work, Medical benefit & SBC lookup, Dependents, Continue your coverage, Healthcare transparency, Benefits info at a glance, Tips to make the most of benefits).
+  - Health programs: **Programs** (the 8 design items plus Railroad Healthlink) and **Health topics** (Preventive screenings, Back or joint pain, Prediabetes & diabetes, Everyday mental health, Health articles, Video library).
+  - Retirement keeps its single list. New hire and Contact & forms stay plain links.
+  - Deeper pages (administrator sub-pages, FSA articles, Contact & forms children) are reached through the section menu, as on the old site's sidebar.
+- **Not in any menu on purpose:** the 46 health articles (listed on Health articles and in the site map), the 2014 campaign pages (site map "Archive" only), the feedback thank-you page (shown after the form), and the merge-source drafts.
+- **Footer** adds the old site's utility links (Video library, Site map, Notice of privacy practices, Accessibility) and News. Its link columns keep the design's selection.
+- **Site map** is generated from the section menu (`build-sitemap.cjs`) and lists every page, replacing the old tree widget.
 - **PDFs** stay on the current server.
-  - For now, links point to `https://www.yourtracktohealth.com/PDF_Files/…`, the same as today.
+  - For now, links use the current site's viewer (`https://www.yourtracktohealth.com/Common/PDFViewer.aspx?fileName=/PDF_Files/…`), because the server answers direct `/PDF_Files/` addresses with 404.
   - Before launch, all PDF links are switched in one rewrite to the final legacy address, which is not chosen yet.
-  - Viewer links (`/Common/PDFViewer.aspx?fileName=…`) are rewritten to direct file links.
 - **PDF-only pages** (13): no page. The old address redirects straight to the PDF, and links point to the PDF.
 - **New hire:** a page in the new design with clearly marked placeholder text, for the benefits team to fill in.
 - **Tools:** the medical benefit lookup and the FSA calculator are rebuilt now as native blocks. This needs the lookup data from the current system.
@@ -85,7 +91,7 @@ Pages built so far (175 documents in `content/`; the full list with old and new 
 
 ## Open items
 
-1. **Homepage hero and teaser photos are low resolution** (599 px wide, from the current site). They need high-resolution replacements.
+1. **Homepage photos:** the hero now uses a 2880 px stock photo (Unsplash License); the owner should confirm it or supply a brand photo of railroad employees. The open-enrollment teaser photo is still 599 px and needs a high-resolution replacement.
 2. **Homepage targets (reviewed 2026-11-11 against the migrated content; owner to confirm):**
    - Request ID card → Benefits directory (every administrator's member site and phone, where ID cards are requested)
    - Find a doctor / Find your doctor → the new Find a doctor page (Aetna, Highmark and UnitedHealthcare provider directories)

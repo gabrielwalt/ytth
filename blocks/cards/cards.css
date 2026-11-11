@@ -109,11 +109,10 @@ main > .section > div + .cards-wrapper:has(.cards.outline) {
     grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
   }
 
-  /* 3 columns of 322.7 px in a 1160 px row */
+  /* 3 columns spanning the content frame (the design's 96 px gaps) */
   .cards.resource > ul {
     grid-template-columns: repeat(3, 1fr);
     column-gap: 95.95px;
-    padding: 0 30px;
   }
 
   .cards.outline > ul {

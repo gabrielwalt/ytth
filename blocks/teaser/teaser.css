@@ -36,7 +36,7 @@ main > .section > .teaser-wrapper {
   width: 100%;
   max-width: calc(var(--container-wide) + (2 * var(--gutter)));
   margin: 0 auto;
-  padding: 0 16px 19px;
+  padding: 0 var(--gutter) 19px;
 }
 
 .teaser .teaser-card {

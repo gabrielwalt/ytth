@@ -24,7 +24,7 @@ main > .section > .quick-links-wrapper {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
   margin: 0;
-  padding: 38px 30px 41px;
+  padding: 38px var(--gutter) 41px;
   list-style: none;
 }
 
@@ -73,7 +73,7 @@ main > .section > .quick-links-wrapper {
   align-items: center;
   column-gap: 16px;
   order: 1;
-  padding: 34.4px 30px 34px;
+  padding: 34.4px var(--gutter) 34px;
   border-top: 1px solid var(--color-border-on-navy);
   text-align: center;
 }
@@ -131,9 +131,7 @@ main > .section > .quick-links-wrapper {
 @media (width >= 768px) and (width < 1200px) {
   .quick-links .quick-links-list {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    max-width: 800px;
     width: 100%;
-    margin: 0 auto;
   }
 }
 
@@ -145,7 +143,7 @@ main > .section > .quick-links-wrapper {
     min-height: 168px;
     max-width: calc(var(--container-wide) + (2 * var(--gutter)));
     margin: 0 auto;
-    padding: 0 calc(var(--gutter) + 33px);
+    padding: 0 var(--gutter);
   }
 
   .quick-links .quick-links-list {

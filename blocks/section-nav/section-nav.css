@@ -1,7 +1,8 @@
 /*
  * Section nav: side menu of inner pages, built from the design tokens.
- * Desktop (>= 1200px): 280px sticky column + 80px gap + 860px text column = the 1220px
- * container. Smaller screens: a collapsible bar above the content (accordion look).
+ * Desktop (>= 1200px): 280px sticky column + 80px gap + the content column, together the
+ * 1320px content frame. Text keeps its 860px measure; blocks fill the column.
+ * Smaller screens: a collapsible bar above the content (accordion look).
  */
 
 /* rules are scoped by component part; their order follows the layout, not specificity */
@@ -113,16 +114,20 @@ main > .section.has-section-nav > .section-nav-wrapper {
   border-bottom: 1px solid var(--color-divider);
 }
 
+/*
+ * Each row keeps a 3 px gap to the dividers around it (padding trimmed by the same amount, so
+ * row heights are unchanged); the current-page highlight then floats between the lines.
+ */
 .section-nav .section-nav-item {
   display: flex;
   align-items: flex-start;
-  border-radius: var(--radius-leaf-s);
+  margin: 3px 0;
 }
 
 .section-nav .section-nav-item a:any-link {
   flex: 1;
   min-width: 0;
-  padding: 9px 8px 9px 12px;
+  padding: 6px 8px 6px 12px;
   color: var(--color-text);
   font-weight: var(--font-weight-medium);
   line-height: 22px;
@@ -135,8 +140,12 @@ main > .section.has-section-nav > .section-nav-wrapper {
 }
 
 /* deeper levels: indented, regular weight, no dividers */
+.section-nav .depth-2 .section-nav-item {
+  margin: 2px 0;
+}
+
 .section-nav .depth-2 .section-nav-item a:any-link {
-  padding: 6px 8px 6px 28px;
+  padding: 4px 8px 4px 28px;
   font-weight: var(--font-weight-regular);
   font-size: var(--body-font-size-m);
 }
@@ -156,7 +165,9 @@ main > .section.has-section-nav > .section-nav-wrapper {
   color: var(--color-navy);
 }
 
+/* current page: soft grey tab with a straight teal bar on its square left edge */
 .section-nav li.is-current > .section-nav-item {
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
   background: var(--color-surface-1);
   box-shadow: inset 3px 0 0 var(--color-teal);
 }
@@ -172,7 +183,7 @@ main > .section.has-section-nav > .section-nav-wrapper {
   flex: 0 0 36px;
   place-items: center;
   width: 36px;
-  height: 40px;
+  height: 34px;
   margin: 0;
   border: 0;
   padding: 0;
@@ -181,7 +192,7 @@ main > .section.has-section-nav > .section-nav-wrapper {
 }
 
 .section-nav .depth-2 .section-nav-toggle {
-  height: 34px;
+  height: 30px;
 }
 
 /* teal chevron, same as the header dropdowns */
@@ -252,12 +263,13 @@ main > .section.has-section-nav > .section-nav-wrapper {
 @media (width >= 1200px) {
   main > .section.has-section-nav {
     display: grid;
-    grid-template-columns: 280px minmax(0, var(--container-text));
+    grid-template-columns: 280px minmax(0, 1fr);
     column-gap: 80px;
-    justify-content: center;
     align-items: start;
-    padding-left: var(--gutter);
-    padding-right: var(--gutter);
+
+    /* the two columns fill the content frame (header bar edges) */
+    padding-left: max(var(--gutter), calc((100% - var(--container-wide)) / 2));
+    padding-right: max(var(--gutter), calc((100% - var(--container-wide)) / 2));
   }
 
   main > .section.has-section-nav > div,

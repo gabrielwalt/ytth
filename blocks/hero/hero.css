@@ -87,7 +87,7 @@ main > .section > .hero-wrapper {
 }
 
 .hero.split .hero-content {
-  padding: 131.8px 28px 48px 26.1px;
+  padding: 131.8px var(--gutter) 48px;
 }
 
 .hero.split .hero-text {
@@ -122,7 +122,7 @@ main > .section > .hero-wrapper {
 }
 
 .hero.navy .hero-content {
-  padding: 147.6px 30px 98px;
+  padding: 147.6px var(--gutter) 98px;
 }
 
 .hero.navy .hero-eyebrow {
@@ -252,7 +252,7 @@ body:is(.content, .article) .hero.navy .hero-text {
 
 .hero.home .hero-content {
   max-width: calc(var(--container-wide) + (2 * var(--gutter)));
-  padding: 243.8px 30px 30px;
+  padding: 243.8px var(--gutter) 30px;
 }
 
 .hero.home .hero-text {
@@ -279,7 +279,7 @@ body:is(.content, .article) .hero.navy .hero-text {
   display: flex;
   align-items: center;
   height: 60px;
-  margin: 52px -10px 0;
+  margin: 52px 0 0;
   padding: 0 14px 0 13px;
   border-radius: var(--radius-s);
   background: var(--color-white);
@@ -343,8 +343,9 @@ body:is(.content, .article) .hero.navy .hero-text {
     min-height: 672px;
   }
 
+  /* keep the top of the photo (hard hats) in view; the subjects sit right of the text */
   .hero.home .hero-media img {
-    object-position: center 25%;
+    object-position: center top;
   }
 
   .hero.home .hero-media::after {

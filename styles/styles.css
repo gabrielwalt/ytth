@@ -104,7 +104,7 @@
   /* ---------- layout ---------- */
   --page-max-width: 1440px;
   --container-wide: 1320px;
-  --container: 1220px;
+  --container: var(--container-wide); /* one content frame: the header bar (was 1220 px) */
   --container-text: 860px;
   --gutter: 20px;
 
@@ -143,7 +143,7 @@
   --button-padding-inline: 20px;
   --header-offset: 22px;
   --header-height: 54px;
-  --header-inset: 16px;
+  --header-inset: var(--gutter); /* the header bar shares the content frame */
   --nav-height: calc(var(--header-offset) + var(--header-height));
 }
 
@@ -761,20 +761,11 @@ main > .section:first-of-type {
   margin-top: 0;
 }
 
-/* 1288 px content column (homepage card rows) */
-main > .section.medium > div {
-  max-width: calc(1288px + (2 * var(--gutter)));
-}
-
-/* narrower 1220 px content column (MMCP-style pages) */
-main > .section.narrow > div {
-  max-width: calc(var(--container) + (2 * var(--gutter)));
-}
-
-/* "inset": mobile text column with 30px gutters (MMCP mobile design) */
-main > .section.inset > div {
-  padding: 0 30px;
-}
+/*
+ * Every section shares one content frame: the header bar's edges (1320 px max, --gutter on the
+ * sides). The older "medium" (1288 px), "narrow" (1220 px) and "inset" (30 px mobile gutters)
+ * section styles are kept for authored content but no longer change the frame.
+ */
 
 /* section backgrounds (section metadata "Style") */
 main > .section:is(.light, .highlight, .grey, .sand, .navy) {
@@ -886,10 +877,6 @@ main > .section.padding-xxl {
 }
 
 @media (width >= 900px) {
-  main > .section.inset > div {
-    padding: 0 var(--gutter);
-  }
-
   main > .section.padding-s {
     padding: 56px 0 80px;
   }
