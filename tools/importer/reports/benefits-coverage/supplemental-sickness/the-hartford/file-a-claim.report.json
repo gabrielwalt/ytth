@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/PageContent.aspx?menuid=77",
   "path": "benefits-coverage/supplemental-sickness/the-hartford/file-a-claim",
-  "timestamp": "2026-11-11T09:28:24.111Z",
+  "timestamp": "2026-11-11T13:26:56.149Z",
   "source": "https://yourtracktohealth.com/PageContent.aspx?menuid=77",
   "template": "article / program detail",
   "merged": false,
   "title": "File a claim",
-  "importScript": "fefc0ec60d3c"
+  "importScript": "cd2d61278477"
 }

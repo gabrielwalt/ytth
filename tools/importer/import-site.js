@@ -95,8 +95,8 @@ function sentenceCase(text) {
     let out = w;
     const stem = bare.replace(/[’']s$/, ''); // possessive: "Aetna’s" keeps "Aetna"
     if (!afterBreak && /^[A-Z][a-z’']+$/.test(bare) && !KEEP_CAPS.has(bare) && !KEEP_CAPS.has(stem)) out = w.toLowerCase();
-    // hyphenated and slashed words ("Out-of-Pocket", "Non-Preferred", "21-Day", "Coordination/Medical"):
-    // every Title-Case part after the first follows the same rule (the first part only mid-sentence)
+    // hyphenated and slashed words ("Out-of-Pocket", "Non-Preferred", "21-Day", "Care/Medical"):
+    // each Title-Case part after the first follows the same rule (the first only mid-sentence)
     if (/[-/]/.test(bare) && !KEEP_CAPS.has(bare)) {
       out = out.split(/([-/])/).map((part, k) => {
         const pb = part.replace(/^[("“'‘]+|[)"”'’.,:;!?]+$/g, '');

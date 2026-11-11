@@ -104,6 +104,13 @@ var CustomImportScript = (() => {
       let out = w;
       const stem = bare.replace(/[’']s$/, "");
       if (!afterBreak && /^[A-Z][a-z’']+$/.test(bare) && !KEEP_CAPS.has(bare) && !KEEP_CAPS.has(stem)) out = w.toLowerCase();
+      if (/[-/]/.test(bare) && !KEEP_CAPS.has(bare)) {
+        out = out.split(/([-/])/).map((part, k) => {
+          const pb = part.replace(/^[("“'‘]+|[)"”'’.,:;!?]+$/g, "");
+          if (k === 0 && afterBreak || !/^[A-Z][a-z’']+$/.test(pb) || KEEP_CAPS.has(pb)) return part;
+          return part.toLowerCase();
+        }).join("");
+      }
       const up = bare.toUpperCase();
       if (allCaps && KEEP_CAPS.has(up) && up.length > 1 && /^[A-Z0-9&-]+$/.test(up)) out = w.replace(bare, up);
       afterBreak = /[:?!.]$/.test(w);
@@ -357,7 +364,12 @@ var CustomImportScript = (() => {
       if (n.parentElement.closest("sup") || !n.textContent.trim()) return;
       const [, lead, core, trail] = n.textContent.match(/^(\s*)([\s\S]*?)(\s*)$/);
       let cased = sentenceCase(core);
-      if (i > 0) cased = cased.replace(/^([A-Z])(?=[a-z])/, (c) => c.toLowerCase());
+      if (i > 0) {
+        cased = cased.replace(/^([("“'‘]*)([A-Z])(?=[a-z])/, (m, punct, c) => {
+          const word = cased.slice(punct.length).match(/^[A-Za-z’']+/)[0];
+          return KEEP_CAPS.has(word) ? m : `${punct}${c.toLowerCase()}`;
+        });
+      }
       n.textContent = `${lead}${cased}${trail}`;
     });
   }
