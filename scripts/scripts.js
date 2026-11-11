@@ -222,6 +222,20 @@ function applyUnprocessedMetadata(main) {
   });
 }
 
+/**
+ * Whether a URL opens a PDF: a .pdf path, or the old server's PDF viewer (?fileName=….pdf).
+ * @param {URL|string} u The URL
+ * @returns {boolean} True for PDF links
+ */
+export function isPdfUrl(u) {
+  try {
+    const url = new URL(u, window.location.href);
+    return /\.pdf$/i.test(url.pathname) || /\.pdf$/i.test(url.searchParams.get('fileName') || '');
+  } catch {
+    return false;
+  }
+}
+
 const PHONE_PATTERN = /(?:\b1-)?(?:\(\d{3}\)\s?|\b\d{3}[-.])\d{3}[-.]\d{4}\b/g;
 
 /**
@@ -272,7 +286,7 @@ export function decorateLinkTypes(root) {
       return;
     }
     if (!/^https?:$/.test(url.protocol)) return;
-    const pdf = /\.pdf$/i.test(url.pathname);
+    const pdf = isPdfUrl(url);
     const external = url.origin !== window.location.origin;
     if (!pdf && !external) return;
     a.target = '_blank';

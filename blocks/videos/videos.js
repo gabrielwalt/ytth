@@ -10,7 +10,7 @@
  */
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
-const isPdf = (a) => /\.pdf($|[?#])/i.test(a.getAttribute('href') || '');
+const isPdf = (a) => /\.pdf($|[?#&])/i.test(a.getAttribute('href') || '');
 
 export default function decorate(block) {
   const ul = document.createElement('ul');

@@ -50,15 +50,48 @@ The importer:
 
 Regenerate the map after every change to its rules. Run `check-targets.cjs` to confirm that every internal link in the designs has a page. Importers rewrite old links with `url-map.json`.
 
-## 3. Pages from the current site (next)
+## 3. Pages from the current site (imported 2026-11-11)
 
-- The inventory of the current site is `migration-work/site-inventory.json`. It lists 178 pages with their old URL, title, structure, components and PDF links. The old site's pages are identified by `MenuId`.
-- The plan:
-  1. Group the pages into templates.
-  2. Map each template's components to the blocks in `PROJECT_BLOCKS.md` (icon card grids → `cards (resource)`, Q&A → `accordion`, and so on).
-  3. Write a parser and transformers per template.
-  4. Import every page into the new information architecture (nav paths such as `/benefits-coverage/dental`).
-- Leave out the old site's banners with baked-in text, its sidebar navigation and its breadcrumbs. The new design replaces them.
+`tools/importer/import-site.js` handles every page type of the current site. It is bundled into `import-site.bundle.js`. It runs with `run-bulk-import.js --import-script tools/importer/import-site.bundle.js --urls tools/importer/urls-site.txt --force` (163 URLs: every `page` and `merge` row of the URL map; `urls-site-pilot.txt` has one page per type).
+
+What it does on each page:
+- **Path, title and section** come from `tools/importer/url-map-data.js`, which `build-url-map.cjs` generates. A page missing from the map fails loudly.
+- **Removes:** the old banner, side menu, breadcrumbs, print button, skip links, decorative arrow/external/print images, icon-font glyphs and inline styles.
+- **Page header:** `Hero (navy)` with the section as eyebrow (Benefits & coverage, Health programs, Retirement, Contact & forms, News) and the H1 in sentence case. The intro is the old H2 subtitle or the sentence after the title in the old banner's alt text; it is removed from the body if it repeats there.
+- **Content patterns:**
+  - icon card grids (`.contentbox`) → `Cards (resource)`
+  - collapsible panels (`.content-panel-default`) → `Accordion (closed)`
+  - `<dl>` → paragraphs with bold terms
+  - data tables → `Table` (or `Table (no-header)`); layout tables are flattened
+  - heading links to PDFs plus their descriptions → `Documents`
+  - the video library → `Videos` per group
+  - image maps → the image (alt text = page title + "infographic") followed by a "Related links" list
+  - archives → `Article list`
+  - the two tools → `Benefit lookup` (data sheet `/benefits-coverage/benefit-lookup-data.json`) and `Fsa calculator`
+- **Text:** loose text and double `<br>` become paragraphs. Bold spans become `<strong>`. Phone spans become plain text (the site links phone numbers automatically).
+- **Calls to action:** short single-link paragraphs with action words become primary buttons.
+- **Headings** get sentence case. Known plan, program and brand names are kept as written (`KEEP_PHRASES`, `KEEP_CAPS`).
+- **Links:**
+  - old `.aspx` URLs become new paths through the URL map
+  - links to PDF-only pages point to their PDF
+  - unknown old URLs stay absolute on the old site
+- **PDFs:** **all PDF links use the old server's viewer address** `https://www.yourtracktohealth.com/Common/PDFViewer.aspx?fileName=/PDF_Files/…`. Direct `/PDF_Files/…` URLs return 404 on the current server. The final PDF host is one setting (`PDF_HOST` in `build-url-map.cjs`).
+- **Page ending:** every page ends with an empty `Section nav` block, plus Section Metadata `narrow` and Metadata (Title, Description, Template `content` or `article`).
+- **Merge sources** (content that belongs in another page) are imported to `/drafts/merge-sources/…`, so no content is lost; they are combined by hand.
+
+After every import:
+1. Run `node tools/importer/merge-pages.cjs` (merges 24/7 Telemedicine into the 24/7 nurses & telemedicine page).
+2. Run `node migration-work/url-map/check-content.cjs` (missing pages, broken internal links, links left on the old site).
+
+Pages with no single source are design-source pages too:
+- `chcb.html` and `hdhp.html`: MMCP layout, from the "How the plan works: at a glance" tables. The HDHP explainer and FAQ are merged in.
+- `heart-health.html`: from the Railroad Heart Health Guide PDF.
+- `fitness-memberships.html`: from the One Pass Select flyer.
+- `savings-spending-accounts.html`
+- `new-hire.html`: placeholder.
+- `search.html`
+
+These are imported with `urls-design-new.txt`.
 
 ## Assets
 

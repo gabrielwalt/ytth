@@ -68,7 +68,8 @@ function buildLegal(section) {
     unwrapListParagraphs(list);
     list.className = 'footer-notices';
     list.querySelectorAll('a').forEach((a) => {
-      if (a.hostname !== window.location.hostname || /\.pdf($|[?#])/i.test(a.pathname)) {
+      const pdf = /\.pdf$/i.test(a.pathname) || /\.pdf$/i.test(new URL(a.href).searchParams.get('fileName') || '');
+      if (a.hostname !== window.location.hostname || pdf) {
         a.classList.add('footer-external');
         a.target = '_blank';
         a.rel = 'noopener';
@@ -78,7 +79,11 @@ function buildLegal(section) {
   }
   const meta = document.createElement('div');
   meta.className = 'footer-meta';
-  wrapper.querySelectorAll(':scope > p').forEach((p) => meta.append(p));
+  wrapper.querySelectorAll(':scope > p').forEach((p) => {
+    // utility links (site map, accessibility) sit at the end of the meta row
+    if (p.querySelector('a')) p.classList.add('footer-meta-link');
+    meta.append(p);
+  });
   legal.append(meta);
   return legal;
 }

@@ -403,3 +403,14 @@ main > .section:has(> .hero-wrapper .hero.home) {
   font-weight: var(--lead-font-weight);
   line-height: var(--body-line-height-xl);
 }
+
+/* the eyebrow above the page title links to the section's main page (set by section-nav) */
+.hero .hero-eyebrow a:any-link {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.hero .hero-eyebrow a:hover {
+  text-decoration: underline;
+}

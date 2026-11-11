@@ -162,8 +162,19 @@ footer .footer-meta {
   font-weight: var(--font-weight-medium);
 }
 
-footer .footer-meta p:last-child {
+footer .footer-meta p:nth-child(2) {
   font-weight: var(--font-weight-bold);
+}
+
+footer .footer-meta .footer-meta-link a:any-link {
+  color: var(--color-white);
+  font-weight: var(--font-weight-medium);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+footer .footer-meta .footer-meta-link a:hover {
+  color: var(--color-mint);
 }
 
 @media (width >= 1200px) {
@@ -280,5 +291,9 @@ footer .footer-meta p:last-child {
     flex-direction: row;
     gap: 17px;
     order: 0;
+  }
+
+  footer .footer-meta p:not(.footer-meta-link) + .footer-meta-link {
+    margin-left: auto;
   }
 }

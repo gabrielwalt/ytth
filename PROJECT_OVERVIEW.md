@@ -69,13 +69,14 @@ Decided 2026-11-10 (Phase 1 of `PROJECT_PLAN.md`):
 |---|---|---|
 | 1 | Design system: tokens, base styles, buttons, section styles, style guide (`/drafts/style-guide.html`) | Done |
 | 2 | Header and footer, plus the blocks and content of Homepage, Benefits & coverage and MMCP | Done. All three pages match their PDFs at 1440 and 425 px within a few pixels |
-| 3+ | Decisions, URL map, the missing blocks, import of the remaining ~175 pages, assets, SEO and redirects, QA, launch, handover | See `PROJECT_PLAN.md` |
+| 3 | Blocks the designs don't cover (tables, documents, videos, search, article list, tools, 404, "In this section") | Done |
+| 4–5 | Import infrastructure and migration of every current page, plus 7 new pages | Done 2026-11-11: 175 documents, QA clean |
+| 6+ | Assets, SEO and redirects, accessibility and performance QA, review, launch, handover | See `PROJECT_PLAN.md` |
 
-Pages built so far, each with its document path:
-- Homepage: `/index`
-- Benefits & coverage: `/benefits-coverage`
-- MMCP: `/benefits-coverage/medical-plans/mmcp`
-- The nav and footer fragments: `/nav`, `/footer`
+Pages built so far (175 documents in `content/`; the full list with old and new addresses is `migration-work/url-map/url-map.csv`):
+- From the designs: Homepage `/index`, Benefits & coverage `/benefits-coverage`, MMCP `/benefits-coverage/medical-plans/mmcp`, and the fragments `/nav` and `/footer`
+- Imported from the current site: 157 pages, plus 6 merge sources in `/drafts/merge-sources/`
+- New: CHCB, HDHP, Managing heart health, Flexible fitness memberships, Savings & spending accounts, New hire (placeholder), Search
 
 **Where content lives:** every change so far is in the local workspace only. Nothing has been uploaded to DA, previewed or published.
 
@@ -90,7 +91,8 @@ Pages built so far, each with its document path:
 3. **MMCP FAQ:** three answers are placeholders, waiting on the benefits team.
 4. **MMCP mobile line:** the mobile design has an extra line under "How the plan works" (the names of the two health and welfare plans). Desktop doesn't have it, so it is left out.
 5. **"New hire"** has no dropdown children in the nav yet.
-6. **Final PDF address:** links point to `www.yourtracktohealth.com/PDF_Files/…` until the legacy address is chosen. That must happen before the domain switches.
+6. **PDFs only work through the old viewer page** (`/Common/PDFViewer.aspx?fileName=/PDF_Files/…`); direct `/PDF_Files/` addresses return 404. Every link uses the viewer address. That server must stay up after launch, or the PDFs need a new home.
+6b. **Final PDF address:** links point to `www.yourtracktohealth.com/PDF_Files/…` until the legacy address is chosen. That must happen before the domain switches.
 7. **Lookup data:** the railroad / union / ZIP → plan document data for the benefit lookup tool. Extract it from the current form, or get an export from the owner.
    - **FSA calculator values:** the current site still uses a $3,500 maximum contribution (plan year 2019). Confirm the current limit and the RRTA and Medicare rates.
    - **Feedback form backend:** choose where submissions of the webmaster feedback form should go.

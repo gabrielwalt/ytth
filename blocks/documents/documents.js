@@ -33,7 +33,9 @@ export default function decorate(block) {
     const a = document.createElement('a');
     a.href = link.href;
     a.className = 'documents-link';
-    const ext = (new URL(link.href, window.location.href).pathname.match(/\.([a-z0-9]+)$/i) || [])[1];
+    const target = new URL(link.href, window.location.href);
+    const file = target.searchParams.get('fileName') || target.pathname;
+    const ext = (file.match(/\.([a-z0-9]+)$/i) || [])[1];
     const type = ext ? ext.toUpperCase() : 'LINK';
     if (ext || new URL(link.href, window.location.href).origin !== window.location.origin) {
       a.target = '_blank';
