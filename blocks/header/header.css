@@ -262,6 +262,25 @@ header .nav-panel-list a:any-link {
   font-weight: var(--font-weight-regular);
 }
 
+/* grouped panels ("Benefits" / "Coverage & enrollment"): eyebrow label above each list */
+header .nav-panel-group + .nav-panel-group {
+  margin-top: 24px;
+}
+
+header .nav-panel-group-title {
+  margin: 0 0 12px;
+  color: var(--color-teal);
+  font-size: var(--eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--eyebrow-line-height);
+  letter-spacing: var(--eyebrow-letter-spacing);
+  text-transform: uppercase;
+}
+
+header .nav-panel-group-title a:any-link {
+  color: inherit;
+}
+
 header .nav-panel-list a:hover,
 header .nav-menu > .nav-item > a:hover,
 header .nav-tools a.nav-link:hover {
@@ -345,6 +364,24 @@ header .nav-tools a.nav-link:hover {
 
   header .nav-panel-list a:any-link {
     white-space: nowrap;
+  }
+
+  /* groups sit side by side, one column each */
+  header .nav-panel-groups {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    gap: 0 48px;
+  }
+
+  header .nav-panel-group + .nav-panel-group {
+    margin-top: 0;
+  }
+
+  header .nav-panel.has-groups .nav-panel-overview {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 16px;
   }
 
   header .nav-tools .default-content-wrapper {

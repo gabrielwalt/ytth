@@ -1,11 +1,8 @@
 {
   "status": "success",
-  "url": "https://yourtracktohealth.com/SiteMap.aspx?menuid=32",
+  "url": "http://localhost:3000/migration-work/design-source/sitemap.html",
   "path": "sitemap",
-  "timestamp": "2026-11-11T09:25:19.031Z",
-  "source": "https://yourtracktohealth.com/SiteMap.aspx?menuid=32",
-  "template": "legal / utility",
-  "merged": false,
-  "title": "Site map",
-  "importScript": "fefc0ec60d3c"
+  "timestamp": "2026-11-11T10:23:06.492Z",
+  "source": "http://localhost:3000/migration-work/design-source/sitemap.html",
+  "importScript": "34c592ad07a0"
 }

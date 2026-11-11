@@ -101,9 +101,45 @@ function decorateSections(sections, nav) {
       overview.append(link);
       panel.append(overview);
     }
-    subList.classList.add('nav-panel-list');
-    if (subList.children.length > 5) subList.classList.add('nav-panel-list-columns');
-    panel.append(subList);
+    // groups: sub-items that hold their own list ("Benefits", "Coverage & enrollment")
+    const groups = [...subList.children].filter((li) => li.querySelector(':scope > ul'));
+    if (groups.length) {
+      const wrap = document.createElement('div');
+      wrap.className = 'nav-panel-groups';
+      let loose = null; // plain links between groups share an untitled group
+      [...subList.children].forEach((li) => {
+        const inner = li.querySelector(':scope > ul');
+        if (!inner) {
+          if (!loose) {
+            const group = document.createElement('div');
+            group.className = 'nav-panel-group';
+            loose = document.createElement('ul');
+            loose.className = 'nav-panel-list';
+            group.append(loose);
+            wrap.append(group);
+          }
+          loose.append(li);
+          return;
+        }
+        loose = null;
+        const group = document.createElement('div');
+        group.className = 'nav-panel-group';
+        const title = document.createElement('p');
+        title.className = 'nav-panel-group-title';
+        const titleLink = li.querySelector(':scope > a');
+        title.append(titleLink || [...li.childNodes].filter((n) => n !== inner)
+          .map((n) => n.textContent).join('').trim());
+        inner.classList.add('nav-panel-list');
+        group.append(title, inner);
+        wrap.append(group);
+      });
+      panel.classList.add('has-groups');
+      panel.append(wrap);
+    } else {
+      subList.classList.add('nav-panel-list');
+      if (subList.children.length > 5) subList.classList.add('nav-panel-list-columns');
+      panel.append(subList);
+    }
 
     item.textContent = '';
     item.append(button, panel);

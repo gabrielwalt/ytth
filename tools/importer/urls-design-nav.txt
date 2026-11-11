@@ -1,0 +1,4 @@
+http://localhost:3000/migration-work/design-source/nav.html
+http://localhost:3000/migration-work/design-source/footer.html
+http://localhost:3000/migration-work/design-source/section-nav.html
+http://localhost:3000/migration-work/design-source/sitemap.html
