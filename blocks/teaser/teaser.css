@@ -32,12 +32,6 @@ main > .section > .teaser-wrapper {
   object-position: var(--teaser-focus, 18% center); /* phones: the people sit left of center */
 }
 
-@media (width >= 900px) {
-  .teaser .teaser-media img {
-    object-position: center;
-  }
-}
-
 .teaser .teaser-container {
   position: relative;
   width: 100%;
@@ -83,6 +77,10 @@ main > .section > .teaser-wrapper {
 @media (width >= 900px) {
   .teaser {
     min-height: 723px;
+  }
+
+  .teaser .teaser-media img {
+    object-position: center;
   }
 
   .teaser .teaser-container {

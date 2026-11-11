@@ -10,6 +10,8 @@
  *     row without values is a subheading for the rows below it)
  *   - other rows: item rows (zebra striped)
  *   - 1 cell with an ordered list: footnotes
+ * A row with a single value in a table whose other rows have two values (a benefit that is the
+ * same in and out of network, CHCB) spans both value columns.
  * @param {Element} block The block
  */
 import attachTooltip from '../../scripts/tooltip.js';
@@ -28,9 +30,9 @@ const startsWithHeading = (cell) => !!cell.firstElementChild?.matches(HEADING);
  * @param {string} label The column label
  * @returns {Element} The value element
  */
-function valueCell(cell, label) {
+function valueCell(cell, label, span = false) {
   const div = document.createElement('div');
-  div.className = 'plan-details-value';
+  div.className = span ? 'plan-details-value plan-details-value-span' : 'plan-details-value';
   if (label) {
     const l = document.createElement('span');
     l.className = 'plan-details-value-label';
@@ -102,6 +104,14 @@ export default function decorate(block) {
   let columns = [];
   let groupCount = 0;
   let zebra = 0;
+  // the widest value row tells how many value columns the table has
+  const valueColumns = Math.max(0, ...rows.map((r) => r.children.length - 1));
+  const values = (el, cells) => {
+    const vals = cells.slice(1);
+    const span = vals.length === 1 && valueColumns >= 2;
+    const label = span ? columns.join(' & ') : null;
+    vals.forEach((c, j) => el.append(valueCell(c, span ? label : columns[j], span)));
+  };
 
   rows.forEach((row, i) => {
     const cells = [...row.children];
@@ -177,7 +187,7 @@ export default function decorate(block) {
       label.className = 'plan-details-label';
       label.append(...cells[0].childNodes);
       el.append(label);
-      if (hasValues) cells.slice(1).forEach((c, j) => el.append(valueCell(c, columns[j])));
+      if (hasValues) values(el, cells);
       out.append(el);
       return;
     }
@@ -191,7 +201,7 @@ export default function decorate(block) {
     label.className = 'plan-details-label';
     label.append(...cells[0].childNodes);
     el.append(label);
-    if (hasValues) cells.slice(1).forEach((c, j) => el.append(valueCell(c, columns[j])));
+    if (hasValues) values(el, cells);
     out.append(el);
   });
 

@@ -106,7 +106,7 @@ Content (177 documents in `content/`; the full list with old and new addresses i
 
 ## Open items
 
-1. **Homepage photos:** the hero now uses a 2880 px stock photo (Unsplash License); the owner should confirm it or supply a brand photo of railroad employees. The open-enrollment teaser photo is still 599 px and needs a high-resolution replacement.
+1. **Homepage photos:** the hero uses a 2880 px stock photo (Unsplash License); the owner should confirm it or supply a brand photo of railroad employees. The open-enrollment teaser now uses the same photo at 1440 × 700, cropped from a current-site banner; an original file from the owner would still be sharper on screens wider than 1440 px.
 2. **Homepage targets (reviewed 2026-11-11 against the migrated content; owner to confirm):**
    - Request ID card → Benefits directory (every administrator's member site and phone, where ID cards are requested)
    - Find a doctor / Find your doctor → the new Find a doctor page (Aetna, Highmark and UnitedHealthcare provider directories)

@@ -37,7 +37,7 @@ const KEEP_CAPS = new Set(('Aetna UnitedHealthcare Highmark MetLife Hartford Tru
 const KEEP_PHRASES = [
   'Railroad Employees National Health and Welfare Plan', 'Railroad Employees National Dental Plan',
   'Railroad Employees National Vision Plan', 'Railroad Employees National Early Retirement Major Medical Benefit Plan',
-  'SMART-TD Health and Welfare Plan', 'Railroad Retirement Board', 'Railroad Retirement', 'Railroad Enrollment Services',
+  'The SMART-TD Health and Welfare Plan', 'SMART-TD Health and Welfare Plan', 'Railroad Retirement Board', 'Railroad Retirement', 'Railroad Enrollment Services',
   'Railroad Healthlink', 'Railroad National Plan', 'Supplemental Sickness Benefit', 'Managed Medical Care Program',
   'Comprehensive Health Care Benefit', 'High Deductible Health Plan', 'Health Savings Account',
   'Flexible Spending Account', 'Summary of Benefits & Coverage', 'Summary of Benefits and Coverage',
@@ -95,6 +95,15 @@ function sentenceCase(text) {
     let out = w;
     const stem = bare.replace(/[’']s$/, ''); // possessive: "Aetna’s" keeps "Aetna"
     if (!afterBreak && /^[A-Z][a-z’']+$/.test(bare) && !KEEP_CAPS.has(bare) && !KEEP_CAPS.has(stem)) out = w.toLowerCase();
+    // hyphenated and slashed words ("Out-of-Pocket", "Non-Preferred", "21-Day", "Coordination/Medical"):
+    // every Title-Case part after the first follows the same rule (the first part only mid-sentence)
+    if (/[-/]/.test(bare) && !KEEP_CAPS.has(bare)) {
+      out = out.split(/([-/])/).map((part, k) => {
+        const pb = part.replace(/^[("“'‘]+|[)"”'’.,:;!?]+$/g, '');
+        if ((k === 0 && afterBreak) || !/^[A-Z][a-z’']+$/.test(pb) || KEEP_CAPS.has(pb)) return part;
+        return part.toLowerCase();
+      }).join('');
+    }
     // restore acronyms that the ALL CAPS pass lowered
     const up = bare.toUpperCase();
     if (allCaps && KEEP_CAPS.has(up) && up.length > 1 && /^[A-Z0-9&-]+$/.test(up)) out = w.replace(bare, up);
@@ -291,18 +300,43 @@ function transformAccordions(root, document) {
 function transformDefinitionLists(root, document) {
   root.querySelectorAll('dl').forEach((dl) => {
     const frag = document.createDocumentFragment();
-    dl.querySelectorAll('dt, dd').forEach((item) => {
-      if (!item.textContent.trim() && !item.querySelector('a')) return;
+    const keep = (item) => item.textContent.trim() || item.querySelector?.('a, img');
+    const emit = (nodes, bold) => {
       const p = document.createElement('p');
-      if (item.nodeName === 'DT') {
+      if (bold) {
         const s = document.createElement('strong');
-        s.append(...item.childNodes);
+        s.append(...nodes);
         p.append(s);
       } else {
-        p.append(...item.childNodes);
+        p.append(...nodes);
       }
       frag.append(p);
-    });
+    };
+    // walk the list in document order: terms and descriptions, but also any other content the
+    // old CMS put inside the list (e.g. a claim address in a layout div after the last <dd>)
+    const walk = (node) => {
+      let loose = [];
+      const flush = () => {
+        if (loose.some((n) => keep(n))) emit(loose, false);
+        loose = [];
+      };
+      [...node.childNodes].forEach((child) => {
+        if (child.nodeName === 'DT' || child.nodeName === 'DD') {
+          flush();
+          if (keep(child)) emit([...child.childNodes], child.nodeName === 'DT');
+        } else if (child.nodeType === 1 && child.querySelector('dt, dd')) {
+          flush();
+          walk(child);
+        } else if (child.nodeType === 1 && /^(DIV|P|SECTION)$/.test(child.nodeName)) {
+          flush();
+          if (keep(child)) emit([...child.childNodes], false);
+        } else {
+          loose.push(child);
+        }
+      });
+      flush();
+    };
+    walk(dl);
     dl.replaceWith(frag);
   });
 }
@@ -342,6 +376,214 @@ function transformCardGrids(root, document) {
   first.parentElement.insertBefore(table, first);
   boxes.forEach((b) => (b.closest('.col-lg-6, .col-md-6, .col-sm-6, .col-lg-4, .col-md-4') || b).remove());
   root.querySelectorAll('.row').forEach((r) => { if (!r.textContent.trim() && !r.querySelector('img, table')) r.remove(); });
+}
+
+// plan terms that get an info icon (their tooltip explains the term, see plan-details)
+const PLAN_TERM = /^(annual deductible|coinsurance|copays?|annual out-of-pocket maximum)\b/i;
+
+/**
+ * Sentence-cases the text nodes of an element in place, keeping inline markup (sup, strong).
+ * @param {Element} el The element
+ */
+function sentenceCaseNodes(el) {
+  const walker = el.ownerDocument.createTreeWalker(el, 4);
+  const nodes = [];
+  for (let n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
+  nodes.forEach((n, i) => {
+    if (n.parentElement.closest('sup') || !n.textContent.trim()) return;
+    const [, lead, core, trail] = n.textContent.match(/^(\s*)([\s\S]*?)(\s*)$/);
+    let cased = sentenceCase(core);
+    // only the first text node starts with a capital; later ones continue the sentence
+    if (i > 0) {
+      cased = cased.replace(/^([("“'‘]*)([A-Z])(?=[a-z])/, (m, punct, c) => {
+        const word = cased.slice(punct.length).match(/^[A-Za-z’']+/)[0];
+        return KEEP_CAPS.has(word) ? m : `${punct}${c.toLowerCase()}`;
+      });
+    }
+    n.textContent = `${lead}${cased}${trail}`;
+  });
+}
+
+/**
+ * "Common terms" boxes (numbered Deductible / Coinsurance / … boxes) -> Columns (terms).
+ * @param {Element} root The content root
+ * @param {Document} document The document
+ */
+function transformTermBoxes(root, document) {
+  const boxes = [...root.querySelectorAll('.panel-Content')].filter((b) => b.querySelector('.boxNumbering'));
+  if (boxes.length < 2) return;
+  const cells = boxes.map((box) => {
+    const cell = document.createElement('div');
+    const titleEl = [...box.querySelectorAll('h3, h4, .local_title')].find((h) => !h.querySelector('.boxNumbering') && h.textContent.trim());
+    const h = document.createElement('h5');
+    h.textContent = sentenceCase(titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : '');
+    cell.append(h);
+    box.querySelectorAll('p').forEach((p) => {
+      // "text<br><br>NOTE: …" is two paragraphs
+      p.innerHTML.split(/(?:<br\s*\/?>\s*){2,}/i).map((part) => part.trim()).filter(Boolean).forEach((part) => {
+        const np = document.createElement('p');
+        np.innerHTML = part;
+        cell.append(np);
+      });
+    });
+    return cell;
+  });
+  const container = boxes[0].parentElement;
+  boxes.slice(1).forEach((b) => b.remove());
+  boxes[0].replaceWith(block('Columns (terms)', [cells], document));
+  if (!container.textContent.trim()) container.remove();
+}
+
+/**
+ * Plan overview grids ("How the plan works: at a glance": tables whose rows start with a number
+ * cell `td.fillHalfCol`) -> one Plan details block per plan, with the summary header lines
+ * that precede it in the layout table. Shared cells are repeated on every row they cover, so
+ * each row stays complete on its own (phones stack the rows).
+ * @param {Element} root The content root
+ * @param {Document} document The document
+ */
+function transformPlanGrids(root, document) {
+  const own = (t) => [...t.rows].filter((r) => r.closest('table') === t);
+  const grids = [...root.querySelectorAll('table')].filter((t) => own(t).some((r) => r.cells[0]?.classList.contains('fillHalfCol')));
+  if (!grids.length) return;
+  const text = (el) => el.textContent.replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+  const p = (html) => { const e = document.createElement('p'); e.innerHTML = html; return e; };
+  const cellDiv = (nodes) => { const d = document.createElement('div'); d.append(...nodes); return d; };
+  const anchors = {};
+
+  const planBlock = (grid, headCells) => {
+    const rows = [];
+    // header: eyebrow + plan names (first header cell), title (second header cell)
+    const header = document.createElement('div');
+    let eyebrowHtml = '';
+    let namesHtml = '';
+    let titleHtml = '';
+    headCells.forEach((cell) => {
+      const parts = cell.innerHTML.split(/<br\s*\/?>/i).map((x) => x.trim()).filter((x) => x.replace(/&nbsp;|<[^>]+>/g, '').trim());
+      if (/benefits summary/i.test(text(cell))) {
+        [eyebrowHtml] = parts;
+        namesHtml = parts.slice(1).join('<br>');
+      } else if (!titleHtml) {
+        titleHtml = parts.join(' ');
+      }
+    });
+    const eyebrow = p(eyebrowHtml);
+    sentenceCaseNodes(eyebrow);
+    // "High Deductible Health Plan (HDHP) Effective 1/1/2026 (…)" -> title + "Effective …" line
+    const m = titleHtml.match(/^(.*?\))\s*(Effective\b.*)$/i);
+    const h = document.createElement('h2');
+    h.innerHTML = m ? m[1] : titleHtml;
+    sentenceCaseNodes(h);
+    header.append(eyebrow, h);
+    if (m) { const eff = p(m[2]); sentenceCaseNodes(eff); header.append(eff); }
+    if (namesHtml) header.append(p(namesHtml));
+    rows.push([header]);
+    anchors[text(h).toLowerCase()] = text(h);
+
+    const carry = []; // values of cells that span several rows, per value column
+    own(grid).forEach((tr) => {
+      const cells = [...tr.cells];
+      const num = cells[0]?.classList.contains('fillHalfCol') ? cells.shift() : null;
+      const numText = num ? text(num) : '';
+      if (!cells.length) return;
+      const first = cells[0];
+      const all = cells.map(text).join(' ');
+      // full-width rows: group bars, column headers, footnotes
+      if (cells.length === 1 && first.colSpan >= 3) {
+        if (!all) return;
+        if (first.querySelector('ol, ul')) { rows.push([cellDiv([first.querySelector('ol, ul')])]); return; }
+        if (/in-network/i.test(all) && /out-of-network/i.test(all) && all.length < 40) {
+          rows.push([cellDiv([]), cellDiv([document.createTextNode('In-network')]), cellDiv([document.createTextNode('Out-of-network')])]);
+          return;
+        }
+        // a numbered full-width row with a bold term is a subheading ("3 Copays (…)")
+        if (/^\d$/.test(numText) && first.querySelector('strong')) {
+          const label = document.createElement('div');
+          const hd = document.createElement('h4');
+          hd.innerHTML = first.querySelector('strong').innerHTML;
+          sentenceCaseNodes(hd);
+          if (PLAN_TERM.test(text(hd))) hd.append(' :info:');
+          label.append(hd);
+          first.querySelector('strong').remove();
+          const rest = first.innerHTML.replace(/^(\s*<br\s*\/?>)+/i, '').trim();
+          if (rest.replace(/&nbsp;/g, '').trim()) label.append(p(rest));
+          rows.push([label]);
+          // a subheading row is told apart from a group bar by its heading
+          return;
+        }
+        const bar = p(first.innerHTML.trim());
+        sentenceCaseNodes(bar);
+        rows.push([cellDiv([bar])]);
+        return;
+      }
+      // label cell
+      const label = document.createElement('div');
+      const strong = first.querySelector('strong');
+      if (/^\d$/.test(numText) && strong) {
+        const hd = document.createElement('h4');
+        hd.innerHTML = strong.innerHTML;
+        sentenceCaseNodes(hd);
+        if (PLAN_TERM.test(text(hd))) hd.append(' :info:');
+        label.append(hd);
+        strong.remove();
+        const rest = first.innerHTML.replace(/^(\s*<br\s*\/?>)+/i, '').trim();
+        if (rest.replace(/&nbsp;/g, '').trim()) label.append(p(rest));
+      } else {
+        const lp = p(first.innerHTML.trim());
+        sentenceCaseNodes(lp);
+        label.append(lp);
+      }
+      const values = [];
+      let next = 1;
+      const spanBoth = cells[1] && cells[1].colSpan >= 2;
+      if (first.colSpan >= 2 && !text(cells[1] || first)) {
+        // "Retail — 21-day supply": a label row without values
+        rows.push([label, cellDiv([]), cellDiv([])]);
+        return;
+      }
+      for (let k = 0; k < (spanBoth ? 1 : 2); k += 1) {
+        if (carry[k] && carry[k].left > 0) {
+          values.push(cellDiv([carry[k].node.cloneNode(true)]));
+          carry[k].left -= 1;
+        } else if (cells[next]) {
+          const c = cells[next];
+          next += 1;
+          const v = p(c.innerHTML.trim());
+          if (c.rowSpan > 1) carry[k] = { node: v.cloneNode(true), left: c.rowSpan - 1 };
+          values.push(cellDiv(text(c) ? [v] : []));
+        }
+      }
+      rows.push([label, ...values]);
+    });
+    return block('Plan details', rows, document);
+  };
+
+  // the layout table around the grids carries the header lines of each plan
+  const outer = grids[0].parentElement.closest('table');
+  const frag = document.createDocumentFragment();
+  if (outer && grids.every((g) => outer.contains(g))) {
+    let head = [];
+    own(outer).forEach((tr) => {
+      const grid = grids.find((g) => tr.contains(g));
+      if (grid) {
+        frag.append(planBlock(grid, head));
+        head = [];
+        return;
+      }
+      if (text(tr)) head.push(...tr.cells);
+    });
+    head.forEach((c) => frag.append(cellDiv([...c.childNodes])));
+    (outer.closest('.table-responsive') || outer).replaceWith(frag);
+  } else {
+    grids.forEach((g) => g.replaceWith(planBlock(g, [])));
+  }
+
+  // "Click here for the … overview grid" jump links -> the plan headings
+  root.querySelectorAll('a:not([href])').forEach((a) => {
+    const t = text(a).toLowerCase();
+    const target = Object.keys(anchors).find((k) => t.includes(k.replace(/\s*\(.*$/, '')));
+    if (target) a.setAttribute('href', `#${target.replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-')}`);
+  });
 }
 
 /**
@@ -571,6 +813,8 @@ export default {
     const videos = /video library/.test(entry.template) && transformVideos(root, document);
     if (!videos) {
       transformImageMaps(root, document, title);
+      transformTermBoxes(root, document);
+      transformPlanGrids(root, document);
       transformAccordions(root, document);
       transformCardGrids(root, document);
       transformDefinitionLists(root, document);

@@ -108,7 +108,7 @@ These are imported with `urls-design-new.txt`.
 
 - **Homepage photos** never come from the homepage PDF raster:
   - `home-hero-workers.jpg` (hero, since 2026-11-11): two workers in hard hats and safety vests reviewing plans, 2880 × 1920. Stock photo by Ronnakorn Triraganon on Unsplash (https://unsplash.com/photos/IvEYfb-3B70), free under the Unsplash License (commercial use, no attribution required). Chosen because the current site has no high-resolution photo that fits a full-width hero (its carousel and page banners have text baked in or only ~1260 px of clean photo). It matches the design's hard-hat worker, and the subjects sit right of the headline. Desktop crop: `object-position: center top`. The earlier stand-in `home-hero-worker.jpg` (`images/linkimg1.jpg`, 599 px) is no longer used.
-  - `home-open-enrollment.jpg`: `images/linkimg2.jpg`, 599 px; still needs a high-resolution replacement.
+  - `home-open-enrollment-wide.jpg` (teaser, since 2026-11-11): 1440 × 700, cropped from the right part of the current site's banner `Images/202112R1_WhereService_banner.jpg` (2800 × 700, the same photo as the old 599 px `images/linkimg2.jpg`, starting past the banner's teal fade). Shown at 1.03× at 1440 px (was 2.4×). On phones the teaser crops it at `18% center` (block token `--teaser-focus`), so the mother and child stay in view. The old `home-open-enrollment.jpg` is no longer used.
   - `home-retiring.jpg`: cropped from the Retirement banner, 962 × 700
 - **Benefits & coverage hero:** `benefits-hero-family.jpg`.
 - **Partner logos:** in `partners/` (originals) and `partners/2x/`.
