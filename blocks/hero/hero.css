@@ -121,13 +121,54 @@ main > .section > .hero-wrapper {
   font-weight: var(--font-weight-medium);
 }
 
-/* ---------- navy: plan detail pages ---------- */
+/* ---------- navy: inner pages and plan detail pages ----------
+ * The band is as tall as its content. Background: navy, a faint teal glow at the top right
+ * (depth on wide screens) and the tracks motif (three half-hexagons whose edges run on to the
+ * right, bg-hex-tracks.svg). The motif is scaled to the band's height, so a short band shows
+ * the whole figure smaller and a tall one larger; its rails reach the right edge at any width.
+ * With a photo (a picture row), the photo fills the band behind a navy veil and the band keeps
+ * a minimum height so the photo can be seen.
+ */
 .hero.navy {
-  background: var(--color-navy) url('../../styles/images/bg-tracks-navy.svg') center top / 1440px auto no-repeat;
+  --hero-tracks-x: 52%;
+
+  background-color: var(--color-navy);
+  background-image: radial-gradient(120% 160% at 100% 0%, color-mix(in srgb, var(--color-teal-light) 22%, transparent) 0%, transparent 60%);
   color: var(--color-white);
 }
 
+/* the motif starts at --hero-tracks-x and runs to the right edge */
+.hero.navy::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 var(--hero-tracks-x);
+  background: url('../../styles/images/bg-hex-tracks.svg') left center / auto 100% no-repeat;
+  pointer-events: none;
+}
+
+.hero.navy:has(.hero-media) {
+  min-height: 320px;
+  background-image: none;
+}
+
+.hero.navy:has(.hero-media)::before {
+  content: none;
+}
+
+.hero.navy .hero-media {
+  position: absolute;
+  inset: 0;
+}
+
+.hero.navy .hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--color-navy) 92%, transparent) 0%, color-mix(in srgb, var(--color-navy) 70%, transparent) 50%, color-mix(in srgb, var(--color-navy) 35%, transparent) 100%);
+}
+
 .hero.navy .hero-content {
+  z-index: 1; /* above a photo and its veil */
   padding: 147.6px var(--gutter) 98px;
 }
 
@@ -216,9 +257,12 @@ body:is(.content, .article) .hero.navy .hero-text {
     padding-left: 2px;
   }
 
-  /* the designed plan pages (MMCP, CHCB, HDHP) keep the PDF's 392 px band; content and
-     article pages size the band to their title and intro (no empty navy under a short title) */
-  body:not(.content, .article) .hero.navy {
+  .hero.navy {
+    /* the motif's point sits right of the text measure (860 px from the content frame) */
+    --hero-tracks-x: calc(max(var(--gutter), (100% - var(--container-wide)) / 2) + 900px);
+  }
+
+  .hero.navy:has(.hero-media) {
     min-height: 392px;
   }
 

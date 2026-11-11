@@ -1004,7 +1004,9 @@ var CustomImportScript = (() => {
       const h1New = document.createElement("h1");
       h1New.textContent = title;
       heroText.append(h1New);
-      const intro = sub ? sentenceCase(sub) : introFromBanner(bannerAlt);
+      const subtitle = sub ? sentenceCase(sub) : introFromBanner(bannerAlt);
+      const lead = /:\s*$/.test(subtitle) ? subtitle : "";
+      const intro = lead ? "" : subtitle;
       if (intro && intro.toLowerCase() !== title.toLowerCase()) {
         const p = document.createElement("p");
         p.textContent = intro;
@@ -1016,6 +1018,11 @@ var CustomImportScript = (() => {
       body.append(...root.childNodes);
       const firstP = body.querySelector("p");
       if (firstP && intro && firstP.textContent.replace(/\s+/g, " ").trim().toLowerCase() === intro.toLowerCase()) firstP.remove();
+      if (lead) {
+        const p = document.createElement("p");
+        p.textContent = lead;
+        body.prepend(p);
+      }
       if (listFolder) {
         const folder = listFolder === "/news" ? "/news" : "/health-programs/articles";
         body.append(block("Article list", [["Folder", folder], ["Limit", "12"]], document));

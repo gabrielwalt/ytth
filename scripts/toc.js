@@ -3,14 +3,20 @@
  * inner pages (next to the section menu), so they are found before the reading starts.
  *
  * - Entries: the h2 headings of the page content, including headings inside blocks (plan
- *   tables, cards, fragments). With fewer than 3 h2s, the h3s are used instead (pages built
- *   from tiles). Shown from 3 entries; headings in the hero, the menu and dialogs are skipped.
+ *   tables, cards, fragments), but not inside accordion items. With fewer than 3 h2s, the
+ *   h3s are used instead (pages built from tiles). Shown from 3 entries; headings in the
+ *   hero, the menu and dialogs are skipped.
  * - Wide screens: an open box; small screens: a collapsed disclosure, so the content is near.
  * - The entry of the heading in view is marked (aria-current="location").
  * Built after all sections are loaded (scripts.js → loadLazy), so block headings exist.
  */
 
-const SKIP = '.hero, .section-nav, .toc, header, footer, dialog, [aria-hidden="true"], .plan-tooltip';
+// headings inside accordion items are hidden until the item is opened: they are not
+// destinations (Contact & forms listed the administrators of one closed topic)
+const SKIP = [
+  '.hero', '.section-nav', '.toc', 'header', 'footer', 'dialog', 'details', '[hidden]',
+  '[aria-hidden="true"]', '.plan-tooltip',
+].join(', ');
 const slug = (text) => text.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
   .replace(/[^a-z0-9]+/g, '-')
   .replace(/^-+|-+$/g, '');

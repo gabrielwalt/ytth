@@ -1088,7 +1088,11 @@ export default {
     const h1New = document.createElement('h1');
     h1New.textContent = title;
     heroText.append(h1New);
-    const intro = sub ? sentenceCase(sub) : introFromBanner(bannerAlt);
+    const subtitle = sub ? sentenceCase(sub) : introFromBanner(bannerAlt);
+    // a subtitle that ends with a colon ("Please choose from the following:") introduces the
+    // list below it: it opens the content, not the page header
+    const lead = /:\s*$/.test(subtitle) ? subtitle : '';
+    const intro = lead ? '' : subtitle;
     if (intro && intro.toLowerCase() !== title.toLowerCase()) {
       const p = document.createElement('p');
       p.textContent = intro;
@@ -1102,6 +1106,11 @@ export default {
     // the banner text often repeats as the first paragraph
     const firstP = body.querySelector('p');
     if (firstP && intro && firstP.textContent.replace(/\s+/g, ' ').trim().toLowerCase() === intro.toLowerCase()) firstP.remove();
+    if (lead) {
+      const p = document.createElement('p');
+      p.textContent = lead;
+      body.prepend(p);
+    }
     if (listFolder) {
       const folder = listFolder === '/news' ? '/news' : '/health-programs/articles';
       body.append(block('Article list', [['Folder', folder], ['Limit', '12']], document));

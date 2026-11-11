@@ -43,7 +43,7 @@ Desktop: a five-column grid; the columns share the width in the design's proport
 | Variant | Page | Notes |
 |---|---|---|
 | `split` | Benefits & coverage | A light panel with the photo on the right 40 % (cropped as in the design). On mobile the photo is a faded background |
-| `navy` | Plan pages (MMCP) | Navy background with track lines, eyebrow and H1 |
+| `navy` | Inner pages and plan pages (MMCP) | Navy band with eyebrow (or breadcrumbs) and H1, as tall as its content (no minimum height). Background: a faint teal glow at the top right and the tracks motif (`styles/images/bg-hex-tracks.svg`: three half-hexagons whose edges run on to the right), drawn right of the text and scaled to the band's height, so short and tall bands, phones and wide screens all show the whole figure. A picture row puts a photo behind a navy veil; then the band keeps a minimum height (320 px, 392 px from 900 px) and the motif is hidden |
 | `home` | Homepage | Full-bleed photo, display H1, text, button and search field |
 
 Authoring:
@@ -176,7 +176,7 @@ Replaces the current site's left-hand menu, its breadcrumbs, the wellness "Resou
 
 ### Breadcrumbs and "On this page" (automatic, not authored)
 - **Breadcrumbs** (`scripts/breadcrumbs.js`): Home › section › … › current page, built from the same `/fragments/section-nav` tree as the side menu (shared code: `scripts/site-tree.js`). They take the place of the section eyebrow in the navy page header; on MMCP/CHCB/HDHP (designed eyebrow "Medical plan details") they sit above it. Not on the homepage or section main pages. Phones show only the parent ("‹ Medical plans"). `nav aria-label="Breadcrumb"`, the current page `aria-current="page"`. Supersedes the earlier "no breadcrumbs" decision.
-- **On this page** (`scripts/toc.js`): a box at the top of the content column of every page with the side menu, first in reading order. Lists the h2 headings of the page including those inside blocks (plan tables, tiles, fragments); with fewer than 3 h2s it lists the h3s; shown from 3 entries; two columns from 7. Open on desktop, collapsed on phones. The heading in view is marked.
+- **On this page** (`scripts/toc.js`): a box at the top of the content column of every page with the side menu, first in reading order. Lists the h2 headings of the page including those inside blocks (plan tables, tiles, fragments) but not inside accordion items (hidden until opened); with fewer than 3 h2s it lists the h3s; shown from 3 entries; two columns from 7. Open on desktop, collapsed on phones. The heading in view is marked.
 - **Skip link:** "Skip to content" is the first focus stop of every page.
 
 ### Table (`table`)

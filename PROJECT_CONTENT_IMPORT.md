@@ -75,7 +75,7 @@ Regenerate the map after every change to its rules. Run `check-targets.cjs` to c
 What it does on each page:
 - **Path, title and section** come from `tools/importer/url-map-data.js`, which `build-url-map.cjs` generates. A page missing from the map fails loudly.
 - **Removes:** the old banner, side menu, breadcrumbs, print button, skip links, decorative arrow/external/print images, icon-font glyphs and inline styles.
-- **Page header:** `Hero (navy)` with the section as eyebrow (Benefits & coverage, Health programs, Retirement, Contact & forms, News) and the H1 in sentence case. The intro is the old H2 subtitle or the sentence after the title in the old banner's alt text; it is removed from the body if it repeats there.
+- **Page header:** `Hero (navy)` with the section as eyebrow (Benefits & coverage, Health programs, Retirement, Contact & forms, News) and the H1 in sentence case. The intro is the old H2 subtitle or the sentence after the title in the old banner's alt text; it is removed from the body if it repeats there. A subtitle that ends with a colon ("Please choose from the following:") introduces the list below it, so it opens the content instead of the header (Contact us, Contact UnitedHealthcare, FSA FAQ).
 - **Content patterns:**
   - icon card grids (`.contentbox`) and sibling icon columns → `Cards (resource)`; each tile keeps its icon: the old icon-font class is mapped to the hexagon library (`ICONS` in the script, `migration-work/icons/icon-map.json`) and written as a `:hex-…:` paragraph
   - a page whose content starts at h3 (no h2) gets its headings moved up one level
