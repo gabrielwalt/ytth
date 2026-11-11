@@ -67,6 +67,13 @@ export default function decorate(block) {
     form.querySelector('button').setAttribute('aria-label', 'Search');
     p.remove();
     content.append(form);
+    // live suggestions (pages and PDFs) while typing; loaded when the visitor focuses the field
+    input.addEventListener('focus', () => {
+      import('../../scripts/search-suggest.js').then((m) => {
+        m.default(input);
+        input.dispatchEvent(new Event('focus'));
+      });
+    }, { once: true });
   });
 
   // the hero photo is the LCP candidate

@@ -118,7 +118,8 @@ Built 2026-11-10. These derive from the existing tokens and are documented in `P
 - [ ] **Lookup data:** the owner exports the real union and option data (railroad × union × ZIP → administrator, plan and SBC PDF) into the lookup spreadsheet in DA. The current form loads unions per railroad through a server round trip, and the results depend on the ZIP, so the data can't be scraped reliably.
 - [ ] **FSA values:** the owner confirms the current maximum contribution (the current site still uses $3,500 with plan year 2019) and the tax rates.
 - [ ] **Webmaster feedback form:** rebuild the feedback box and its thank-you page. Waiting for the owner to choose a form backend.
-- [ ] **Page index:** configure the query index (Phase 7) with the columns `title`, `description`, `date`, `navTitle` and `lastModified`. Search and the article lists read it; until then they fall back to the generated `/search-index.json`.
+- [ ] **Page index:** configure the query index (Phase 7) with the columns `title`, `description`, `date`, `navTitle`, `lastModified` and `content` (the page text, e.g. `words(textContent(main), 0, 800)`, so search stays full text). Search and the article lists read it; until then they fall back to the generated `/search-index.json`.
+- [ ] **PDF search after launch:** `/search-documents.json` is generated from the migrated pages and served from the code. Decide whether it stays a generated file (re-run the script when PDFs change) or becomes a DA sheet the benefits team maintains.
 
 ## Phase 4: import infrastructure
 
@@ -179,7 +180,7 @@ QA results:
   - the Rx hub banner text still mentions Express Scripts
   - titles that repeat across sections ("Forms", "Contact us")
 - [ ] **Infographic pages (16):** they are images with text baked in. Write text alternatives, or keep the PDF/image as is (owner choice).
-- [ ] **Lookup data:** `/benefits-coverage/benefit-lookup-data.json` doesn't exist yet. Until the owner exports it, the lookup page shows a "not available right now" message.
+- [ ] **Lookup data:** `/benefits-coverage/benefit-lookup-data.json` doesn't exist yet. Until the owner exports it (railroads, unions, and the plan options per railroad/union/ZIP range from Railroad Enrollment Services), the lookup page sends members to the current `BenefitLookup.aspx`.
 
 ## Phase 6: assets
 
@@ -260,3 +261,4 @@ See `PROJECT_OVERVIEW.md` → Open items:
 - check-navigation: every page is reachable from a menu or the site map except the feedback thank-you page (by design). check-content: 0 missing pages, 0 broken links. Checked the dropdowns at 1440, 1200 and 425. |
 | 2026-11-11 | Homepage hero photo: the 599 px stand-in was blurry at full width and the face sat behind the headline. Checked every current-site image (carousel banners 5833 px but with baked-in text and hexagon crops; 26 page banners 2800 × 700 with only ~1260 px of clean photo, families/doctors). Chose a free-licensed Unsplash photo (2880 × 1920) of two workers in hard hats and safety vests, close to the design's worker; subjects right of the headline. Desktop crop set to the top of the photo. Checked at 1440, 1024 and 425. |
 | 2026-11-11 | Alignment pass: one content frame (the header bar: 1320 px max, `--gutter` 20/40 on the sides) for header, every section, block and footer. Removed the 1288 px (`medium`), 1220 px (`narrow`) and 30 px mobile (`inset`) offsets; quick links, hero text and search, teaser card and resource cards sit on the frame; footer columns end on the right edge (no overflow at 1200); desktop header menu tightened between 1200 and 1319 px. Side-menu layout now 280 + 80 + content column = 1320. Measured every page in the index (168) at 1440, 1200, 1024, 768 and 425: no block edges off the frame except deliberate ones (list indents, text measure, narrow images). Side-menu current page restyled (straight teal bar, gap to dividers). |
+| 2026-11-11 | Dynamic features review. Current site: search is a server page (`SiteSearch.aspx?SearchTerm=`, no cross-site access, no framing, results point to old addresses), the benefit lookup is a server form with results per railroad/union/ZIP, the feedback form posts back to the server. Rebuilt search on our own content: full-text page index plus 318 PDFs, ranking with stems and synonyms, live results with section/PDF filters and excerpts, a header search panel, and suggestions in the header, the homepage hero and the 404 page (pre-filled from the missing address). Benefit lookup now hands members to the current lookup until its data is published. Fixed the 404 page loading a non-existent block. |

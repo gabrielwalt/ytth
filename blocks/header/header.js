@@ -16,6 +16,85 @@ function closeDropdowns(nav, except) {
 }
 
 /**
+ * Opens or closes the header search panel.
+ * @param {Element} nav The nav element
+ * @param {boolean} open Open (true) or close (false)
+ * @param {boolean} [focusToggle] Return focus to the search icon after closing
+ */
+function toggleSearch(nav, open, focusToggle = false) {
+  const toggle = nav.querySelector('a.nav-search');
+  const panel = nav.querySelector('.nav-search-panel');
+  if (!toggle || !panel) return;
+  panel.hidden = !open;
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) {
+    panel.querySelector('input').focus();
+  } else if (focusToggle) {
+    toggle.focus();
+  }
+}
+
+/**
+ * The search icon opens a search panel under the header bar: a field with live suggestions
+ * (pages and PDFs) that submits to the search page. Without JavaScript, or with a modifier
+ * key, the icon stays a plain link to the search page. On the search page itself it focuses
+ * the page's search field instead.
+ * @param {Element} nav The nav element
+ * @param {Element} link The search link
+ */
+function decorateSearch(nav, link) {
+  const target = new URL(link.href, window.location.href);
+  const panel = document.createElement('div');
+  panel.className = 'nav-search-panel';
+  panel.id = 'nav-search-panel';
+  panel.hidden = true;
+  panel.innerHTML = `<form class="nav-search-form" role="search" method="get">
+      <label class="visually-hidden" for="nav-search-q">Search the site</label>
+      <span class="nav-search-field">
+        <img class="nav-search-field-icon" src="${window.hlx.codeBasePath}/icons/search-teal.svg" alt="" width="22" height="22">
+        <input id="nav-search-q" type="search" name="q" placeholder="How can we help you today?">
+      </span>
+      <button type="submit" class="button primary">Search</button>
+    </form>`;
+  panel.querySelector('form').action = target.pathname;
+  nav.append(panel);
+  link.setAttribute('aria-controls', panel.id);
+  link.setAttribute('aria-expanded', 'false');
+
+  const input = panel.querySelector('input');
+  let suggestions;
+  link.addEventListener('click', (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    const pageField = document.querySelector('main .search input[type="search"]');
+    if (pageField) {
+      pageField.focus();
+      pageField.select();
+      return;
+    }
+    const open = panel.hidden;
+    if (open) {
+      closeDropdowns(nav);
+      if (nav.getAttribute('aria-expanded') === 'true') {
+        nav.setAttribute('aria-expanded', 'false');
+        document.body.style.overflowY = '';
+      }
+      if (!suggestions) {
+        suggestions = import('../../scripts/search-suggest.js')
+          .then((m) => m.default(input, { container: panel.querySelector('.nav-search-form') }));
+      }
+    }
+    toggleSearch(nav, open);
+  });
+  panel.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      e.stopPropagation();
+      toggleSearch(nav, false, true);
+    }
+  });
+}
+
+/**
  * Opens or closes the mobile menu.
  * @param {Element} nav The nav element
  * @param {boolean} [force] Force a state (true = open)
@@ -146,6 +225,7 @@ function decorateSections(sections, nav) {
 
     button.addEventListener('click', () => {
       const expanded = button.getAttribute('aria-expanded') === 'true';
+      toggleSearch(nav, false);
       if (isDesktop.matches) closeDropdowns(nav, button);
       button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
     });
@@ -220,7 +300,11 @@ export default async function decorate(block) {
   if (sections) decorateSections(sections, nav);
 
   const tools = nav.querySelector('.nav-tools');
-  if (tools) decorateTools(tools);
+  if (tools) {
+    decorateTools(tools);
+    const searchLink = tools.querySelector('a.nav-search');
+    if (searchLink) decorateSearch(nav, searchLink);
+  }
 
   // mobile: the "Contact & forms" link also appears at the end of the menu
   if (sections && tools) {
@@ -242,7 +326,10 @@ export default async function decorate(block) {
   hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
       <span class="nav-hamburger-icon"></span>
     </button>`;
-  hamburger.querySelector('button').addEventListener('click', () => toggleMenu(nav));
+  hamburger.querySelector('button').addEventListener('click', () => {
+    toggleSearch(nav, false);
+    toggleMenu(nav);
+  });
   nav.append(hamburger);
 
   // close on escape and on click outside
@@ -258,7 +345,9 @@ export default async function decorate(block) {
     }
   });
   document.addEventListener('click', (e) => {
-    if (isDesktop.matches && !nav.contains(e.target)) closeDropdowns(nav);
+    if (nav.contains(e.target)) return;
+    if (isDesktop.matches) closeDropdowns(nav);
+    toggleSearch(nav, false);
   });
   nav.addEventListener('focusout', (e) => {
     if (isDesktop.matches && !nav.contains(e.relatedTarget)) closeDropdowns(nav);

@@ -92,6 +92,87 @@ header .nav-tools a.nav-search .icon {
   height: 30px;
 }
 
+header .nav-tools a.nav-search[aria-expanded='true'] {
+  border-radius: var(--radius-xs);
+  background: var(--color-surface-1);
+}
+
+/* search panel: drops below the header bar, full bar width, field + Search button */
+header .nav-search-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border-radius: var(--radius-leaf-l);
+  padding: 16px;
+  background: var(--color-white);
+  box-shadow: var(--shadow-header);
+}
+
+header .nav-search-panel[hidden] {
+  display: none;
+}
+
+header .nav-search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+}
+
+header .nav-search-field {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  border: var(--border);
+  border-radius: var(--radius-s);
+  padding: 0 12px;
+}
+
+header .nav-search-field:focus-within {
+  border-color: var(--color-teal);
+  box-shadow: 0 0 0 2px var(--color-mint);
+}
+
+header .nav-search-field-icon {
+  flex: 0 0 auto;
+}
+
+header .nav-search-field input {
+  flex: 1;
+  min-width: 0;
+  height: calc(var(--button-height) - 2px);
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--body-font-size-m);
+}
+
+header .nav-search-field input:focus {
+  outline: none;
+}
+
+header .nav-search-form .button {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+/* inside the panel the suggestions are part of it (a full-width row under the field) */
+header .nav-search-panel .search-suggest {
+  position: static;
+  flex: 0 0 calc(100% + 32px);
+  margin: 0 -16px -8px;
+  border-top: 1px solid var(--color-divider);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
 header .nav-tools a.nav-signin {
   display: inline-flex;
   align-items: center;

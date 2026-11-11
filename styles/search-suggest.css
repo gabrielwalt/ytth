@@ -1,0 +1,92 @@
+/* search suggestions under a search field (scripts/search-suggest.js), on brand tokens */
+.search-suggest-host {
+  position: relative;
+}
+
+.search-suggest {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: min(480px, 70vh);
+  overflow: auto;
+  border-radius: var(--radius-leaf-s);
+  padding: 8px 0;
+  background: var(--color-white);
+  box-shadow: var(--shadow-header);
+  text-align: left;
+}
+
+.search-suggest[hidden] {
+  display: none;
+}
+
+.search-suggest ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-suggest li {
+  margin: 0;
+}
+
+.search-suggest a:any-link {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 16px;
+  color: var(--color-text);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--body-line-height-m);
+  text-decoration: none;
+}
+
+.search-suggest .search-suggest-title {
+  color: var(--color-navy);
+  font-weight: var(--font-weight-medium);
+}
+
+/* PDFs carry the same file icon as PDF links in the text */
+.search-suggest li.is-document .search-suggest-title::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 6px;
+  background-color: currentcolor;
+  mask: url('../icons/file-pdf.svg') center / contain no-repeat;
+  vertical-align: -1px;
+}
+
+.search-suggest .search-suggest-meta {
+  color: var(--color-text-muted);
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-line-height-s);
+}
+
+.search-suggest mark {
+  background: none;
+  color: inherit;
+  font-weight: var(--font-weight-bold);
+}
+
+.search-suggest a:hover,
+.search-suggest li[aria-selected='true'] a {
+  background: var(--color-surface-1);
+  box-shadow: inset 3px 0 0 var(--color-teal);
+}
+
+.search-suggest li.search-suggest-all {
+  margin-top: 6px;
+  border-top: 1px solid var(--color-divider);
+  padding-top: 6px;
+}
+
+.search-suggest li.search-suggest-all a:any-link {
+  color: var(--color-teal);
+  font-weight: var(--font-weight-medium);
+}

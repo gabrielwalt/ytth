@@ -19,6 +19,29 @@ main > .section > .benefit-lookup-wrapper {
   background: var(--color-surface-1);
 }
 
+/* hand-over to the official lookup while the data sheet is not published (same panel look) */
+.benefit-lookup .benefit-lookup-handoff {
+  border-radius: var(--radius-leaf-l);
+  padding: 24px;
+  background: var(--color-surface-1);
+}
+
+.benefit-lookup .benefit-lookup-handoff > * {
+  margin: 0;
+}
+
+.benefit-lookup .benefit-lookup-handoff > * + * {
+  margin-top: 12px;
+}
+
+.benefit-lookup .benefit-lookup-handoff .button-wrapper {
+  margin-top: 20px;
+}
+
+.benefit-lookup .benefit-lookup-handoff-title {
+  color: var(--color-navy);
+}
+
 .benefit-lookup .benefit-lookup-field label {
   display: block;
   margin-bottom: 6px;
@@ -97,6 +120,10 @@ main > .section > .benefit-lookup-wrapper {
 }
 
 @media (width >= 900px) {
+  .benefit-lookup .benefit-lookup-handoff {
+    padding: 32px;
+  }
+
   .benefit-lookup .benefit-lookup-form {
     grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr) auto;
     padding: 32px;

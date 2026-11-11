@@ -1,23 +1,52 @@
-/* search: field + results list, built from the design tokens */
-.search .search-form {
-  display: flex;
-  gap: 12px;
+/* search page: field, filters and results, built from the design tokens */
+.search {
   max-width: var(--container-text);
 }
 
-.search .search-form input {
+.search .search-form {
+  display: flex;
+  gap: 12px;
+}
+
+.search .search-field {
+  display: flex;
   flex: 1;
+  align-items: center;
+  gap: 10px;
   min-width: 0;
-  height: var(--button-height);
   border: var(--border);
   border-radius: var(--radius-s);
   padding: 0 14px;
-  color: var(--color-text);
+  background: var(--color-white);
 }
 
-.search .search-form input:focus {
+.search .search-field:focus-within {
   border-color: var(--color-teal);
+  box-shadow: 0 0 0 2px var(--color-mint);
+}
+
+.search .search-field-icon {
+  flex: 0 0 auto;
+}
+
+.search .search-field input {
+  flex: 1;
+  min-width: 0;
+  height: calc(var(--button-height) - 2px);
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+}
+
+.search .search-field input:focus {
   outline: none;
+}
+
+.search .search-form .button {
+  flex: 0 0 auto;
+  margin: 0;
 }
 
 .search .search-status {
@@ -25,48 +54,166 @@
   color: var(--color-text-muted);
 }
 
+.search .search-status:empty {
+  display: none;
+}
+
+/* filters: pill toggles, the pressed one in navy */
+.search .search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.search .search-filters:empty {
+  display: none;
+}
+
+.search .search-filter {
+  margin: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 6px 14px;
+  background: var(--color-white);
+  color: var(--color-navy);
+  font: inherit;
+  font-size: var(--body-font-size-s);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--body-line-height-s);
+  cursor: pointer;
+}
+
+.search .search-filter:hover {
+  border-color: var(--color-navy);
+}
+
+.search .search-filter[aria-pressed='true'] {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+  color: var(--color-white);
+}
+
+.search .search-filter-count {
+  opacity: 0.75;
+}
+
+/* results */
 .search .search-results {
-  max-width: var(--container-text);
   margin: 24px 0 0;
   padding: 0;
   list-style: none;
+}
+
+.search .search-results:not(:empty) {
   border-top: 1px solid var(--color-border);
 }
 
-.search .search-results li {
+.search .search-result {
   margin: 0;
   padding: 20px 0;
   border-bottom: 1px solid var(--color-border);
 }
 
-.search .search-results h2 {
+.search .search-result-label {
+  margin: 0 0 4px;
+  color: var(--color-teal);
+  font-size: var(--eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--eyebrow-line-height);
+  letter-spacing: var(--eyebrow-letter-spacing);
+  text-transform: uppercase;
+}
+
+.search .search-result-title {
   margin: 0;
   font-size: var(--heading-font-size-m);
   font-weight: var(--font-weight-bold);
   line-height: var(--heading-line-height-m);
 }
 
-.search .search-results h2 a:any-link {
+.search .search-result-title a:any-link {
   color: var(--color-navy);
   font-weight: inherit;
   text-decoration: none;
 }
 
-.search .search-results h2 a:hover {
+.search .search-result-title a:hover {
   text-decoration: underline;
 }
 
-.search .search-results p {
+/* PDFs carry the same file icon as PDF links in the text */
+.search .search-result.is-document .search-result-title a::after {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  background-color: currentcolor;
+  mask: url('../../icons/file-pdf.svg') center / contain no-repeat;
+  vertical-align: -1px;
+}
+
+.search .search-result p {
   margin: 6px 0 0;
 }
 
-.search .search-results .search-path {
+.search .search-result-url {
   color: var(--color-text-subtle);
   font-size: var(--body-font-size-s);
   line-height: var(--body-line-height-s);
+  overflow-wrap: anywhere;
+}
+
+.search .search-result-url a:any-link {
+  color: inherit;
 }
 
 .search mark {
+  border-radius: 2px;
   background: var(--color-mint);
   color: inherit;
+}
+
+.search .search-more {
+  margin-top: 24px;
+}
+
+.search .search-more[hidden],
+.search .search-popular[hidden] {
+  display: none;
+}
+
+/* popular pages: before searching and when nothing matches */
+.search .search-popular {
+  margin-top: 32px;
+}
+
+.search .search-popular-title {
+  margin: 0 0 12px;
+  font-size: var(--heading-font-size-s);
+  line-height: var(--heading-line-height-s);
+}
+
+.search .search-popular ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search .search-popular li {
+  margin: 0;
+}
+
+@media (width < 600px) {
+  .search .search-form {
+    flex-wrap: wrap;
+  }
+
+  .search .search-form .button {
+    flex: 1 0 100%;
+  }
 }

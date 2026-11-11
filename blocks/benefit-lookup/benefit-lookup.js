@@ -3,7 +3,9 @@
  * Members pick their railroad and union and enter a ZIP code; the block lists their medical
  * benefit options and SBC documents. Replaces the server form BenefitLookup.aspx.
  *
- * Authoring: one row "Data | <link to the lookup spreadsheet>" (a DA sheet published as JSON).
+ * Authoring: a row "Data | <link to the lookup spreadsheet>" (a DA sheet published as JSON),
+ * and optionally "Fallback | <link>": where members are sent while the sheet is not published
+ * (default: the current system's BenefitLookup.aspx).
  * The spreadsheet has three sheets:
  * - railroads: Code, Name
  * - unions:    Railroad (code, or * for all), Union
@@ -47,9 +49,20 @@ function field(id, labelText, control) {
   return f;
 }
 
+// the current system's lookup, used until the lookup data is published as a sheet
+const DEFAULT_FALLBACK = 'https://www.yourtracktohealth.com/BenefitLookup.aspx';
+
 export default async function decorate(block) {
-  const link = block.querySelector('a[href]');
-  const source = link ? link.getAttribute('href') : block.textContent.replace(/^\s*data\s*/i, '').trim();
+  // rows: "Data | <sheet link>" and optionally "Fallback | <link to another lookup>"
+  const config = {};
+  [...block.children].forEach((row) => {
+    const [k, v] = [...row.children];
+    if (!k || !v) return;
+    const a = v.querySelector('a[href]');
+    config[k.textContent.trim().toLowerCase()] = a ? a.getAttribute('href') : v.textContent.trim();
+  });
+  const source = config.data || block.querySelector('a[href]')?.getAttribute('href') || '';
+  const fallback = config.fallback || DEFAULT_FALLBACK;
   block.replaceChildren();
 
   let json = {};
@@ -63,7 +76,22 @@ export default async function decorate(block) {
   const unions = sheet(json, 'unions');
   const options = sheet(json, 'options');
   if (!railroads.length) {
-    block.append(el('p', 'benefit-lookup-error', 'The benefit lookup is not available right now. Please call Member Services or try again later.'));
+    // until the lookup data is published, hand members over to the official lookup
+    // (its results depend on railroad, union and ZIP code and come from that system)
+    const box = el('div', 'benefit-lookup-handoff');
+    box.append(
+      el('h3', 'benefit-lookup-handoff-title', 'Look up your medical benefit options'),
+      el('p', '', 'Select your railroad and union and enter your ZIP code in the Railroad Enrollment Services lookup to see your plan, your program choices and your Summaries of Benefits & Coverage.'),
+    );
+    const p = el('p', 'button-wrapper');
+    const a = el('a', 'button primary', 'Open the benefit lookup');
+    a.href = fallback;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.append(el('span', 'visually-hidden', ' (opens in a new tab)'));
+    p.append(a);
+    box.append(p);
+    block.append(box);
     return;
   }
 

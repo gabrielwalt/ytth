@@ -82,7 +82,7 @@ What it does on each page:
 After every import:
 1. Run `node tools/importer/merge-pages.cjs` (merges 24/7 Telemedicine into the 24/7 nurses & telemedicine page).
 2. Run `node migration-work/url-map/check-content.cjs` (missing pages, broken internal links, links left on the old site).
-3. Run `node migration-work/url-map/build-search-index.cjs` (refreshes `/search-index.json`, the page index search uses until the query index exists).
+3. Run `node migration-work/url-map/build-search-index.cjs`. It refreshes `/search-index.json` (pages with their text, the page index search uses until the query index exists) and `/search-documents.json` (the PDFs linked from the pages, which search always uses).
 4. When pages were added or renamed, regenerate the section menu with `node migration-work/url-map/build-section-nav.cjs` and then the site map with `node migration-work/url-map/build-sitemap.cjs`. Import both with the design importer (`--urls tools/importer/urls-design-nav.txt`, which also re-imports nav and footer). After launch they are maintained in DA (`/fragments/section-nav`, `/sitemap`).
    - The section menu's order follows the header groups in `design-source/nav.html`; pages that belong under another page than their folder (`PARENTS`, e.g. the prediabetes pages under Prediabetes & diabetes) are set in the script.
 5. Run `node migration-work/url-map/check-navigation.cjs`: which pages the header, footer and section menu reach, which are only linked from content, and which are linked from nowhere.

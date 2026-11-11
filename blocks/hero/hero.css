@@ -227,8 +227,12 @@ body:is(.content, .article) .hero.navy .hero-text {
 /* stylelint-disable no-descending-specificity */
 
 /* ---------- home: full-bleed photo, display heading, search field (homepage design) ---------- */
+
+/* the search suggestions may drop out of the hero over the next section */
 .hero.home {
+  z-index: 2;
   min-height: 682px;
+  overflow: visible;
   background: var(--color-navy);
   color: var(--color-white);
 }
@@ -236,6 +240,7 @@ body:is(.content, .article) .hero.navy .hero-text {
 .hero.home .hero-media {
   position: absolute;
   inset: 0;
+  overflow: hidden;
 }
 
 .hero.home .hero-media img {
