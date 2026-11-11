@@ -1,4 +1,4 @@
-/* videos: video cards with in-page Brightcove players and transcript disclosures */
+/* videos: video cards; a Brightcove video opens in a dialog with its transcript */
 main > .section > .videos-wrapper {
   margin-top: var(--space-m);
 }
@@ -129,67 +129,214 @@ main > .section > .videos-wrapper {
   line-height: var(--body-line-height-s);
 }
 
-/* transcript disclosure: the accordion's plus/minus marker */
-.videos .videos-transcript {
-  border-block: 1px solid var(--color-border);
-}
-
-.videos .videos-body > .videos-transcript {
-  margin-top: 12px;
-}
-
-.videos .videos-transcript > summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 10px 4px;
-  color: var(--heading-color);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--body-line-height-m);
-  list-style: none;
-  cursor: pointer;
-}
-
-.videos .videos-transcript > summary::-webkit-details-marker {
-  display: none;
-}
-
-.videos .videos-transcript > summary::after {
-  content: '';
-  flex: 0 0 22px;
-  width: 22px;
-  height: 22px;
-  background-color: var(--heading-color);
-  mask: url('../../icons/plus-circle.svg') center / contain no-repeat;
-}
-
-.videos .videos-transcript[open] > summary::after {
-  mask-image: url('../../icons/minus-circle.svg');
-}
-
-.videos .videos-transcript > summary:hover {
-  text-decoration: underline;
-}
-
-.videos .videos-transcript-body {
-  padding: 4px 4px 20px;
-  font-size: var(--body-font-size-s);
-  line-height: var(--body-line-height-s);
-  overflow-wrap: anywhere;
-}
-
-.videos .videos-transcript-body > * {
-  margin: 0;
-}
-
-.videos .videos-transcript-body > * + * {
-  margin-top: 12px;
-}
-
 @media (width >= 768px) {
   .videos ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 48px 36px;
+  }
+}
+
+/* ---------- video dialog: player on top, transcript below (with its PDF) ---------- */
+html.videos-dialog-open {
+  overflow: hidden; /* the page behind doesn't scroll */
+}
+
+.videos-dialog {
+  width: min(1040px, calc(100vw - 48px));
+  max-width: none;
+  max-height: calc(100dvh - 48px);
+  margin: auto;
+  border: 0;
+  border-radius: var(--radius-leaf-l);
+  padding: 0;
+  overflow: hidden;
+  background: var(--color-white);
+  box-shadow: 0 24px 64px rgb(0 0 0 / 35%);
+  color: var(--color-text);
+}
+
+.videos-dialog::backdrop {
+  background: color-mix(in srgb, var(--color-navy) 82%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.videos-dialog .videos-dialog-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - 48px);
+}
+
+.videos-dialog .videos-dialog-head {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 12px 12px 24px;
+}
+
+.videos-dialog .videos-dialog-title {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: var(--heading-font-size-m);
+  line-height: var(--heading-line-height-m);
+}
+
+.videos-dialog .videos-dialog-close {
+  position: relative;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  padding: 0;
+  background: none;
+  color: var(--color-navy);
+  cursor: pointer;
+}
+
+.videos-dialog .videos-dialog-close::before,
+.videos-dialog .videos-dialog-close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+  background: currentcolor;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.videos-dialog .videos-dialog-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.videos-dialog .videos-dialog-close:hover {
+  background: var(--color-surface-2);
+}
+
+.videos-dialog .videos-dialog-close:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 0;
+}
+
+/* the player keeps 16:9 and never takes more than ~58% of the window height */
+.videos-dialog .videos-dialog-player {
+  flex: 0 0 auto;
+  background: var(--color-black);
+}
+
+.videos-dialog .videos-dialog-player iframe {
+  display: block;
+  width: min(100%, calc(58dvh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  border: 0;
+}
+
+.videos-dialog .videos-dialog-transcript {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 20px 24px 28px;
+  border-top: 1px solid var(--color-divider);
+}
+
+.videos-dialog .videos-dialog-transcript[hidden] {
+  display: none;
+}
+
+.videos-dialog .videos-dialog-transcript-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-bottom: 16px;
+}
+
+.videos-dialog .videos-dialog-transcript-head h3 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: var(--eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--eyebrow-line-height);
+  letter-spacing: var(--eyebrow-letter-spacing);
+  text-transform: uppercase;
+}
+
+.videos-dialog a.videos-dialog-pdf:any-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--color-teal);
+  font-size: var(--body-font-size-s);
+  font-weight: var(--font-weight-bold);
+}
+
+/* the transcript reads like an article: a comfortable measure, speakers in navy */
+.videos-dialog .videos-dialog-transcript-body {
+  max-width: 68ch;
+  font-size: var(--body-font-size-m);
+  line-height: 26px;
+  overflow-wrap: anywhere;
+}
+
+.videos-dialog .videos-dialog-transcript-body > * {
+  margin: 0;
+}
+
+.videos-dialog .videos-dialog-transcript-body > * + * {
+  margin-top: 14px;
+}
+
+.videos-dialog .videos-dialog-transcript-body strong {
+  color: var(--color-navy);
+}
+
+.videos-dialog .videos-dialog-transcript-body em {
+  color: var(--color-text-muted);
+}
+
+/* phones: the dialog fills the screen; the player stays on top while the transcript scrolls */
+@media (width < 768px) {
+  .videos-dialog {
+    width: 100vw;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+  }
+
+  .videos-dialog .videos-dialog-inner {
+    height: 100dvh;
+    max-height: none;
+  }
+
+  .videos-dialog .videos-dialog-head {
+    padding-left: 20px;
+  }
+
+  .videos-dialog .videos-dialog-player iframe {
+    width: 100%;
+  }
+
+  .videos-dialog .videos-dialog-transcript {
+    padding: 16px 20px 32px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .videos-dialog[open] {
+    animation: videos-dialog-in 0.2s ease-out;
+  }
+
+  @keyframes videos-dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
   }
 }
