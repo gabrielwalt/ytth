@@ -8,3 +8,4 @@ test/*
 sync-block-collection.sh
 YTTH*.pdf
 migration-work/*
+tools/importer/test/*

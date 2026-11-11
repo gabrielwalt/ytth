@@ -82,19 +82,26 @@ function pageTerms() {
  * @param {Element} root The decorated table
  */
 function attachTermTooltips(root) {
-  const icons = [...root.querySelectorAll('.icon-info')];
-  if (!icons.length) return;
-  const defs = pageTerms();
-  icons.forEach((icon) => {
-    const label = (icon.closest('h1, h2, h3, h4, h5, h6, p') || icon.parentElement).textContent.trim();
-    const pair = TERMS.find(([re]) => re.test(label));
-    const def = pair && defs.find((d) => pair[1].test(d.term));
-    if (!def) return;
-    const term = def.term.toLowerCase();
-    // "coinsurance" takes no article; the other plan terms are countable
-    const article = /^coinsurance/.test(term) ? '' : `${/^[aeiou]/.test(term) ? 'an' : 'a'} `;
-    attachTooltip(icon, def.content, `What is ${article}${term}?`);
-  });
+  const pending = [...root.querySelectorAll('.icon-info')];
+  if (!pending.length) return;
+  const attach = () => {
+    const defs = pageTerms();
+    [...pending].forEach((icon) => {
+      const label = (icon.closest('h1, h2, h3, h4, h5, h6, p') || icon.parentElement).textContent.trim();
+      const pair = TERMS.find(([re]) => re.test(label));
+      const def = pair && defs.find((d) => pair[1].test(d.term));
+      if (!def) return;
+      const term = def.term.toLowerCase();
+      // "coinsurance" takes no article; the other plan terms are countable
+      const article = /^coinsurance/.test(term) ? '' : `${/^[aeiou]/.test(term) ? 'an' : 'a'} `;
+      attachTooltip(icon, def.content, `What is ${article}${term}?`);
+      pending.splice(pending.indexOf(icon), 1);
+    });
+    if (!pending.length) document.removeEventListener('fragment-loaded', attach);
+  };
+  attach();
+  // the "Common terms" can be a shared fragment that loads after this block
+  if (pending.length) document.addEventListener('fragment-loaded', attach);
 }
 
 export default function decorate(block) {

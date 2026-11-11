@@ -40,6 +40,8 @@ main > .section > .benefit-lookup-wrapper {
 
 .benefit-lookup .benefit-lookup-handoff-title {
   color: var(--color-navy);
+  font-size: var(--heading-font-size-l);
+  line-height: var(--heading-line-height-l);
 }
 
 .benefit-lookup .benefit-lookup-field label {

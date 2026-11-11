@@ -332,6 +332,14 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    // keyboard users can jump past the header menu straight to the page content
+    main.id = main.id || 'main';
+    main.tabIndex = -1;
+    const skip = document.createElement('a');
+    skip.className = 'skip-link';
+    skip.href = `#${main.id}`;
+    skip.textContent = 'Skip to content';
+    document.body.prepend(skip);
     decorateMain(main);
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
@@ -355,7 +363,14 @@ async function loadLazy(doc) {
   loadHeader(doc.querySelector('body > header'));
 
   const main = doc.querySelector('main');
+  // page chrome of inner pages: breadcrumbs in the page header (same tree as the section menu)
+  import('./breadcrumbs.js').then(({ default: buildBreadcrumbs }) => buildBreadcrumbs(main)).catch(() => {});
   await loadSections(main);
+  // "On this page" needs every block decorated (it lists headings inside blocks too)
+  try {
+    const { default: buildToc } = await import('./toc.js');
+    buildToc(main);
+  } catch { /* the page works without it */ }
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;

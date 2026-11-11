@@ -993,7 +993,7 @@ main > .section.readable.center .default-content-wrapper {
   .plan-details .plan-details-header,
   .plan-details .plan-details-group.navy,
   .table thead,
-  .fsa-calculator .fsa-calculator-results
+  .fsa-calculator .fsa-calculator-results-title
 ) {
   --text-color: var(--color-white);
   --text-muted-color: var(--color-mint);
@@ -1058,4 +1058,256 @@ main > .section.readable.center .default-content-wrapper {
 :where(main > .section.sand, .cards.feature > ul > li:nth-child(odd):not(:first-child)) {
   --link-color: var(--color-navy);
   --link-hover-color: var(--color-navy);
+}
+
+/* ---------- breadcrumbs (inner pages, in the navy page header; scripts/breadcrumbs.js) ---------- */
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-line-height-s);
+}
+
+.breadcrumbs li {
+  display: none;
+  align-items: center;
+  margin: 0;
+}
+
+/* small screens: only the way up ("‹ Medical plans") */
+.breadcrumbs li.breadcrumbs-parent {
+  display: inline-flex;
+}
+
+.breadcrumbs li.breadcrumbs-parent::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin: 0 10px 0 2px;
+  border-bottom: 1.5px solid currentcolor;
+  border-left: 1.5px solid currentcolor;
+  color: var(--color-mint);
+  transform: rotate(45deg);
+}
+
+.breadcrumbs a:any-link {
+  display: inline-block;
+  padding: 10px 0; /* 40 px touch target on a 20 px line */
+  margin: -10px 0;
+  color: var(--color-white);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--color-white);
+  text-decoration: underline;
+  text-decoration-color: var(--color-mint);
+}
+
+.breadcrumbs a:focus-visible {
+  outline-color: var(--color-mint);
+}
+
+.breadcrumbs [aria-current='page'] {
+  color: color-mix(in srgb, var(--color-white) 85%, transparent);
+}
+
+.hero .hero-text {
+  position: relative;
+}
+
+/* a designed eyebrow stays; the breadcrumbs sit in the header spacing above it */
+.breadcrumbs.breadcrumbs-above {
+  position: absolute;
+  bottom: calc(100% + 20px);
+  left: 0;
+  width: max-content;
+  max-width: min(calc(100vw - 2 * var(--gutter)), var(--container-wide));
+}
+
+@media (width >= 900px) {
+  .breadcrumbs li,
+  .breadcrumbs li.breadcrumbs-parent {
+    display: inline-flex;
+  }
+
+  .breadcrumbs li.breadcrumbs-parent::before {
+    content: none;
+  }
+
+  /* separators: a small mint chevron after every item but the last */
+  .breadcrumbs li:not(:last-child)::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    margin: 0 12px 0 8px;
+    border-top: 1.5px solid var(--color-mint);
+    border-right: 1.5px solid var(--color-mint);
+    transform: rotate(45deg);
+  }
+
+  .breadcrumbs.breadcrumbs-above {
+    bottom: calc(100% + 24px);
+  }
+}
+
+/* the breadcrumbs take the eyebrow's place: same spacing below */
+.hero .breadcrumbs:not(.breadcrumbs-above) {
+  margin-bottom: 12.2px;
+}
+
+@media (width >= 900px) {
+  .hero .breadcrumbs:not(.breadcrumbs-above) {
+    margin-bottom: 8px;
+  }
+}
+
+/* ---------- "On this page" (top of the content column; scripts/toc.js) ---------- */
+main > .section > .toc-wrapper {
+  margin-bottom: var(--space-xl);
+}
+
+/* the content after the box starts right below it */
+main > .section > .toc-wrapper + div {
+  margin-top: 0;
+}
+
+.toc details {
+  border-radius: var(--radius-leaf-s);
+  padding: 0;
+  background: var(--color-surface-1);
+  box-shadow: inset 3px 0 0 var(--color-teal);
+}
+
+.toc .toc-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 10px 16px 10px 20px;
+  color: var(--color-navy);
+  font-size: var(--eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--eyebrow-line-height);
+  letter-spacing: var(--eyebrow-letter-spacing);
+  text-transform: uppercase;
+  list-style: none;
+  cursor: pointer;
+}
+
+.toc .toc-title::-webkit-details-marker {
+  display: none;
+}
+
+.toc .toc-title::after {
+  content: '';
+  flex: 0 0 22px;
+  height: 22px;
+  background: url('../icons/plus-circle.svg') center / contain no-repeat;
+}
+
+.toc details[open] .toc-title::after {
+  background-image: url('../icons/minus-circle.svg');
+}
+
+.toc .toc-list {
+  margin: 0;
+  padding: 0 20px 16px;
+  list-style: none;
+}
+
+.toc .toc-list li {
+  margin: 0;
+  break-inside: avoid;
+}
+
+.toc .toc-list li + li {
+  margin-top: 2px;
+}
+
+.toc .toc-list a:any-link {
+  display: block;
+  padding: 6px 0;
+  color: var(--color-text);
+  font-size: var(--body-font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: 22px;
+  text-decoration: none;
+}
+
+.toc .toc-list a:hover {
+  color: var(--color-teal);
+  text-decoration: underline;
+}
+
+.toc .toc-list a[aria-current] {
+  color: var(--color-navy);
+  font-weight: var(--font-weight-medium);
+}
+
+@media (width >= 900px) {
+  /* wide screens: starts open (scripts/toc.js); the toggle stays for readers who close it */
+  .toc .toc-title {
+    min-height: 0;
+    padding: 14px 16px 8px 20px;
+  }
+
+  .toc .toc-list a:any-link {
+    padding: 4px 0;
+    font-size: var(--body-font-size-s);
+    line-height: var(--body-line-height-s);
+  }
+
+  .toc.toc-long .toc-list {
+    columns: 2;
+    column-gap: var(--space-l);
+  }
+}
+
+/* plan pages: "Common terms" and the FAQ title are h3 (under the section's h2) at the size the
+   design gives them (h4 metrics) */
+main > .section:has(.columns.terms) > .default-content-wrapper > h3 {
+  font-size: var(--heading-font-size-m);
+  line-height: var(--heading-line-height-m);
+}
+
+/* ---------- skip link (first focus stop on every page) ---------- */
+.skip-link:any-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 10px 16px;
+  border-radius: var(--radius-s);
+  background: var(--color-navy);
+  color: var(--color-white);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  outline: 2px solid var(--color-mint);
+  transform: none;
+}
+
+main:focus {
+  outline: none;
+}
+
+/* visitors who ask for less motion: no transitions or animations (chevrons, card borders, menus) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/Content.aspx?menuid=11",
   "path": "benefits-coverage/vision",
-  "timestamp": "2026-11-11T14:16:00.246Z",
+  "timestamp": "2026-11-11T18:49:11.346Z",
   "source": "https://yourtracktohealth.com/Content.aspx?menuid=11",
   "template": "program hub (icon card grid)",
   "merged": false,
   "title": "Vision",
-  "importScript": "a5013cda4e22"
+  "importScript": "80dbafb345e0"
 }

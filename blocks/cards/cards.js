@@ -34,7 +34,7 @@ export default function decorate(block) {
     // a plain link closing a resource card is an arrow link
     if (body && block.classList.contains('resource')) {
       const last = body.lastElementChild;
-      const link = last?.querySelector('a:only-child');
+      const link = last?.tagName === 'P' ? last.querySelector('a:only-child') : null;
       if (link && last.textContent.trim() === link.textContent.trim() && !link.classList.contains('button')) {
         link.classList.add('link-arrow');
       }

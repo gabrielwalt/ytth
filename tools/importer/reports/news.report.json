@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/Latest_News_Archives.aspx",
   "path": "news",
-  "timestamp": "2026-11-11T14:19:15.950Z",
+  "timestamp": "2026-11-11T18:02:11.780Z",
   "source": "https://yourtracktohealth.com/Latest_News_Archives.aspx",
   "template": "article archive / listing",
   "merged": false,
   "title": "Latest news archives",
-  "importScript": "a5013cda4e22"
+  "importScript": "565bca5498fb"
 }

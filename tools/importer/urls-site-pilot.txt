@@ -5,7 +5,6 @@ https://yourtracktohealth.com/WellnessPageContent.aspx?menuid=263
 https://yourtracktohealth.com/PageContent.aspx?menuid=29
 https://yourtracktohealth.com/ContactUs.aspx?menuid=6
 https://yourtracktohealth.com/NewsPage.aspx?menuname=LatestNewsKnowWhereToGo
-https://yourtracktohealth.com/VideoLibrary.aspx
 https://yourtracktohealth.com/PageContent.aspx?menuid=135
 https://yourtracktohealth.com/BenefitLookup.aspx?menuid=28
 https://yourtracktohealth.com/FSAcalculator.aspx

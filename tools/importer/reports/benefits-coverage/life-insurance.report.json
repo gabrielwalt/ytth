@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/Content.aspx?menuid=12",
   "path": "benefits-coverage/life-insurance",
-  "timestamp": "2026-11-11T14:16:07.635Z",
+  "timestamp": "2026-11-11T18:48:42.049Z",
   "source": "https://yourtracktohealth.com/Content.aspx?menuid=12",
   "template": "program hub (icon card grid)",
   "merged": false,
   "title": "Life insurance and AD&D",
-  "importScript": "a5013cda4e22"
+  "importScript": "80dbafb345e0"
 }

@@ -49,7 +49,7 @@ Decided 2026-11-10 (Phase 1 of `PROJECT_PLAN.md`):
 - **Side menu (revised 2026-11-11):** inner pages get a section menu again, built on the brand.
   - Desktop: a sticky left column with the section tree, the current branch open and an "On this page" list.
   - Smaller screens: a collapsible "In this section" bar above the content.
-  - No breadcrumb bar: the open branch shows every parent of the current page, and the hero eyebrow links to the section.
+  - ~~No breadcrumb bar~~ — superseded 2026-11-11: inner pages have breadcrumbs in the page header, and "On this page" is a box at the top of the content column (see `PROJECT_BLOCKS.md`).
   - No print button.
 - **Header menus (revised 2026-11-11):** the designs showed 10 Benefits & coverage and 8 Health programs links. The old site had 18 Benefits, 11 Coverage and 8 Healthy Living menu entries, so the dropdowns now list every first-level page in two labelled groups:
   - Benefits & coverage: **Benefits** (the 9 design items plus Cardiac Care Program) and **Coverage & enrollment** (Coverage & eligibility, How the plans work, Medical benefit & SBC lookup, Dependents, Continue your coverage, Healthcare transparency, Benefits info at a glance, Tips to make the most of benefits).
@@ -77,6 +77,7 @@ Decided 2026-11-11 (on the owner's requests during review):
 - **Search is our own:** the current site's search (`SiteSearch.aspx`) can't be reused (no cross-site access, no framing, old addresses in its results). Search runs on the migrated content: a full-text page index plus the PDFs linked from the pages. The header search icon opens a search panel with live suggestions.
 - **Benefit lookup:** its results depend on railroad, union and ZIP code in Railroad Enrollment Services' data. Until that data is published as a sheet, the lookup page hands members over to the current `BenefitLookup.aspx`.
 - **Homepage hero photo:** a free-licensed stock photo (see Open items 1).
+- **Videos play on the page** (video library): Brightcove players load only when a visitor presses play, with an HTML transcript under each video and the PDF as a download. The library is built from `migration-work/videos/` through the design importer (`PROJECT_CONTENT_IMPORT.md` §1).
 
 ## Status
 
@@ -127,3 +128,4 @@ Content (177 documents in `content/`; the full list with old and new addresses i
 9. **Homepage mobile header:** the mobile design hides "Sign in" in the header on the homepage only. We keep it, for consistency with the inner pages.
 10. **Query index (Phase 7):** must include a `content` column with the page text, or search loses its full-text matching once authors edit pages in DA. Until then search uses the generated `/search-index.json`, which only changes when the import scripts run.
 11. **PDF search list after launch:** `/search-documents.json` is generated from the migrated pages. Decide whether it stays generated or becomes a DA sheet the benefits team maintains.
+12. **Videos without known ids:** three `bcove.me` short links (5 FSA articles, a news item, Railroad Healthlink) no longer resolve, and the diabetes article's legacy Brightcove video is gone. The owner can supply the Brightcove ids, or the links are dropped (`migration-work/videos/inventory.json`).

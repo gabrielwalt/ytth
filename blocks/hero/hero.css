@@ -216,12 +216,18 @@ body:is(.content, .article) .hero.navy .hero-text {
     padding-left: 2px;
   }
 
-  .hero.navy {
+  /* the designed plan pages (MMCP, CHCB, HDHP) keep the PDF's 392 px band; content and
+     article pages size the band to their title and intro (no empty navy under a short title) */
+  body:not(.content, .article) .hero.navy {
     min-height: 392px;
   }
 
   .hero.navy .hero-content {
     padding: 155px var(--gutter) 92px;
+  }
+
+  body:is(.content, .article) .hero.navy .hero-content {
+    padding-bottom: 64px;
   }
 
   .hero.navy .hero-eyebrow {

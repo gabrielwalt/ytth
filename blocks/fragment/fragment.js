@@ -67,4 +67,6 @@ export default async function decorate(block) {
     });
     wrapper.remove();
   }
+  // blocks that read shared content (the plan tables read the "Common terms") can wait for it
+  document.dispatchEvent(new CustomEvent('fragment-loaded', { detail: { path } }));
 }

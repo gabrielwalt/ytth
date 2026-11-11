@@ -18,6 +18,31 @@ import MAP from './url-map-data.js';
 
 const OLD_ORIGIN = 'https://www.yourtracktohealth.com';
 
+// the current site's icon font (icomoon) -> the hexagon icon library (icons/hex-*.svg, built by
+// migration-work/icons/build-icons.cjs from the same glyphs)
+const ICONS = {
+  'icon-1': 'hex-eye', 'icon-10': 'hex-globe', 'icon-11': 'hex-care', 'icon-14': 'hex-folder', 'icon-15': 'hex-spine', 'icon-2': 'hex-glasses', 'icon-4': 'hex-household', 'icon-5': 'hex-form', 'icon-6': 'hex-wallet', 'icon-7': 'hex-24-hours', 'icon-8': 'hex-calculator', 'icon-9': 'hex-tooth', 'icon-a': 'hex-handshake', 'icon-b': 'hex-laptop', 'icon-c': 'hex-lock', 'icon-d': 'hex-care-team', 'icon-e': 'hex-doctors', 'icon-f': 'hex-mobile', 'icon-g': 'hex-advisor', 'icon-h': 'hex-account', 'icon-i': 'hex-question', 'icon-j': 'hex-first-aid', 'icon-k': 'hex-checklist', 'icon-l': 'hex-headset', 'icon-m': 'hex-stethoscope', 'icon-n': 'hex-discount', 'icon-o': 'hex-coach', 'icon-p': 'hex-no-smoking', 'icon-q': 'hex-mindfulness', 'icon-r': 'hex-virus', 'icon-s': 'hex-chat', 'icon-t': 'hex-doctor', 'icon-u': 'hex-strategy', 'icon-v': 'hex-pharmacy', 'icon-w': 'hex-mental-health', 'icon-x': 'hex-baby', 'icon-y': 'hex-ribbon', 'icon-z': 'hex-heart-pulse',
+};
+
+// ContactUs.aspx?Service=… -> the id of that topic's accordion item on /contact-forms
+const CONTACT_TOPICS = {
+  nurselink: '24-7-nurse-support',
+  medical: 'medical-benefit-claims',
+  wellness: 'wellness-programs-support',
+  mentalhealth: 'mental-health-substance-use-benefits-claims',
+  fsa: 'fsa-benefits-claims',
+  prescription: 'prescription-benefits-claims',
+  additionalservice: 'additional-benefits-and-services',
+  dental: 'dental-benefits-claims',
+  vision: 'vision-benefits-claims',
+  supplemental: 'supplemental-sickness-benefits-claims',
+  life: 'life-benefits-claims',
+  retiree: 'retiree-planning-benefits',
+  enrollment: 'enrollment-support',
+  discount: 'discount-programs',
+  hsabank: 'hsa-bank-support',
+};
+
 const SECTION_LABEL = [
   ['/benefits-coverage', 'Benefits & coverage'],
   ['/health-programs', 'Health programs'],
@@ -31,7 +56,9 @@ const KEEP_CAPS = new Set(('Aetna UnitedHealthcare Highmark MetLife Hartford Tru
   + 'Express Scripts Railroad Railroads Medicare Medicaid COBRA FSA HSA HFSA HDHP MMCP CHCB SBC SPD AD&D COVID-19 COVID '
   + 'A1C Calm HealthSafe ID UHC RRB RRTA RUIA SSB SSBP GA-46000 GA-23111 GA-48000 Lyme Wellos I US U.S. IRS TTY PPO HMO '
   + 'OE Q&A Q-1 FAQ FAQs iOS Android Google Apple CDC Monday Tuesday Wednesday Thursday Friday Saturday Sunday January February '
-  + 'March April May June July August September October November December').split(' '));
+  + 'March April May June July August September October November December COE Cleveland Clinic Maven 1095-B 1095-C').split(' '));
+// ALL CAPS words are restored to these spellings ("EYEMED" -> "EyeMed")
+const CANON = new Map([...KEEP_CAPS].map((w) => [w.toUpperCase(), w]));
 
 // multi-word names that stay exactly as written
 const KEEP_PHRASES = [
@@ -43,7 +70,8 @@ const KEEP_PHRASES = [
   'Flexible Spending Account', 'Summary of Benefits & Coverage', 'Summary of Benefits and Coverage',
   'Summary Plan Description', 'Centers of Excellence', 'Blue Cross Blue Shield', 'United Behavioral Health',
   'HSA Bank', 'Hospital Association', 'One Pass Select', 'Plan E', 'Plan F', 'Plans A, B, C', 'Your Track to Health',
-  'Express Scripts', 'Calm Health', 'Teladoc Health', 'Cardiac Care Program',
+  'Express Scripts', 'Calm Health', 'Teladoc Health', 'Cardiac Care Program', 'Blue Cross Blue Shield Global Core',
+  'Cleveland Clinic', 'My Highmark', 'Maven Clinic',
 ];
 /**
  * Normalizes an old-site URL to the URL map key. Keep in sync with build-url-map.cjs.
@@ -75,7 +103,7 @@ function sentenceCase(text) {
   if (!t) return t;
   // protect known names (case-insensitive), restore them at the end
   const kept = [];
-  KEEP_PHRASES.forEach((phrase) => {
+  [...KEEP_PHRASES].sort((a, b) => b.length - a.length).forEach((phrase) => {
     const re = new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
     t = t.replace(re, () => {
       kept.push(phrase);
@@ -106,7 +134,9 @@ function sentenceCase(text) {
     }
     // restore acronyms that the ALL CAPS pass lowered
     const up = bare.toUpperCase();
-    if (allCaps && KEEP_CAPS.has(up) && up.length > 1 && /^[A-Z0-9&-]+$/.test(up)) out = w.replace(bare, up);
+    if (allCaps && CANON.has(up) && up.length > 1) out = w.replace(bare, CANON.get(up));
+    // a Title-Case acronym of the old site ("Cardiac Care Program Coe") gets its capitals back
+    if (!allCaps && up.length >= 3 && CANON.get(up) === up && /^[A-Z][a-z]+$/.test(bare)) out = w.replace(bare, up);
     afterBreak = /[:?!.]$/.test(w);
     return out;
   }).join(' ').replace(/^§/, '§');
@@ -134,8 +164,12 @@ function rewriteHref(href) {
   }
   if (/\.pdf$/i.test(url.pathname)) return viewer(url.pathname);
   if (/^\/?(default\.aspx)?$/i.test(url.pathname)) return '/';
-  // ContactUs.aspx?Service=X only pre-opened one topic of the contact page
-  if (/^\/contactus\.aspx$/i.test(url.pathname)) return '/contact-forms';
+  // ContactUs.aspx?Service=X opened one topic of the contact page: link to that accordion item
+  if (/^\/contactus\.aspx$/i.test(url.pathname)) {
+    const service = [...url.searchParams.entries()].find(([k]) => /^service$/i.test(k))?.[1] || '';
+    const item = CONTACT_TOPICS[service.toLowerCase()];
+    return item ? `/contact-forms#${item}` : '/contact-forms';
+  }
   const hit = MAP.pages[normalize(url.href)];
   if (hit) {
     if (hit.action === 'pdf' || hit.action === 'external') return hit.redirectTo || url.href;
@@ -256,13 +290,41 @@ function cleanup(root) {
       } else {
         el.replaceWith(...(s.textContent.trim() ? [s] : []), ...el.childNodes);
       }
-    } else if (!el.querySelector('div, p, ul, ol, table, h1, h2, h3, h4, h5, h6')) {
+    } else if (/^(UL|OL)$/.test(el.nodeName)) {
+      // <ul style="font-weight:bold">: bold each item; wrapping the items themselves in one
+      // <strong> made the conversion fold the whole list into a single bullet
+      el.querySelectorAll(':scope > li').forEach((li) => {
+        if (li.querySelector('ul, ol, div, p, table')) return;
+        const s = doc.createElement('strong');
+        s.append(...li.childNodes);
+        li.append(s);
+      });
+    } else if (!el.querySelector('div, p, ul, ol, li, table, h1, h2, h3, h4, h5, h6')) {
       const s = doc.createElement('strong');
       s.append(...el.childNodes);
       el.append(s);
     }
   });
   root.querySelectorAll('[style]').forEach((el) => el.removeAttribute('style'));
+  // invalid nesting of the old CMS ("</li><ul>…</ul>" directly inside a list): the sub-list
+  // belongs to the item before it; without one it gets its own item
+  root.querySelectorAll(':is(ul, ol) > :is(ul, ol)').forEach((sub) => {
+    const prev = sub.previousElementSibling;
+    if (prev && prev.nodeName === 'LI') {
+      prev.append(sub);
+    } else {
+      const li = sub.ownerDocument.createElement('li');
+      sub.replaceWith(li);
+      li.append(sub);
+    }
+  });
+  // items typed with a literal dash bullet ("- Pediatric sleep coaches") keep one marker
+  root.querySelectorAll('li').forEach((li) => {
+    const walker = li.ownerDocument.createTreeWalker(li, 4);
+    let first = walker.nextNode();
+    while (first && !first.textContent.trim()) first = walker.nextNode();
+    if (first && /^\s*[-–•]\s+/.test(first.textContent)) first.textContent = first.textContent.replace(/^\s*[-–•]\s+/, '');
+  });
 }
 
 /**
@@ -277,6 +339,29 @@ function rewriteLinks(root) {
     // link texts in ALL CAPS ("VIEW YOUR OPTIONS") -> sentence case
     const t = a.textContent.trim();
     if (t.length > 3 && t === t.toUpperCase() && /[A-Z]{3}/.test(t) && !a.querySelector('img')) a.textContent = sentenceCase(t);
+    // "here&nbsp;<img external></a> to": the icon is gone; a trailing (non-breaking) space inside
+    // the link is dropped by the import conversion together with the space after it ("here</a>to"),
+    // so move it out of the link as a plain space
+    let lastText = a.lastChild;
+    while (lastText && lastText.nodeType === 1 && lastText.lastChild) lastText = lastText.lastChild;
+    if (lastText && lastText.nodeType === 3 && /\s+$/.test(lastText.textContent)) {
+      lastText.textContent = lastText.textContent.replace(/\s+$/, '');
+      const next = a.nextSibling;
+      if (!next || next.nodeType !== 3 || !/^\s/.test(next.textContent)) a.after(a.ownerDocument.createTextNode(' '));
+      else next.textContent = next.textContent.replace(/^\s+/, ' ');
+    }
+  });
+  // "Go to top" / "Return to Home Page" links of the old layout have no target here
+  root.querySelectorAll('a[href="#GoToTop" i], a[href="#top" i]').forEach((a) => {
+    const p = a.closest('p, div');
+    a.remove();
+    if (p && !p.textContent.trim() && !p.querySelector('img')) p.remove();
+  });
+  root.querySelectorAll('a').forEach((a) => {
+    if (!/^\s*return to (the )?home ?page\s*$/i.test(a.textContent)) return;
+    const p = a.closest('p, div');
+    a.remove();
+    if (p && !p.textContent.trim() && !p.querySelector('img')) p.remove();
   });
   root.querySelectorAll('img[src]').forEach((img) => {
     try {
@@ -301,6 +386,8 @@ function transformAccordions(root, document) {
       paragraphize(body, document);
       a.append(...body.childNodes);
     }
+    // a panel without a readable title keeps its body (never drop content silently)
+    if (!q.textContent.trim() && a.textContent.trim()) q.textContent = 'More information';
     return [q, a];
   }).filter(([q]) => q.textContent.trim());
 
@@ -337,7 +424,20 @@ function transformDefinitionLists(root, document) {
     const keep = (item) => item.textContent.trim() || item.querySelector?.('a, img');
     const emit = (nodes, bold) => {
       const p = document.createElement('p');
-      if (bold) {
+      // leading/trailing line breaks are layout ("<br>Claim address:<br>…<br>")
+      const isBr = (n) => n && (n.nodeName === 'BR' || (n.nodeType === 3 && !n.textContent.trim()));
+      while (nodes.length && isBr(nodes[0])) nodes.shift().remove?.();
+      while (nodes.length && isBr(nodes[nodes.length - 1])) nodes.pop().remove?.();
+      // a term that already marks its own label in bold ("<strong>Wellos</strong><br>24 hours")
+      // keeps that emphasis only: the hours and addresses after the label stay regular text
+      const ownBold = nodes.some((n) => n.nodeType === 1 && (n.nodeName === 'STRONG' || n.querySelector?.('strong')));
+      const firstBr = nodes.findIndex((n) => n.nodeName === 'BR');
+      if (bold && !ownBold && firstBr > 0) {
+        // multi-line term: the first line is the label, the rest (hours) is regular text
+        const s = document.createElement('strong');
+        s.append(...nodes.slice(0, firstBr));
+        p.append(s, ...nodes.slice(firstBr));
+      } else if (bold && !ownBold) {
         const s = document.createElement('strong');
         s.append(...nodes);
         p.append(s);
@@ -381,6 +481,27 @@ function transformDefinitionLists(root, document) {
  * @param {Document} document The document
  */
 function transformCardGrids(root, document) {
+  // icon columns outside .contentbox ("Options to take care of your health": one column per
+  // place of care, each led by an icon): two or more sibling columns -> Cards (resource)
+  const groups = new Map();
+  root.querySelectorAll('[data-icon]:not(.contentbox)').forEach((col) => {
+    const list = groups.get(col.parentElement) || [];
+    list.push(col);
+    groups.set(col.parentElement, list);
+  });
+  groups.forEach((cols) => {
+    if (cols.length < 2) return;
+    const rows = cols.map((col) => {
+      const cell = document.createElement('div');
+      const icon = document.createElement('p');
+      icon.textContent = `:${col.dataset.icon}:`;
+      paragraphize(col, document);
+      cell.append(icon, ...col.childNodes);
+      return [cell];
+    });
+    cols[0].before(block('Cards (resource)', rows, document));
+    cols.forEach((c) => c.remove());
+  });
   const boxes = [...root.querySelectorAll('.contentbox')];
   if (!boxes.length) return;
   const rows = boxes.map((box) => {
@@ -396,6 +517,12 @@ function transformCardGrids(root, document) {
       h3.append(a);
     } else {
       h3.textContent = title;
+    }
+    // the tile's icon (recorded before cleanup removed the icon-font glyph) leads the card
+    if (box.dataset.icon) {
+      const icon = document.createElement('p');
+      icon.textContent = `:${box.dataset.icon}:`;
+      cell.append(icon);
     }
     cell.append(h3);
     const body = box.querySelector('.panel-body');
@@ -808,10 +935,15 @@ function findContent(document) {
  * @param {string} alt The banner alt text
  * @returns {string} The intro sentence or ''
  */
+const STALE_BANNER = /\b(Express Scripts|Best Doctors)\b/i;
+
 function introFromBanner(alt) {
   if (!alt) return '';
   const m = alt.match(/^(?:[A-Z0-9&®.,'’\s-]{3,}?\.|[^.]{0,60}\blogo\.)\s*(.+)$/i);
-  const text = (m ? m[1] : '').trim();
+  const text = (m ? m[1] : '').trim().replace(/\bTrsuted\b/g, 'Trusted');
+  // banner messages that name a former vendor contradict the page (Rx is Optum Rx, second
+  // opinions are Teladoc Health): no intro from those
+  if (STALE_BANNER.test(text)) return '';
   return text.length > 20 ? text : '';
 }
 
@@ -831,8 +963,12 @@ export default {
     root.querySelectorAll('.h2PageHeader, [id$="PageCntnt_divHeader"]').forEach((el) => el.remove());
     // side boxes of the content column that sit outside the content box (Contact Us: "Website
     // feedback & technical issues?") are content too: they follow the main content
+    // Only boxes *beside* the content: on Contact Us the main column carries the same
+    // `webfeedback` class and wraps the content root; treating it as a side box moved every bold
+    // phone number and panel-title link out of the panels, and the accordion then dropped all 15
+    // topics with their hours and claim addresses (regression test: qa/test-importer-contact.mjs)
     document.querySelectorAll('.webfeedback').forEach((box) => {
-      if (root.contains(box)) return;
+      if (root.contains(box) || box.contains(root)) return;
       const out = document.createElement('div');
       const heading = box.querySelector('h2, h3');
       if (heading) {
@@ -854,6 +990,12 @@ export default {
       });
       root.append(out);
     });
+    // icon-font glyphs carry meaning on the hub tiles: remember them before cleanup drops them
+    root.querySelectorAll('span[class^="icon-"], span[class*=" icon-"]').forEach((span) => {
+      const cls = [...span.classList].find((c) => ICONS[c]);
+      const box = span.closest('.contentbox') || span.closest('[class*="col-"]');
+      if (cls && box && !box.dataset.icon) box.dataset.icon = ICONS[cls];
+    });
     cleanup(root);
 
     const isArticle = /wellness article|news|image-only|campaign/.test(entry.template || '');
@@ -865,6 +1007,16 @@ export default {
     if (/archive \/ listing/.test(entry.template)) {
       listFolder = entry.path;
       root.replaceChildren();
+    }
+    if (/interactive tool/.test(entry.template) && /calculator/.test(entry.path)) {
+      // FSA calculator: keep the instructions above the old form (.caldiv > p) and the back link;
+      // the form, its result rows and the tax footnote are replaced by the Fsa calculator block
+      // (whose Note carries the footnote and the phone line)
+      const keep = [...root.querySelectorAll('.caldiv > p')];
+      const back = [...root.querySelectorAll('a')].find((a) => /^\s*return to\b/i.test(a.textContent));
+      const backP = back ? document.createElement('p') : null;
+      if (backP) backP.append(back);
+      root.replaceChildren(...(backP ? [backP] : []), ...keep);
     }
     if (/interactive tool/.test(entry.template)) {
       root.querySelectorAll('select, input, button, label, .form-horizontal, .form-group, [class*="fsacal" i], [id*="FsaCalculator" i], [id*="collapseFsa" i], [id*="divResult" i], table').forEach((el) => el.remove());
@@ -904,6 +1056,16 @@ export default {
       if (!h.textContent.trim()) { h.remove(); return; }
       if (!h.querySelector('a') && h.children.length === 0) h.textContent = sentenceCase(h.textContent);
     });
+    // a page whose sections start at h3 (hub pages: only tile titles) has no h2 under its h1:
+    // move every heading up one level so the outline has no gap
+    if (!root.querySelector('h2') && root.querySelector('h3')) {
+      root.querySelectorAll('h3, h4, h5, h6').forEach((h) => {
+        const up = document.createElement(`h${Number(h.tagName[1]) - 1}`);
+        [...h.attributes].forEach((a) => up.setAttribute(a.name, a.value));
+        up.append(...h.childNodes);
+        h.replaceWith(up);
+      });
+    }
     // ALL CAPS link paragraphs ("VIEW YOUR OPTIONS") are calls to action -> primary buttons
     root.querySelectorAll('p').forEach((p) => {
       const a = p.querySelector(':scope > a:only-child');
@@ -948,7 +1110,10 @@ export default {
     if (!merged) main.append(block('Section nav', [], document));
     main.append(WebImporter.DOMUtils.createTable([['Section Metadata'], ['Style', 'narrow']], document));
 
-    const firstText = [...body.querySelectorAll('p')].map((p) => p.textContent.replace(/\s+/g, ' ').trim()).find((t) => t.length > 60) || intro || '';
+    // description: the first real sentence outside blocks (not a claim address in an accordion)
+    const sentence = (ps) => ps.map((p) => p.textContent.replace(/\s+/g, ' ').trim()).find((t) => t.length > 60);
+    const paras = [...body.querySelectorAll('p')];
+    const firstText = sentence(paras.filter((p) => !p.closest('table'))) || sentence(paras) || intro || '';
     const description = firstText.length > 160 ? `${firstText.slice(0, 157).replace(/\s+\S*$/, '')}…` : firstText;
     const meta = { Title: title, Template: isArticle ? 'article' : 'content' };
     if (description) meta.Description = description;

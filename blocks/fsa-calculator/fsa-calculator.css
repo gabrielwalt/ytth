@@ -11,6 +11,7 @@ main > .section > .fsa-calculator-wrapper {
 }
 
 .fsa-calculator fieldset {
+  min-width: 0; /* fieldsets default to min-content: rows must shrink at 320 px (400% zoom) */
   margin: 0;
   border: 0;
   padding: 0;
@@ -40,7 +41,7 @@ main > .section > .fsa-calculator-wrapper {
 
 .fsa-calculator .fsa-calculator-money {
   display: flex;
-  flex: 0 0 140px;
+  flex: 0 1 140px;
   align-items: center;
   height: var(--button-height);
   border: var(--border);
@@ -87,7 +88,9 @@ main > .section > .fsa-calculator-wrapper {
   padding: 20px 16px 16px;
   background: var(--color-navy);
   color: var(--color-white);
+  font-size: var(--heading-font-size-l);
   font-weight: var(--font-weight-medium);
+  line-height: var(--heading-line-height-l);
 }
 
 .fsa-calculator .fsa-calculator-line {

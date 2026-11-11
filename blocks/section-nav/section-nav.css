@@ -98,6 +98,7 @@ main > .section.has-section-nav > .section-nav-wrapper {
 
 .section-nav a.section-nav-root:hover {
   color: var(--color-teal);
+  text-decoration: underline;
 }
 
 .section-nav ul {
@@ -217,48 +218,6 @@ main > .section.has-section-nav > .section-nav-wrapper {
   display: none;
 }
 
-/* "On this page": jump links under the current page */
-.section-nav .section-nav-toc {
-  margin: 4px 0 12px 12px;
-  border-left: 1px solid var(--color-border);
-  padding: 4px 0 4px 16px;
-}
-
-.section-nav .section-nav-panel > .section-nav-toc {
-  margin-top: 16px;
-}
-
-.section-nav .section-nav-toc-title {
-  margin: 0 0 6px;
-  color: var(--color-text-muted);
-  font-size: var(--eyebrow-font-size);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--eyebrow-line-height);
-  letter-spacing: var(--eyebrow-letter-spacing);
-  text-transform: uppercase;
-}
-
-.section-nav .section-nav-toc li + li {
-  margin-top: 6px;
-}
-
-.section-nav .section-nav-toc a:any-link {
-  color: var(--color-text);
-  font-size: var(--body-font-size-s);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--body-line-height-s);
-  text-decoration: none;
-}
-
-.section-nav .section-nav-toc a:hover,
-.section-nav .section-nav-toc a[aria-current] {
-  color: var(--color-teal);
-}
-
-.section-nav .section-nav-toc a[aria-current] {
-  font-weight: var(--font-weight-bold);
-}
-
 /* ---------- desktop: sticky left column ---------- */
 @media (width >= 1200px) {
   main > .section.has-section-nav {
@@ -291,9 +250,11 @@ main > .section.has-section-nav > .section-nav-wrapper {
     top: calc(var(--nav-height) + 24px);
     max-height: calc(100vh - var(--nav-height) - 48px);
     overflow: auto;
+    overscroll-behavior: contain; /* scrolling the menu never scrolls the page */
     margin-bottom: 0;
     padding-bottom: 8px;
     scrollbar-width: thin;
+    scrollbar-gutter: stable;
   }
 
   /* the first content block keeps no extra top margin next to the menu */

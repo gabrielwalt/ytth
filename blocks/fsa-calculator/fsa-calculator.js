@@ -95,7 +95,7 @@ export default function decorate(block) {
   // results
   const results = el('div', 'fsa-calculator-results');
   results.setAttribute('aria-live', 'polite');
-  results.append(el('h3', 'fsa-calculator-results-title', 'Results'));
+  results.append(el('h2', 'fsa-calculator-results-title', 'Results'));
   const line = (labelText, extraClass) => {
     const r = el('div', `fsa-calculator-line${extraClass ? ` ${extraClass}` : ''}`);
     const label = el('span', 'fsa-calculator-label');
@@ -108,7 +108,7 @@ export default function decorate(block) {
   const total = line('Total of estimated eligible expenses');
   const suggested = line('Suggested Health FSA annual contribution', 'is-key');
   results.append(el('p', 'fsa-calculator-max', `The current maximum amount you can contribute to an FSA is ${money(max)}.`));
-  results.append(el('h4', 'fsa-calculator-subtitle', 'Estimated tax savings*'));
+  results.append(el('h3', 'fsa-calculator-subtitle', 'Estimated tax savings*'));
 
   const select = (id, values, suffix, initial) => {
     const s = el('select');

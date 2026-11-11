@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/NewsPage.aspx?menuname=LatestNews202102CovidVaccine",
   "path": "news/covid-19-vaccine-answers",
-  "timestamp": "2026-11-11T14:32:30.347Z",
+  "timestamp": "2026-11-11T18:51:32.840Z",
   "source": "https://yourtracktohealth.com/NewsPage.aspx?menuname=LatestNews202102CovidVaccine",
   "template": "news / announcement",
   "merged": false,
   "title": "Ten straight answers to COVID-19 vaccine questions",
-  "importScript": "a5013cda4e22"
+  "importScript": "80dbafb345e0"
 }

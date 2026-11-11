@@ -95,6 +95,30 @@ function decorateSearch(nav, link) {
 }
 
 /**
+ * Marks where the visitor is: the link of the current page gets aria-current="page", the
+ * menu items above it (the top-level item and the group link) get the class is-trail.
+ * @param {Element} nav The nav element
+ */
+function markCurrent(nav) {
+  const clean = (p) => (p || '/').replace(/\.html$/, '').replace(/^\/content(?=\/)/, '').replace(/\/$/, '') || '/';
+  const here = clean(window.location.pathname);
+  let best = null;
+  nav.querySelectorAll('.nav-sections a[href]').forEach((a) => {
+    let url;
+    try { url = new URL(a.href, window.location.href); } catch { return; }
+    if (url.origin !== window.location.origin || url.hash) return;
+    const path = clean(url.pathname);
+    if (path === '/') return;
+    if (path === here) a.setAttribute('aria-current', 'page');
+    if ((path === here || here.startsWith(`${path}/`)) && (!best || path.length > best.path.length)) best = { a, path };
+  });
+  const anchor = nav.querySelector('.nav-sections a[aria-current="page"]') || best?.a;
+  if (!anchor) return;
+  if (anchor !== nav.querySelector('.nav-sections a[aria-current="page"]')) anchor.classList.add('is-trail');
+  anchor.closest('.nav-drop')?.classList.add('is-trail');
+}
+
+/**
  * Opens or closes the mobile menu.
  * @param {Element} nav The nav element
  * @param {boolean} [force] Force a state (true = open)
@@ -112,6 +136,10 @@ function toggleMenu(nav, force) {
   button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
   document.body.style.overflowY = open ? 'hidden' : '';
   if (!open) closeDropdowns(nav);
+  // opening the menu shows the branch of the current page
+  if (open && !nav.querySelector('.nav-drop > button[aria-expanded="true"]')) {
+    nav.querySelector('.nav-drop.is-trail > button')?.setAttribute('aria-expanded', 'true');
+  }
 }
 
 /**
@@ -353,6 +381,7 @@ export default async function decorate(block) {
     if (isDesktop.matches && !nav.contains(e.relatedTarget)) closeDropdowns(nav);
   });
 
+  markCurrent(nav);
   toggleMenu(nav, false);
   isDesktop.addEventListener('change', () => toggleMenu(nav, false));
 

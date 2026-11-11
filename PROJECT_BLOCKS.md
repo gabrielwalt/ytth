@@ -72,7 +72,7 @@ One row per card. A cell that holds only a picture is the image, and a cell (or 
 | Variant | Use |
 |---|---|
 | *(none)* | Plain grid |
-| `resource` | Icon, title, text and a plain link (shown as an arrow link), three columns on a `light` section ("Additional plan resources") |
+| `resource` | Icon, title, text and a plain link (shown as an arrow link), three columns on a `light` section ("Additional plan resources"). On inner pages (template `content`/`article`) the same block shows **resource tiles**: white cards with a hairline border and leaf corners, hexagon icon, title and links, two columns next to the side menu (three without it, one on phones). Used by the hub pages (FSA, Aetna, Dental, Trustmark…) and the "where to go for care" page. Icon: a first paragraph holding only `:hex-…:` (see `PROJECT_DESIGN_SYSTEM.md` → Icons) |
 | `outline` | White cards with a lavender border, leaf corners, hexagon icon, title, text and button; two columns ("Need to make updates", homepage) |
 | `feature` | Homepage: card 1 is the photo card (image, H2, text, button) spanning two rows. Cards 2, 3… alternate navy and sand; each has a hexagon icon, H3, text and button, centered, all the same height |
 
@@ -140,6 +140,7 @@ On mobile, the rows stack: the label first, then each value with its column labe
 
 ### Accordion
 One row per item: `| question | answer |`. It is built from `details` and `summary` elements with plus and minus icons. The first item starts open; the `closed` variant starts every item closed.
+- Every item gets an id from its label ("Medical benefit & claims" → `#medical-benefit-claims`). A link to `page#id` opens that item and scrolls to it (also on the same page). The old `ContactUs.aspx?Service=…` links point to these ids on `/contact-forms`.
 
 ## Inner-page and content blocks (Phase 3)
 
@@ -163,19 +164,26 @@ Replaces the current site's left-hand menu, its breadcrumbs, the wellness "Resou
 **What it shows:**
 - the tree of the section the page belongs to, with the current branch open and the other branches collapsed (teal chevron toggles)
 - the current page highlighted. A page that isn't listed (for example a health article) highlights its closest listed parent ("Health articles").
-- **On this page:** under the current page, links to its main H2 headings when there are 3 or more. The heading in view is marked as you scroll.
 - the hero eyebrow (section name) becomes a link to the section's main page
 
 **Layout:**
 - **Desktop (1200 px and up):** a sticky 280 px column, an 80 px gap and the content column, together the 1320 px content frame. Text keeps its 860 px measure; blocks run to the frame's right edge.
 - **Smaller screens:** a collapsible bar above the content ("In this section" + the current page, plus/minus icon). It opens into the same tree.
 
+**Scrolling (desktop):** the sticky column scrolls on its own when the tree is taller than the window (`overscroll-behavior: contain`: the wheel never scrolls the page from the menu), and it starts scrolled so the current page is in view.
+
 **Options:** a list of links in the block replaces the fragment. `Source | /other-fragment` reads another document. The block removes itself on pages outside every section (utility pages).
+
+### Breadcrumbs and "On this page" (automatic, not authored)
+- **Breadcrumbs** (`scripts/breadcrumbs.js`): Home › section › … › current page, built from the same `/fragments/section-nav` tree as the side menu (shared code: `scripts/site-tree.js`). They take the place of the section eyebrow in the navy page header; on MMCP/CHCB/HDHP (designed eyebrow "Medical plan details") they sit above it. Not on the homepage or section main pages. Phones show only the parent ("‹ Medical plans"). `nav aria-label="Breadcrumb"`, the current page `aria-current="page"`. Supersedes the earlier "no breadcrumbs" decision.
+- **On this page** (`scripts/toc.js`): a box at the top of the content column of every page with the side menu, first in reading order. Lists the h2 headings of the page including those inside blocks (plan tables, tiles, fragments); with fewer than 3 h2s it lists the h3s; shown from 3 entries; two columns from 7. Open on desktop, collapsed on phones. The heading in view is marked.
+- **Skip link:** "Skip to content" is the first focus stop of every page.
 
 ### Table (`table`)
 One row per table row; the first row is the header.
 - Variants: `no-header` and `compact`.
-- Tables with 4 or more columns scroll sideways on phones.
+- In a table with a header row the first cell of each row is its row header (`th scope="row"`), so values are announced with their row and column.
+- Tables with 4 or more columns scroll sideways on phones; the row headers stay in view (sticky first column). The scroll region is named after the closest heading before the table.
 
 ### Documents (`documents`)
 | Cell | Contents |
@@ -186,12 +194,21 @@ One row per table row; the first row is the header.
 A row holding only a heading starts a group. Each document shows a PDF icon and a file-type tag, and opens in a new tab.
 
 ### Videos (`videos`)
+One row per video. Two columns on tablet and desktop, one on phones.
+
 | Cell | Contents |
 |---|---|
-| 1 | Thumbnail picture |
-| 2 | Video link (its text is the title), optional description, optional transcript link (a PDF) |
+| 1 | Thumbnail picture (optional; the Brightcove poster, 16:9) |
+| 2 | Video link (its text is the title), optional description paragraphs, optional link to the transcript PDF |
+| 3 | Transcript text (optional): paragraphs, `<strong>` speaker labels, `<em>` scene descriptions, line breaks |
 
-The cards open the video (Brightcove or YouTube share links) in a new tab. There are no embedded players.
+**Brightcove videos play on the page.** Use the player address as the video link: `https://players.brightcove.net/{account}/{player}_default/index.html?videoId={id}` (the Player Pages form `…/pages/v1/index.html?accountId=…&playerId=…&videoId=…`, which `bcove.video` share links redirect to, works too). `bcove.video` / `bcove.me` short links themselves can't be read, so they and other videos (YouTube, Vimeo) stay cards that open the video in a new tab.
+- **Click to load:** the thumbnail is a button labelled "Play video: {title}". Only when it is pressed (mouse, Enter or Space) is the player iframe created, in the same 16:9 box (no layout shift), with the title "Video player: {title}", `allow="fullscreen; encrypted-media"` and no autoplay; focus moves into the player, which shows its own play button (none of the site's players autoplays). Nothing is requested from Brightcove before that.
+- **Consent:** `scripts/consent-check.js` only announces a yes/no `consent.update` event. The block listens to it: with consent it warms up the connection to Brightcove when the pointer or focus reaches a player; without it nothing loads until the visitor presses play (an explicit choice to load the third-party player; it sends Brightcove analytics, `metrics.brightcove.com`, from then on). Swap in a "video" consent category here when a real CMP arrives.
+- **Fallbacks:** each video has a "Watch on Brightcove" link (new tab). Without JavaScript the authored links stay usable.
+- **Transcript:** cell 3 becomes a "Transcript: {title}" disclosure (`<details>`) below the video; the PDF link becomes "Download transcript (PDF)" next to "Watch on Brightcove".
+- **Anchors:** each title is an `h3` with an id from its text (`/video-library#health-flexible-spending-account`), for links from other pages.
+- Captions come from the Brightcove player (every library video has an English caption track); the HTML transcript is an addition, not a replacement.
 
 ### Article list (`article-list`)
 Rows `Folder | /news`, `Limit | 12`, and optionally `Source | …`. It lists the pages below the folder from the page index, newest first, with a "Show more" button.

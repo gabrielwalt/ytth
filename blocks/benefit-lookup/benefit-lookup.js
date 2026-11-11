@@ -80,7 +80,7 @@ export default async function decorate(block) {
     // (its results depend on railroad, union and ZIP code and come from that system)
     const box = el('div', 'benefit-lookup-handoff');
     box.append(
-      el('h3', 'benefit-lookup-handoff-title', 'Look up your medical benefit options'),
+      el('h2', 'benefit-lookup-handoff-title', 'Look up your medical benefit options'),
       el('p', '', 'Select your railroad and union and enter your ZIP code in the Railroad Enrollment Services lookup to see your plan, your program choices and your Summaries of Benefits & Coverage.'),
     );
     const p = el('p', 'button-wrapper');
@@ -122,7 +122,10 @@ export default async function decorate(block) {
   const submit = el('button', 'button primary', 'Show my options');
   submit.type = 'submit';
   const error = el('p', 'benefit-lookup-message');
+  error.id = 'benefit-lookup-error';
   error.setAttribute('role', 'alert');
+  // our own messages name every missing field (the browser's bubbles show one at a time)
+  form.noValidate = true;
   form.append(
     field('lookup-railroad', 'Railroad', rr),
     field('lookup-union', 'Union', un),
@@ -138,11 +141,14 @@ export default async function decorate(block) {
     error.textContent = '';
     results.replaceChildren();
     const missing = [];
-    if (!rr.value) missing.push('your railroad');
-    if (!un.value) missing.push('your union');
-    if (!/^\d{5}$/.test(zip.value.trim())) missing.push('a 5-digit ZIP code');
+    const invalid = [];
+    [[rr, !rr.value, 'your railroad'], [un, !un.value, 'your union'],
+      [zip, !/^\d{5}$/.test(zip.value.trim()), 'a 5-digit ZIP code']].forEach(([c, bad, what]) => {
+      if (bad) { missing.push(what); invalid.push(c); c.setAttribute('aria-invalid', 'true'); c.setAttribute('aria-describedby', error.id); } else { c.removeAttribute('aria-invalid'); c.removeAttribute('aria-describedby'); }
+    });
     if (missing.length) {
       error.textContent = `Please select or enter ${missing.join(', ')}.`;
+      invalid[0].focus();
       return;
     }
     const z = Number(zip.value.trim());

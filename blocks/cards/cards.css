@@ -261,3 +261,92 @@ main > .section:has(> .cards-wrapper .cards.feature) {
     margin-top: 24px;
   }
 }
+
+/*
+ * ---------- resource tiles on inner pages ----------
+ * Hub pages of the current site (FSA, Aetna, Dental, Trustmark…) are grids of icon tiles with a
+ * heading and a few links. Next to the section menu the designed 3-column resource row is too
+ * tight, so inner pages (template content/article) show them as spacious tiles: two columns,
+ * white card with a hairline border and leaf corners, the hexagon icon, the title and links.
+ * The rules follow the tile's parts; they only apply to resource cards, so their order is not
+ * a specificity contest with the variants above.
+ */
+/* stylelint-disable no-descending-specificity */
+body:is(.content, .article) main > .section > .cards-wrapper:has(.cards.resource) {
+  margin-top: var(--space-xl);
+}
+
+body:is(.content, .article) main > .section.has-section-nav > :is(.section-nav-wrapper, .toc-wrapper) + .cards-wrapper:has(.cards.resource) {
+  margin-top: 0;
+}
+
+body:is(.content, .article) .cards.resource > ul {
+  gap: var(--space-m);
+}
+
+body:is(.content, .article) .cards.resource > ul > li {
+  border-radius: var(--radius-leaf-l);
+  padding: var(--space-l) var(--space-l) 36px;
+  background: var(--color-white);
+  box-shadow: 0 0 0 1px var(--color-divider);
+  transition: box-shadow 0.2s ease;
+}
+
+body:is(.content, .article) .cards.resource > ul > li:has(a:hover) {
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+body:is(.content, .article) .cards.resource .cards-card-icon + .cards-card-body {
+  margin-top: 20px;
+}
+
+body:is(.content, .article) .cards.resource .cards-card-body {
+  margin-top: 0;
+}
+
+body:is(.content, .article) .cards.resource .cards-card-body > :is(h2, h3, h4) {
+  color: var(--color-navy);
+  font-size: var(--heading-font-size-m);
+  line-height: var(--heading-line-height-m);
+}
+
+body:is(.content, .article) .cards.resource .cards-card-body > :is(h2, h3, h4) a:any-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+body:is(.content, .article) .cards.resource .cards-card-body > :is(h2, h3, h4) a:hover {
+  color: var(--color-teal);
+  text-decoration: underline;
+}
+
+body:is(.content, .article) .cards.resource .cards-card-body > * + * {
+  margin-top: 12px;
+}
+
+body:is(.content, .article) .cards.resource .cards-card-body > :is(h2, h3, h4) + * {
+  margin-top: 12px;
+}
+
+body:is(.content, .article) .cards.resource .cards-card-body ul {
+  padding-left: 20px;
+}
+
+body:is(.content, .article) .cards.resource .cards-card-body li + li {
+  margin-top: 8px;
+}
+
+@media (width >= 700px) {
+  body:is(.content, .article) .cards.resource > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-m);
+  }
+}
+
+/* wide content column without a side menu: three tiles a row */
+@media (width >= 1200px) {
+  body:is(.content, .article) main > .section:not(.has-section-nav) .cards.resource > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* stylelint-enable no-descending-specificity */

@@ -176,6 +176,7 @@ header .nav-search-panel .search-suggest {
 header .nav-tools a.nav-signin {
   display: inline-flex;
   align-items: center;
+  min-height: 24px; /* WCAG 2.2 target size */
   color: var(--color-navy);
   font-size: var(--button-font-size);
   font-weight: var(--font-weight-medium);
@@ -369,6 +370,72 @@ header .nav-tools a.nav-link:hover {
   text-decoration: underline;
 }
 
+/* where the visitor is: current page bold navy with a teal bar, its ancestors in navy */
+header .nav-sections a[aria-current='page'] {
+  color: var(--color-navy);
+  font-weight: var(--font-weight-bold);
+}
+
+header .nav-sections a.is-trail {
+  color: var(--color-navy);
+  font-weight: var(--font-weight-medium);
+}
+
+/* small screens: the opened branch is indented under its button, rows are 44 px touch targets */
+@media (width < 1200px) {
+  header .nav-drop > button {
+    min-height: 56px;
+    font-size: var(--body-font-size-l);
+  }
+
+  header .nav-drop.is-trail > button {
+    color: var(--color-navy);
+    font-weight: var(--font-weight-bold);
+  }
+
+  header .nav-panel {
+    margin: 0 0 16px 2px;
+    border-left: 2px solid var(--color-divider);
+    padding: 0 0 0 16px;
+  }
+
+  header .nav-panel-overview a:any-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  header .nav-panel-list li + li {
+    margin-top: 0;
+  }
+
+  header .nav-panel-list a:any-link {
+    display: block;
+    position: relative;
+    padding: 10px 0;
+    line-height: var(--body-line-height-m);
+  }
+
+  header .nav-panel-list a[aria-current='page']::before,
+  header .nav-panel-list a.is-trail::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    left: -18px;
+    width: 2px;
+    background: var(--color-teal);
+  }
+
+  header .nav-panel-group + .nav-panel-group {
+    margin-top: 16px;
+  }
+
+  header .nav-panel-group-title {
+    margin: 8px 0 4px;
+  }
+}
+
 @media (width >= 1200px) {
   header nav {
     gap: 0;
@@ -535,5 +602,35 @@ header .nav-tools a.nav-link:hover {
 
   header .nav-tools .default-content-wrapper {
     gap: 14px;
+  }
+}
+
+/* 320 px (400% zoom): smaller logo and an icon-only sign in, so the bar never scrolls sideways */
+@media (width < 360px) {
+  header nav {
+    gap: 10px;
+  }
+
+  header .nav-brand .icon {
+    width: 118px;
+    height: 28px;
+  }
+
+  header .nav-tools a.nav-signin {
+    min-width: 24px;
+    justify-content: center;
+  }
+
+  header .nav-tools a.nav-signin::before {
+    margin-right: 0;
+  }
+
+  header .nav-tools .nav-signin-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }

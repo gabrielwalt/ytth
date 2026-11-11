@@ -133,7 +133,7 @@ main > .section:has(> .plan-details-wrapper) {
 }
 
 .plan-details .plan-details-group.teal {
-  background: var(--color-teal-light);
+  background: var(--color-teal); /* white text needs 4.5:1; teal-light gave 3.9:1 */
 }
 
 .plan-details .plan-details-group > * {
@@ -171,7 +171,7 @@ main > .section:has(> .plan-details-wrapper) {
 
 .plan-details .plan-details-label :is(h1, h2, h3, h4, h5, h6) + p {
   margin-top: 7.8px;
-  color: var(--color-text-subtle);
+  color: var(--color-text-muted); /* text-subtle was 2.9:1 on white */
   font-weight: var(--font-weight-medium);
   line-height: 17px;
 }
@@ -328,8 +328,14 @@ main > .section:has(> .plan-details-wrapper) {
     margin-top: 9px;
   }
 
+  /* the column header row carries the labels visually; screen readers keep them per value */
   .plan-details .plan-details-value-label {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .plan-details .plan-details-value-text {

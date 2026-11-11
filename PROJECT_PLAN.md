@@ -36,7 +36,7 @@ Figures from `migration-work/site-inventory.json`:
 | FAQ / accordion | 3 | `accordion` |
 | Interactive tool / lookup | 2 | Native blocks: benefit lookup and FSA calculator |
 | Article archive / listing | 2 | Article list block (new) |
-| Video library | 1 | `cards` with video links |
+| Video library | 1 | `videos`: in-page Brightcove players and HTML transcripts |
 | Error / empty page | 1 | New `404.html` |
 | Login-gated portal | 1 | No page; it stays an external sign-in link |
 | Homepage | 1 | Done (from the design) |
@@ -59,7 +59,7 @@ Decided 2026-11-10. The details are in `PROJECT_OVERVIEW.md` → Decisions.
   - Contact Us → `/contact-forms`
   - News → `/news`, linked from the footer
 - [x] **New hire:** a placeholder page in the new design.
-- [x] **Side menu:** first "In this section" links at the end of the page. Revised 2026-11-11 to a full section menu (see Phase 3). No breadcrumb bar, no print button.
+- [x] **Side menu:** first "In this section" links at the end of the page. Revised 2026-11-11 to a full section menu (see Phase 3). No print button. ~~No breadcrumb bar~~: superseded on 2026-11-11, inner pages have breadcrumbs (Phase 5d).
 - [x] **PDFs:** they stay on the current server. Links use its viewer (`www.yourtracktohealth.com/Common/PDFViewer.aspx?fileName=/PDF_Files/…`; direct `/PDF_Files/` addresses return 404). Choose the final legacy address before launch (Phase 9).
 - [x] **PDF-only pages (13):** no page; redirect to the PDF.
 - [x] **Interactive tools:** rebuild the benefit lookup and the FSA calculator now as native blocks.
@@ -100,7 +100,7 @@ Built 2026-11-10. These derive from the existing tokens and are documented in `P
 - [x] **Long-form default content:** images, image captions, blockquotes, nested lists and teal bullets. On pages with the `content` or `article` template, text and tables keep an 860 px width.
 - [x] **Table** (`table`): navy header row, zebra rows, rounded card. Tables with 4 or more columns scroll sideways on phones. Variants: `no-header`, `compact`.
 - [x] **Document list** (`documents`): PDF icon, title, file-type tag and optional description; heading rows group the documents.
-- [x] **Video** (`videos`): thumbnail cards with a play button that open the video in a new tab, plus a transcript link.
+- [x] **Video** (`videos`): thumbnail cards with a play button that open the video in a new tab, plus a transcript link. Revised 2026-11-11: Brightcove videos play on the page behind a click-to-load facade, with an HTML transcript disclosure (see Phase 5c).
 - [x] **Infographic article:** no new block. The importer writes the image plus a link list made from the image-map areas, and long-form styles cover it (Phase 4).
 - [x] **Section menu** (`section-nav`, revised 2026-11-11): reads the `/fragments/section-nav` tree.
   - Desktop: sticky left column. Smaller screens: collapsible bar.
@@ -188,7 +188,41 @@ QA results:
 - [x] **Token audit:** colors, gradients, shadows and radii in the blocks now come from tokens (new: error, section washes, field and popover shadows, pill and round radii, inner corner, hero veils and scrims as hero-level tokens, color-mix for translucent navy/white). Some blocks still carry measured type metrics from the designs (for example plan-details line heights) as literal values.
 - [x] **Style cascade:** buttons, links, bullets, rules and arrow links run on context variables; dark and light surfaces are registered in two zero-specificity lists; navy sections no longer need their own button overrides; section backgrounds can't cancel each other (`hexagons` uses background images only, navy wins). The specificity-order exception is limited to the section-style block. The designed pages are pixel-identical before and after (1440 and 425 px).
 - [x] **Robustness for any author content:** test page `/drafts/author-combinations` (every section style and combination, the main blocks with any heading level, lists, quotes, images and all button types, light blocks inside navy sections). Fixed: titles of any level, navy/sand card colors, accordion and table on navy, spacing inside card and teaser bodies, centered lists, default cards filling the row, link contrast on sand, primary button contrast on navy. An automatic contrast check of the page passes at 1440 and 425 px.
-- [ ] **Reusable fragments:** find content repeated on three or more pages (for example contact panels, plan notices, disclaimers), move each into a `/fragments/…` document, and reference it from the pages with the `fragment` block so it is edited once.
+- [x] **Reusable fragments** (done 2026-11-11, Phase 5d): 5 fragments, 19 consumer pages.
+
+## Phase 5c: videos and transcripts (2026-11-11)
+
+- [x] **Video inventory** (`migration-work/videos/inventory.json`): 34 entries. 15 library videos and 7 others on other pages with known Brightcove ids (accounts 2418587620001 and 5639141710001); 6 Brightcove links whose ids can't be established (retired `bcove.me` short links, one deleted legacy video); 6 YouTube/Vimeo entries.
+- [x] **Transcript links:** each library video points to its own PDF through the viewer address (all 15 checked: 200, real PDF). The DA copy of `/video-library` still has 15 links to `/common/pdfviewer-aspx` (an earlier upload); the next upload of `content/video-library.plain.html` fixes it.
+- [x] **In-page playback:** `videos` block plays Brightcove videos behind a click-to-load facade (keyboard, 16:9 reserved, no autoplay, consent hook, "Watch on Brightcove" fallback).
+- [x] **HTML transcripts:** the 15 PDFs converted verbatim and shown as "Transcript: {title}" disclosures, PDF kept as a download. Word-sequence match with the PDF text: 100% for all 15.
+- [x] **Page:** `/video-library` built from `design-source/video-library.html` (groups kept; the section menu's "On this page" replaces "Jump to"). Brightcove posters (up to 1280 px) replace the 280 px thumbnails.
+- [ ] **Other pages with videos** (not changed; owner/author choice): link them to the library anchors or add a `Videos` block. What is Brightcove-ready: What is HFSA (`#health-flexible-spending-account`), Railroad Healthlink (2 maternity videos, also in the library as other cuts), Preventive screenings (4 videos with PDF transcripts whose text layer lacks the "ti" ligature), See benefits info at a glance (overview video with a PDF transcript).
+- [ ] **Unknown videos:** `bcove.me/deqwnxq0` (5 FSA articles), `bcove.me/so8dfnql` (walking news item), `bcove.me/h3t8a783` (Railroad Healthlink) answer 403; the diabetes article's legacy video 2660327001001 is gone. Ask the owner for the Brightcove ids or drop the links.
+- [x] **Site importer:** `VideoLibrary.aspx` removed from `tools/importer/urls-site.txt` and `urls-site-pilot.txt`, so a site import doesn't overwrite the page.
+- [ ] Upload `migration-work/assets/videos/` to DA media with the other images (Phase 6).
+
+## Phase 5d: fidelity, layouts, page chrome, fragments, library, accessibility (2026-11-11)
+
+- [x] **Contact & forms content loss** (regression): the "Website feedback" side-box step matched the main column too (same `webfeedback` class), moved every bold phone number and panel-title link out of the 15 contact panels, and the accordion dropped them with their hours and claim addresses. Fixed in `import-site.js`, plus: hours and addresses are no longer bold; an untitled panel keeps its body; the description skips block text. Regression test: `node --test tools/importer/test/*.test.mjs` (the unmodified old page as fixture; fails on the old importer, passes now). Audit: 27 missing items → 0.
+- [x] **Second fidelity audit** of the complex pages (how the plans work / `NewsPage.aspx?MenuId=286`, contact pages, plan comparisons, eligibility, document pages, FSA/Trustmark titles). Fixed:
+  - FSA calculator instructions restored; the old result rows removed
+  - CHCB "Copays" row and footnote ¹ markers on MMCP, CHCB and HDHP restored; HDHP "Effective 1/1/2026 (for ratified employees only¹)"
+  - invalid list nesting and bold `<ul>`s no longer merge items; literal "- " bullets dropped
+  - stale banner intros (Express Scripts, Best Doctors) dropped; "Trsuted" typo fixed
+  - 34 dead "Go to Top" links and 4 "Return to Home Page" links removed; 54 missing spaces after links fixed
+  - proper nouns in headings (COE, Cleveland Clinic, EyeMed, My Highmark, Global Core, 1095-B)
+  - contact deep links: `ContactUs.aspx?Service=X` → `/contact-forms#<topic>` (accordion items have ids and open from the hash)
+  - redirect gaps: `NewsPage.aspx?MenuId=286`, `/howplanworks` and 7 more live addresses added as aliases (267 rules)
+  - the audit script itself skipped ~25 pages whose content sits in `#divPrintArticle`; fixed, and it now follows fragment references
+  - FSA is titled "Flexible Spending Account" and Trustmark "Trustmark", each from its own source page (verified)
+- [x] **Icon library:** 38 hexagon icons (`icons/hex-*.svg`) built from the current site's own icon font (`migration-work/icons/build-icons.cjs`), in the inner-page PDF's hexagon style. The importer keeps each tile's icon (`:hex-…:`); 19 hub pages and the "where to go for care" page now show them (FSA: wallet, form, calculator, handshake, checklist, headset, as on the current site).
+- [x] **Resource tiles on inner pages:** two-column white tiles with hairline border, leaf corners, hexagon icon, title and links (three columns without side menu); the designed Benefits & coverage row is unchanged. Icon columns outside `.contentbox` (Options to take care of your health, 24/7 nurses) become the same tiles. Pages whose content started at h3 (43) get their headings moved up one level.
+- [x] **Page chrome:** content/article heroes have no minimum height (video library 392 → 271 px; designed plan pages keep 392); breadcrumbs from the section-menu tree (in place of the section eyebrow; above the designed eyebrow on MMCP/CHCB/HDHP; small screens show "‹ parent"); "On this page" box at the top of the content column (h2s including headings inside blocks, else h3s; open on desktop, collapsed on phones; first in reading order); the sticky side menu scrolls on its own (`overscroll-behavior: contain`) and starts with the current page in view; hover underlines on the menu root and the contents links; mobile header menu opens on the current branch, indents it, marks the current page and its ancestor, 44–56 px rows; skip link.
+- [x] **Reusable fragments:** `/fragments/plan-common-terms` (MMCP, CHCB, HDHP, How the plans work), `/fragments/health-coach-contacts` (4 articles), `/fragments/article-disclaimer-annual-physical` (4 articles), `/fragments/program-confidentiality` (4 pages), `/fragments/fsa-tax-disclaimer` (3 FSA articles). Only word-for-word identical content; near-duplicates (other wording, other dates, plan footnotes with 2018 vs 2025 dates) stay on their pages. Sources `design-source/fragment-*.html`; `tools/importer/apply-fragments.cjs` replaces occurrences after every import and writes `fragments-report.json` (consumers). Plan tooltips wait for the terms fragment.
+- [x] **Author library** (local): 20 block documents, 4 templates, blocks/templates/icons sheets and a guide in `content/library/`, `PROJECT_AUTHORING.md`.
+- [ ] **Library in DA:** upload `content/library/` and `content/fragments/`, add the `library` tab to the site config (rows in `PROJECT_AUTHORING.md`), then test finding, inserting and previewing in the DA editor.
+- [x] **Accessibility pass** (automated axe 4.14 WCAG 2.2 AA + keyboard walk + reflow): 0 axe violations on 20 pages at 1440 and 390 px after fixes (plan table teal bars and helper text contrast, footer mobile Sign in contrast, FSA calculator results text that was white on white, heading order on plan pages, calculator and lookup); tables expose row headers with a sticky first column on phones; plan values keep their column labels for screen readers on desktop; 320 px reflow fixed (header, calculator); reduced motion; lookup errors mark and focus the fields. Not done: testing with a real screen reader.
 
 ## Phase 6: assets
 
@@ -209,7 +243,7 @@ QA results:
 
 - [x] Alignment: every page in the index measured at 1440, 1200, 1024, 768 and 425 px against the content frame (2026-11-11; `migration-work/qa/measure-alignment.js` + `sweep-report.cjs`). Re-run after layout changes.
 - [x] Navigation reachability: every page reachable from a menu or the site map (`check-navigation.cjs`).
-- [ ] Accessibility: WCAG 2.1 AA (contrast, focus order, keyboard use of the header, accordion, tooltips and search; alt text; heading order).
+- [~] Accessibility: WCAG 2.2 AA. Automated and keyboard pass done 2026-11-11 (Phase 5d). To do: screen-reader test (VoiceOver iOS/macOS, NVDA), alt text review of infographic pages.
 - [ ] Performance: Lighthouse scores of 100 on the homepage and on one page per template; check the LCP image and font loading.
 - [ ] Browsers: Chrome, Safari, Firefox and Edge; iOS and Android; at 1440, 1024, 768 and 425 px.
 - [ ] A link check across all pages (internal, PDF and vendor links).
@@ -278,3 +312,5 @@ See `PROJECT_OVERVIEW.md` → Open items:
 | 2026-11-11 | Docs brought up to date with the implementation: status, content counts (177 documents: 168 pages, 3 fragments, 6 merge sources), decisions of the day, open items, and the requested next steps (Phase 5b). The alignment check and the current-site probes (search, benefit lookup) are kept in `migration-work/qa/` and `migration-work/research/`. |
 | 2026-11-11 | Phase 5b design-system pass. Colors: traced every token to its source; the PDFs' extra vibrance comes from untagged colors shown in wide gamut, so brand colors use Display P3 on wide-gamut screens. Tokens added for the remaining literals. Cascade: context variables for text, links, bullets, rules and buttons with registered dark and light surfaces; section-style combinations can't break each other. Author robustness: new test page `/drafts/author-combinations`; fixed heading levels in title slots, card colors, accordion and table on navy, body spacing, centered lists, link and button contrast. Designed pages unchanged (pixel diff 0 at 1440 and 425). Reusable fragments still to do. |
 | 2026-11-11 | Homepage teaser photo: found the same photo at 2800 × 700 in the current site's "Be prepared when you need care" banner; cropped its photo part (1440 × 700, past the teal fade) and replaced the 599 px stand-in (now 1.03× at 1440 px instead of 2.4×). Phones crop it left of center so the mother and child stay in view. |
+| 2026-11-11 | Videos and transcripts (Phase 5c). Inventoried every video of the current site from the old markup, the share-link redirects and the read-only Brightcove Playback API (34 entries, ids marked unknown where they can't be established). The `videos` block now plays Brightcove videos in the page (click-to-load facade, keyboard, 16:9 reserved, no autoplay, consent hook, fallback link) with transcript disclosures. Converted the 15 transcript PDFs to HTML verbatim (100% word match each) and rebuilt `/video-library` through the design importer, with the Brightcove posters. Verified at 1440 and 390: CLS 0, no requests to Brightcove before play, player iframe 200, transcripts open with the keyboard, 0 console errors, 15 PDF links 200. Captions: every library video has an English caption track in Brightcove. |
+| 2026-11-11 | Phase 5d. Fixed the Contact & forms content loss (root cause: the side-box step matched the main column) with a regression test; second fidelity audit with fixes in the importer and the plan sources; full re-import (161 pages, word-diffed against the previous content: only intended changes); 38-icon hexagon library from the current site's icon font and icon tiles on hub pages; breadcrumbs, "On this page" box, contained side-menu scrolling, mobile menu hierarchy, no hero minimum on content pages; 5 shared fragments on 19 pages; author library in `content/library/`; accessibility pass to 0 axe violations on 20 pages at 2 widths. Not yet on the AEM preview: needs the code pushed and the content uploaded. |

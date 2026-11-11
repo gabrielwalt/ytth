@@ -70,7 +70,7 @@ footer .footer-actions a.button {
 }
 
 footer .footer-actions a.button.primary {
-  background-color: var(--color-teal-light);
+  background-color: var(--color-teal); /* white text needs 4.5:1 (teal-light: 3.9:1) */
 }
 
 footer .footer-actions a.button.secondary {

@@ -8,97 +8,22 @@
  * - the branch of the current page is open, the others are collapsed (toggle buttons)
  * - the current page is highlighted; pages that are not in the menu (for example the health
  *   articles) highlight their closest listed parent
- * - under the current page, "On this page" lists its main headings (3 or more) as jump links
- * - the hero eyebrow (section name) becomes a link to the section's main page
- * Desktop (>= 1200px): sticky left column. Smaller screens: a collapsible panel above the content.
+ * - the hero eyebrow (section name) becomes a link to the section's main page (the breadcrumbs,
+ *   scripts/breadcrumbs.js, then replace it)
+ * "On this page" is a separate box at the top of the content column (scripts/toc.js).
+ * Desktop (>= 1200px): sticky left column that scrolls on its own (no scroll chaining) and
+ * starts scrolled to the current page. Smaller screens: a collapsible panel above the content.
  *
  * Authoring: an empty "Section nav" block. Optional rows: a list of links (used instead of
  * the fragment), or "Source | /other-fragment".
  * @param {Element} block The block
  */
 import { loadFragment } from '../fragment/fragment.js';
+import {
+  cleanPath, readTree, locate, loadTree,
+} from '../../scripts/site-tree.js';
 
 let instance = 0;
-
-const cleanPath = (p) => (p || '/').replace(/\.html$/, '').replace(/^\/content(?=\/)/, '').replace(/\/$/, '') || '/';
-
-/**
- * Reads the nested lists of the fragment into a tree.
- * @param {Element} ul The list
- * @returns {Array<{href: string, label: string, path: string, children: Array}>} Nodes
- */
-function readTree(ul) {
-  return [...ul.children].filter((li) => li.tagName === 'LI').map((li) => {
-    const a = li.querySelector(':scope > a, :scope > p > a');
-    const sub = li.querySelector(':scope > ul');
-    const href = a ? a.getAttribute('href') : '';
-    let path = '';
-    try {
-      const url = new URL(href, window.location.href);
-      if (url.origin === window.location.origin) path = cleanPath(url.pathname);
-    } catch { /* external */ }
-    return {
-      href, label: a ? a.textContent.trim() : '', path, children: sub ? readTree(sub) : [],
-    };
-  }).filter((n) => n.label);
-}
-
-/**
- * Finds the node for the current page: exact match, else the deepest listed ancestor.
- * @param {Array} roots The section roots
- * @param {string} here The current path
- * @returns {{root: Object, trail: Array}|null} The section root and the path of nodes
- */
-function locate(roots, here) {
-  let best = null;
-  const visit = (node, trail, root) => {
-    const t = [...trail, node];
-    if (node.path && (here === node.path || here.startsWith(`${node.path}/`))) {
-      const bestLength = best ? best.trail[best.trail.length - 1].path.length : -1;
-      if (node.path.length > bestLength) best = { root, trail: t };
-    }
-    node.children.forEach((c) => visit(c, t, root));
-  };
-  roots.forEach((r) => visit(r, [], r));
-  return best;
-}
-
-/**
- * Builds the main headings list of the current page ("On this page").
- * @returns {HTMLElement|null} The list or null when the page has fewer than 3 headings
- */
-function onThisPage() {
-  const heads = [...document.querySelectorAll('main .default-content-wrapper > h2[id]')]
-    .filter((h) => h.textContent.trim());
-  if (heads.length < 3) return null;
-  const wrap = document.createElement('div');
-  wrap.className = 'section-nav-toc';
-  const title = document.createElement('p');
-  title.className = 'section-nav-toc-title';
-  title.textContent = 'On this page';
-  const ul = document.createElement('ul');
-  heads.forEach((h) => {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = `#${h.id}`;
-    a.textContent = h.textContent.trim();
-    li.append(a);
-    ul.append(li);
-  });
-  wrap.append(title, ul);
-  // mark the heading currently in view
-  if ('IntersectionObserver' in window) {
-    const links = new Map([...ul.querySelectorAll('a')].map((a) => [a.hash.slice(1), a]));
-    const io = new IntersectionObserver((entries) => {
-      entries.filter((e) => e.isIntersecting).forEach((e) => {
-        links.forEach((a) => a.removeAttribute('aria-current'));
-        links.get(e.target.id)?.setAttribute('aria-current', 'location');
-      });
-    }, { rootMargin: '-120px 0px -60% 0px' });
-    heads.forEach((h) => io.observe(h));
-  }
-  return wrap;
-}
 
 /**
  * Renders one level of the tree.
@@ -146,10 +71,6 @@ function renderList(nodes, open, current, depth) {
       sub.id = id;
       li.append(sub);
     }
-    if (node === current) {
-      const toc = onThisPage();
-      if (toc) li.append(toc);
-    }
     ul.append(li);
   });
   return ul;
@@ -169,10 +90,12 @@ export default async function decorate(block) {
     roots = [{
       href: window.location.pathname, label: 'In this section', path: '', children: readTree(authored),
     }];
-  } else {
-    const fragment = await loadFragment(config.source || '/fragments/section-nav');
+  } else if (config.source) {
+    const fragment = await loadFragment(config.source);
     fragment?.querySelectorAll(':scope .default-content-wrapper > ul')
       .forEach((ul) => roots.push(...readTree(ul)));
+  } else {
+    roots = await loadTree();
   }
 
   const here = cleanPath(window.location.pathname);
@@ -218,16 +141,21 @@ export default async function decorate(block) {
   head.textContent = root.label;
   if (root === current) head.setAttribute('aria-current', 'page');
   panel.append(head, renderList(root.children, open, current, 1));
-  if (root === current) {
-    const toc = onThisPage();
-    if (toc) panel.append(toc);
-  }
   nav.append(toggle, panel);
   block.replaceChildren(nav);
 
   // reading order: the menu comes before the page content
   if (wrapper && section && section.firstElementChild !== wrapper) section.prepend(wrapper);
   section?.classList.add('has-section-nav');
+
+  // desktop: the sticky column scrolls on its own; start with the current page in view
+  requestAnimationFrame(() => {
+    const scroller = wrapper;
+    const mark = panel.querySelector('[aria-current="page"]');
+    if (!scroller || !mark || scroller.scrollHeight <= scroller.clientHeight) return;
+    const top = mark.getBoundingClientRect().top - scroller.getBoundingClientRect().top;
+    if (top > scroller.clientHeight - 80) scroller.scrollTop = top - scroller.clientHeight / 3;
+  });
 
   // the hero eyebrow names the section: link it to the section's main page
   if (!authored && root.path) {

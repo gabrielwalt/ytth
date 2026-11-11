@@ -1,0 +1,51 @@
+{
+ "/fragments/plan-common-terms": {
+  "replaced": [],
+  "already": [
+   "/benefits-coverage/medical-plans/chcb",
+   "/benefits-coverage/medical-plans/hdhp",
+   "/benefits-coverage/medical-plans/how-the-plans-work",
+   "/benefits-coverage/medical-plans/mmcp"
+  ],
+  "mismatch": []
+ },
+ "/fragments/health-coach-contacts": {
+  "replaced": [],
+  "already": [
+   "/health-programs/articles/are-you-as-active-as-you-should-be",
+   "/health-programs/articles/nutrition-labels-what-do-they-mean",
+   "/health-programs/articles/portion-distortion-what-is-a-normal-serving-size",
+   "/health-programs/articles/stretch-and-strengthen-to-feel-good-and-prevent"
+  ],
+  "mismatch": []
+ },
+ "/fragments/article-disclaimer-annual-physical": {
+  "replaced": [],
+  "already": [
+   "/health-programs/articles/cross-training-the-benefits-of-mixing",
+   "/health-programs/articles/exercise-when-time-is-short",
+   "/health-programs/articles/flu-vaccines-protect-yourself-and-others",
+   "/health-programs/articles/portion-distortion-what-is-a-normal-serving-size"
+  ],
+  "mismatch": []
+ },
+ "/fragments/program-confidentiality": {
+  "replaced": [],
+  "already": [
+   "/benefits-coverage/nurses-telemedicine/diagnosed-with-cancer",
+   "/benefits-coverage/nurses-telemedicine/managing-a-health-condition",
+   "/health-programs/healthy-habits",
+   "/health-programs/quitting-nicotine"
+  ],
+  "mismatch": []
+ },
+ "/fragments/fsa-tax-disclaimer": {
+  "replaced": [],
+  "already": [
+   "/benefits-coverage/savings-spending-accounts/fsa/articles/enroll-now-for-2014",
+   "/benefits-coverage/savings-spending-accounts/fsa/articles/make-the-most-of-your-benefit-options",
+   "/benefits-coverage/savings-spending-accounts/fsa/articles/you-could-save-hundreds-annually-in-taxes"
+  ],
+  "mismatch": []
+ }
+}

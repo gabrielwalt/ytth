@@ -7,7 +7,10 @@
  * A row with fewer cells than the widest row stretches its last cell over the remaining columns
  * (title and subheading rows). In a no-header table, a first row made of one such cell is shown
  * as the table's title row.
- * Wide tables scroll sideways on small screens.
+ * In a table with a header row, the first cell of each body row is its row header
+ * (th scope="row"), so every value is announced with its row and column ("Dental, Monthly
+ * contributions: $0"). Wide tables scroll sideways on small screens with the row headers kept
+ * in view (sticky first column).
  * @param {Element} block The block
  */
 export default function decorate(block) {
@@ -25,8 +28,11 @@ export default function decorate(block) {
     if (cells.length === 1 && width > 1 && i > 0) tr.className = 'table-subheading';
     cells.forEach((cell, j) => {
       const isHead = hasHeader && i === 0;
-      const c = document.createElement(isHead ? 'th' : 'td');
+      const isRowHead = !isHead && hasHeader && !titleRow && j === 0 && width > 1
+        && cells.length > 1 && cell.textContent.trim() !== '';
+      const c = document.createElement(isHead || isRowHead ? 'th' : 'td');
       if (isHead) c.scope = cells.length === 1 && width > 1 ? 'colgroup' : 'col';
+      if (isRowHead) c.scope = 'row';
       if (j === cells.length - 1 && cells.length < width) c.colSpan = width - cells.length + 1;
       // unwrap a single paragraph so cells keep a tight line height
       const only = cell.children.length === 1 && cell.firstElementChild.tagName === 'P' ? cell.firstElementChild : null;
@@ -43,7 +49,11 @@ export default function decorate(block) {
   scroller.className = 'table-scroll';
   scroller.tabIndex = 0;
   scroller.setAttribute('role', 'region');
-  const caption = block.closest('.section')?.querySelector('h2, h3, h4');
+  // the region is named after the closest heading before the table
+  let caption = null;
+  for (let n = block.closest('.table-wrapper') || block; n && !caption; n = n.previousElementSibling) {
+    caption = n.matches('h2, h3, h4, h5, h6') ? n : [...n.querySelectorAll('h2, h3, h4, h5, h6')].pop();
+  }
   scroller.setAttribute('aria-label', caption ? caption.textContent.trim() : 'Table');
   scroller.append(table);
   block.replaceChildren(scroller);
