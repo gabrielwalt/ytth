@@ -15,6 +15,7 @@
  * See PROJECT_CONTENT_IMPORT.md.
  */
 import MAP from './url-map-data.js';
+import HERO_IMAGES from './hero-images-data.js';
 
 const OLD_ORIGIN = 'https://www.yourtracktohealth.com';
 
@@ -1098,7 +1099,18 @@ export default {
       p.textContent = intro;
       heroText.append(p);
     }
-    main.append(block('Hero (navy)', [[heroText]], document));
+    // header photo (migration-work/heroes: the photo part of the page's old banner, or a
+    // topical second use); without one the navy header shows the tracks motif
+    const heroImage = HERO_IMAGES[entry.path];
+    const heroRows = [[heroText]];
+    if (heroImage && !merged) {
+      const img = document.createElement('img');
+      img.src = heroImage.src;
+      img.alt = '';
+      heroRows.unshift([img]);
+      heroRows.push(['Focus', heroImage.focus]);
+    }
+    main.append(block('Hero (navy)', heroRows, document));
     main.append(document.createElement('hr'));
 
     const body = document.createElement('div');

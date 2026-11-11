@@ -44,7 +44,8 @@ export async function transform(html, url) {
   // the importer imports its URL map relatively: load a copy with an absolute import
   const tmp = path.join('/tmp', `import-site-test-${process.pid}-${Date.now()}.mjs`);
   const src = fs.readFileSync(process.env.IMPORTER_SRC || path.join(ROOT, 'tools/importer/import-site.js'), 'utf8')
-    .replace("import MAP from './url-map-data.js';", `import MAP from '${pathToFileURL(path.join(ROOT, 'tools/importer/url-map-data.js')).href}';`);
+    .replace("import MAP from './url-map-data.js';", `import MAP from '${pathToFileURL(path.join(ROOT, 'tools/importer/url-map-data.js')).href}';`)
+    .replace("import HERO_IMAGES from './hero-images-data.js';", `import HERO_IMAGES from '${pathToFileURL(path.join(ROOT, 'tools/importer/hero-images-data.js')).href}';`);
   fs.writeFileSync(tmp, src);
   try {
     const mod = await import(pathToFileURL(tmp).href);

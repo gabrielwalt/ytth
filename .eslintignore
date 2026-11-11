@@ -2,3 +2,4 @@ helix-importer-ui
 *.min.js
 tools/importer/url-map-data.js
 tools/importer/*.bundle.js
+tools/importer/hero-images-data.js

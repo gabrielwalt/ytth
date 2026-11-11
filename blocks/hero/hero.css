@@ -126,8 +126,11 @@ main > .section > .hero-wrapper {
  * (depth on wide screens) and the tracks motif (three half-hexagons whose edges run on to the
  * right, bg-hex-tracks.svg). The motif is scaled to the band's height, so a short band shows
  * the whole figure smaller and a tall one larger; its rails reach the right edge at any width.
- * With a photo (a picture row), the photo fills the band behind a navy veil and the band keeps
- * a minimum height so the photo can be seen.
+ * With a photo (a picture row): text always stays on plain navy. Wide screens: the photo fills
+ * the right part of the band (from the end of the text column) and fades into the navy on its
+ * left edge; the band keeps a minimum height so the photo can be seen. Small screens: the photo
+ * is a band under the text, fading in from the navy above. An optional "Focus | 40%" row sets
+ * the horizontal point of the photo that must stay in view (default: center).
  */
 .hero.navy {
   --hero-tracks-x: 52%;
@@ -147,7 +150,8 @@ main > .section > .hero-wrapper {
 }
 
 .hero.navy:has(.hero-media) {
-  min-height: 320px;
+  display: flex;
+  flex-direction: column;
   background-image: none;
 }
 
@@ -156,20 +160,31 @@ main > .section > .hero-wrapper {
 }
 
 .hero.navy .hero-media {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  order: 2;
+  height: 200px;
 }
 
+.hero.navy .hero-media img {
+  object-position: var(--hero-focus, 50%) 30%;
+}
+
+/* the photo fades in from the navy (above it on small screens, left of it on wide ones) */
 .hero.navy .hero-media::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--color-navy) 92%, transparent) 0%, color-mix(in srgb, var(--color-navy) 70%, transparent) 50%, color-mix(in srgb, var(--color-navy) 35%, transparent) 100%);
+  background: linear-gradient(180deg, var(--color-navy) 0%, color-mix(in srgb, var(--color-navy) 0%, transparent) 55%);
 }
 
 .hero.navy .hero-content {
   z-index: 1; /* above a photo and its veil */
+  width: 100%;
   padding: 147.6px var(--gutter) 98px;
+}
+
+.hero.navy:has(.hero-media) .hero-content {
+  padding-bottom: 8px;
 }
 
 .hero.navy .hero-eyebrow {
@@ -181,12 +196,7 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
 }
 
 .hero.navy .hero-text {
-  max-width: 560px;
-}
-
-/* content and article pages carry longer titles */
-body:is(.content, .article) .hero.navy .hero-text {
-  max-width: var(--container-text);
+  max-width: var(--container-text); /* long plan titles stay on one line where they fit */
 }
 
 .hero.navy :is(h1, h2, h3, h4, h5, h6) {
@@ -262,12 +272,42 @@ body:is(.content, .article) .hero.navy .hero-text {
     --hero-tracks-x: calc(max(var(--gutter), (100% - var(--container-wide)) / 2) + 900px);
   }
 
-  .hero.navy:has(.hero-media) {
-    min-height: 392px;
-  }
 
   .hero.navy .hero-content {
     padding: 155px var(--gutter) 92px;
+  }
+
+  /* wide screens: the photo takes the band's right part, after the text column */
+  .hero.navy:has(.hero-media) {
+    /* the hero is full-bleed, so viewport units place the photo against the content frame */
+    --hero-frame-left: max(var(--gutter), (100vw - var(--container-wide)) / 2);
+    --hero-photo-left: clamp(45vw, calc(var(--hero-frame-left) + 780px), 60vw);
+
+    display: block;
+    min-height: 392px;
+  }
+
+  .hero.navy .hero-media {
+    position: absolute;
+    inset: 0 0 0 var(--hero-photo-left);
+    height: auto;
+  }
+
+  .hero.navy .hero-media img {
+    object-position: var(--hero-focus, 50%) center;
+  }
+
+  .hero.navy .hero-media::after {
+    background: linear-gradient(90deg, var(--color-navy) 0%, color-mix(in srgb, var(--color-navy) 55%, transparent) 22%, color-mix(in srgb, var(--color-navy) 0%, transparent) 45%);
+  }
+
+  .hero.navy:has(.hero-media) .hero-content {
+    padding-bottom: 92px;
+  }
+
+  /* the text column ends where the photo starts */
+  .hero.navy:has(.hero-media) .hero-text {
+    max-width: min(var(--container-text), calc(var(--hero-photo-left) - var(--hero-frame-left) - 24px));
   }
 
   body:is(.content, .article) .hero.navy .hero-content {

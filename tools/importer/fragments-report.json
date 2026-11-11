@@ -30,11 +30,12 @@
   "mismatch": []
  },
  "/fragments/program-confidentiality": {
-  "replaced": [],
+  "replaced": [
+   "/health-programs/healthy-habits"
+  ],
   "already": [
    "/benefits-coverage/nurses-telemedicine/diagnosed-with-cancer",
    "/benefits-coverage/nurses-telemedicine/managing-a-health-condition",
-   "/health-programs/healthy-habits",
    "/health-programs/quitting-nicotine"
   ],
   "mismatch": []

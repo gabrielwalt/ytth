@@ -223,3 +223,12 @@ The icons from the vector PDF were exported from it. The homepage-only icons (`q
 | Copy | Different on desktop and mobile | n/a | Desktop copy |
 
 The designs also contain typos and lorem ipsum ("deducible", "Preventitive" and others). The text on the site is corrected or left out.
+
+## Header photos (2026-11-11)
+
+The Benefits & coverage design pairs the page header with a photo; inner pages now do the same where a good photo exists.
+
+- **Source:** the current site's 2800 × 700 page banners. Their left ~45% carries a baked-in teal fade, logo and tagline and is not used; the photo part (x 1450–2800, 1350 × 700; the heart photo from x 1800 to clear a logo) is cropped into `migration-work/assets/heroes/` by `migration-work/heroes/crop-banners.cjs`. Two small banners (an illustration and a text panel) are left out. Catalog with subject and focus point: `migration-work/heroes/catalog.json` (25 photos, named after what they show).
+- **Layout:** text never sits on the photo. Wide screens: the photo takes the band's right part after the text column and fades into the navy; small screens: a band under the text. Text contrast is the navy's (white on #1c355e).
+- **Assignment** (`build-assignments.cjs`, review list `hero-assignments.json`): each photo heads the page whose banner it was (24 pages); 7 topical pages without a banner get a second use (savings & spending accounts, heart health, find a doctor, new hire, fitness memberships, healthy habits, dependents). No photo appears more than twice on the site, counting the homepage (telehealth and retiree photos); none is used on a page that already shows it. The designed plan pages (MMCP, CHCB, HDHP) keep the PDF's navy band with the tracks motif, as do all other pages without a fitting photo.
+- **Authors:** add a picture row (and optionally `Focus | 40%`) to `Hero (navy)`. Choose a calm photo with its subject away from its left edge; alt text stays empty (decorative: the title names the page).

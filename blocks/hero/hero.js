@@ -6,6 +6,8 @@
  * Authoring: one row may hold only a picture (the photo). The other row holds the text.
  * In the text row, a paragraph that holds only an icon becomes the hexagon badge, and a
  * paragraph before the h1 becomes the eyebrow.
+ * navy with a photo: optional row "Focus | 40%" (or left / center / right) keeps that part of
+ * the photo in view when it is cropped.
  * @param {Element} block The hero block
  */
 export default function decorate(block) {
@@ -19,6 +21,13 @@ export default function decorate(block) {
 
   rows.forEach((row) => {
     const cells = [...row.children];
+    // "Focus | 40%" (or left / center / right): the part of the photo that stays in view
+    if (cells.length === 2 && /^focus$/i.test(cells[0].textContent.trim())) {
+      const v = cells[1].textContent.trim().toLowerCase();
+      const pos = { left: '15%', center: '50%', right: '85%' }[v] || (/^\d{1,3}%$/.test(v) ? v : '');
+      if (pos) block.style.setProperty('--hero-focus', pos);
+      return;
+    }
     cells.forEach((cell) => {
       const onlyPicture = cell.querySelector('picture') && cell.textContent.trim() === '';
       if (onlyPicture && !media) {
