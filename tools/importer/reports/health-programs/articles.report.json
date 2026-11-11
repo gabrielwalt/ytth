@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/WellnessMoreArchived.aspx?menuid=5",
   "path": "health-programs/articles",
-  "timestamp": "2026-11-11T09:37:51.093Z",
+  "timestamp": "2026-11-11T13:37:19.220Z",
   "source": "https://yourtracktohealth.com/WellnessMoreArchived.aspx?menuid=5",
   "template": "article archive / listing",
   "merged": false,
   "title": "More archived articles",
-  "importScript": "fefc0ec60d3c"
+  "importScript": "cd2d61278477"
 }
