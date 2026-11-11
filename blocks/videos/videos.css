@@ -1,0 +1,104 @@
+/* videos: video cards, built from the design tokens (leaf corners, navy play button) */
+main > .section > .videos-wrapper {
+  margin-top: var(--space-m);
+}
+
+.videos ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.videos li {
+  margin: 0;
+}
+
+.videos .videos-thumb {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-leaf-l);
+  background: var(--color-navy);
+}
+
+.videos .videos-thumb picture,
+.videos .videos-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.videos .videos-thumb:hover img {
+  transform: scale(1.03);
+}
+
+.videos .videos-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgb(28 53 94 / 85%);
+  transform: translate(-50%, -50%);
+}
+
+.videos .videos-play::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  border-block: 10px solid transparent;
+  border-inline-start: 16px solid var(--color-white);
+  transform: translate(-50%, -50%);
+}
+
+.videos .videos-thumb:hover .videos-play {
+  background: var(--color-teal);
+}
+
+.videos .videos-body {
+  margin-top: 16px;
+}
+
+.videos .videos-body > * {
+  margin: 0;
+}
+
+.videos .videos-body > * + * {
+  margin-top: 8px;
+}
+
+.videos h3 {
+  font-size: var(--heading-font-size-m);
+  line-height: var(--heading-line-height-m);
+}
+
+.videos h3 a:any-link {
+  color: var(--color-navy);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.videos h3 a:hover {
+  text-decoration: underline;
+}
+
+@media (width >= 768px) {
+  .videos ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 36px;
+  }
+}
+
+@media (width >= 1200px) {
+  .videos ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

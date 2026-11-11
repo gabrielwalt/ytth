@@ -428,6 +428,46 @@ a:hover strong {
   outline-offset: 2px;
 }
 
+/* screen-reader-only text */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* links that leave the site or open a PDF carry a small trailing icon */
+a.link-external::after,
+a.link-pdf::after {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 5px;
+  background-color: currentcolor;
+  mask: url('../icons/external.svg') center / contain no-repeat;
+  vertical-align: -1px;
+}
+
+a.link-pdf::after {
+  width: 13px;
+  height: 13px;
+  mask-image: url('../icons/file-pdf.svg');
+}
+
+/* phone numbers in running text */
+a.link-phone:any-link {
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+a.link-phone:hover {
+  text-decoration: underline;
+}
+
 /* arrow link: "View options ▸" */
 a.link-arrow:any-link {
   display: inline-flex;
@@ -580,6 +620,49 @@ main img {
 .icon img {
   height: 100%;
   width: 100%;
+}
+
+/* ---------- long-form content (inner pages and articles) ---------- */
+main .default-content-wrapper picture,
+main .default-content-wrapper img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+main .default-content-wrapper p:has(> picture:only-child) {
+  margin: var(--space-l) 0;
+}
+
+main .default-content-wrapper p:has(> picture:only-child) + p > em:only-child {
+  display: block;
+  margin-top: calc(-1 * var(--space-m));
+  color: var(--color-text-muted);
+  font-size: var(--body-font-size-s);
+  font-style: normal;
+  line-height: var(--body-line-height-s);
+}
+
+main .default-content-wrapper blockquote {
+  margin: var(--space-l) 0;
+  padding: 4px 0 4px 20px;
+  border-left: 4px solid var(--color-teal);
+  font-size: var(--body-font-size-xl);
+  line-height: var(--body-line-height-xl);
+}
+
+main .default-content-wrapper li > ul,
+main .default-content-wrapper li > ol {
+  margin-top: var(--space-xs);
+}
+
+main .default-content-wrapper ul > li::marker {
+  color: var(--color-teal);
+}
+
+/* inner pages: text at a readable measure inside the 1220 px column */
+body:is(.content, .article) main > .section > .default-content-wrapper > * {
+  max-width: var(--container-text);
 }
 
 /* ---------- sections ---------- */

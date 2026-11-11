@@ -242,7 +242,7 @@ main > .section:has(> .plan-details-wrapper) {
   /* stats: 4 columns of 300px with 1x83 dividers */
   .plan-details .plan-details-stats {
     display: grid;
-    grid-template-columns: repeat(4, 300px);
+    grid-template-columns: repeat(4, minmax(0, 300px));
     gap: 0;
     padding: 48.7px 0;
   }

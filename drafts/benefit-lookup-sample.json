@@ -1,0 +1,251 @@
+{
+ ":names": [
+  "railroads",
+  "unions",
+  "options"
+ ],
+ ":type": "multi-sheet",
+ "railroads": {
+  "total": 48,
+  "offset": 0,
+  "limit": 48,
+  "data": [
+   {
+    "Code": "4203",
+    "Name": "ALBANY PORT RAILROAD CORPORATION"
+   },
+   {
+    "Code": "4302",
+    "Name": "ALTON & SOUTHERN RAILROAD"
+   },
+   {
+    "Code": "4306",
+    "Name": "BELT RAILWAY COMPANY OF CHICAGO"
+   },
+   {
+    "Code": "1621",
+    "Name": "BNSF RAILWAY COMPANY"
+   },
+   {
+    "Code": "4310",
+    "Name": "CANTON RAILROAD CO."
+   },
+   {
+    "Code": "2740",
+    "Name": "CENTRAL CALIFORNIA TRACTION CO."
+   },
+   {
+    "Code": "4713",
+    "Name": "CHICAGO RAIL LINK"
+   },
+   {
+    "Code": "5325",
+    "Name": "CHICAGO SOUTHSHORE & SOUTH BEND RAILROAD"
+   },
+   {
+    "Code": "1724",
+    "Name": "COLORADO & WYOMING RAILWAY"
+   },
+   {
+    "Code": "1321",
+    "Name": "CONSOLIDATED RAILWAY CORPORATION"
+   },
+   {
+    "Code": "1504",
+    "Name": "CSX CORPORATION"
+   },
+   {
+    "Code": "1203",
+    "Name": "DELAWARE & HUDSON RAILROAD CORP."
+   },
+   {
+    "Code": "2606",
+    "Name": "ESCANABA & LAKE SUPERIOR RAILROAD"
+   },
+   {
+    "Code": "4103",
+    "Name": "FORE RIVER TRANSPORTATION COMPANY"
+   },
+   {
+    "Code": "6421",
+    "Name": "FRUIT GROWERS EXPRESS"
+   },
+   {
+    "Code": "1309",
+    "Name": "GARY RAILWAY COMPANY"
+   },
+   {
+    "Code": "2706",
+    "Name": "GREAT WESTERN RAILWAY OF COLORADO"
+   },
+   {
+    "Code": "2893",
+    "Name": "HERZOG TRANSIT SERVICES, INC."
+   },
+   {
+    "Code": "3799",
+    "Name": "IDAHO & SEDALIA TRANSPORTATION CO."
+   },
+   {
+    "Code": "1516",
+    "Name": "ILLINOIS CENTRAL RAILROAD"
+   },
+   {
+    "Code": "4217",
+    "Name": "INDIANA HARBOR BELT"
+   },
+   {
+    "Code": "3760",
+    "Name": "IOWA INTERSTATE RAILROAD"
+   },
+   {
+    "Code": "1806",
+    "Name": "KANSAS CITY SOUTHERN RAILWAY CO."
+   },
+   {
+    "Code": "4812",
+    "Name": "KANSAS CITY TERMINAL RAILWAY"
+   },
+   {
+    "Code": "8201",
+    "Name": "KOPPERS CO. INC."
+   },
+   {
+    "Code": "4643",
+    "Name": "LONGVIEW SWITCHING COMPANY"
+   },
+   {
+    "Code": "2810",
+    "Name": "LOUISIANA & NORTH WEST RAILROAD CO."
+   },
+   {
+    "Code": "3339",
+    "Name": "METRA (NORTHEAST ILLINOIS REG. COMM RR CORP)"
+   },
+   {
+    "Code": "3548",
+    "Name": "MISSISSIPPI EXPORT RAILROAD CO."
+   },
+   {
+    "Code": "4586",
+    "Name": "NEW ORLEANS PUBLIC BELT RAILROAD"
+   },
+   {
+    "Code": "3251",
+    "Name": "NEW YORK, SUSQUEHANNA AND WESTERN RAILWAY"
+   },
+   {
+    "Code": "9408",
+    "Name": "NORFOLK SOUTHERN CORPORATION"
+   },
+   {
+    "Code": "3276",
+    "Name": "NORTHERN INDIANA COMMUTER TRANSPORTATION DISTRICT"
+   },
+   {
+    "Code": "2903",
+    "Name": "PACIFIC & ARTIC RAILWAY & NAVIGATION CO."
+   },
+   {
+    "Code": "4559",
+    "Name": "PALMETTO RAILWAYS"
+   },
+   {
+    "Code": "2143",
+    "Name": "PITTSBURG & SHAWMUT RR"
+   },
+   {
+    "Code": "4815",
+    "Name": "PORT TERMINAL RAILROAD ASSOCIATION"
+   },
+   {
+    "Code": "4718",
+    "Name": "PORTLAND TERMINAL RR CO."
+   },
+   {
+    "Code": "8042",
+    "Name": "PROVIDENCE & WORCESTER RR CO"
+   },
+   {
+    "Code": "1606",
+    "Name": "SOO LINE RAILROAD COMPANY"
+   },
+   {
+    "Code": "3740",
+    "Name": "STOCKTON TERMINAL & EASTERN RAILROAD"
+   },
+   {
+    "Code": "4819",
+    "Name": "TERMINAL RAILROAD ASSOCIATION OF ST. LOUIS"
+   },
+   {
+    "Code": "4535",
+    "Name": "TERMINAL RAILWAY ALABAMA STATE DOCKS"
+   },
+   {
+    "Code": "4820",
+    "Name": "TEXAS CITY TERMINAL RAILWAY"
+   },
+   {
+    "Code": "1821",
+    "Name": "THE TEXAS MEXICAN RAILWAY CO."
+   },
+   {
+    "Code": "1915",
+    "Name": "TRANSITAMERICA SERVICES, INC. (CT RAIL)"
+   },
+   {
+    "Code": "1715",
+    "Name": "UNION PACIFIC RAILROAD CO."
+   },
+   {
+    "Code": "4737",
+    "Name": "WICHITA TERMINAL ASSOCIATION"
+   }
+  ]
+ },
+ "unions": {
+  "total": 2,
+  "offset": 0,
+  "limit": 2,
+  "data": [
+   {
+    "Railroad": "*",
+    "Union": "[Sample union A - test data]"
+   },
+   {
+    "Railroad": "*",
+    "Union": "[Sample union B - test data]"
+   }
+  ]
+ },
+ "options": {
+  "total": 2,
+  "offset": 0,
+  "limit": 2,
+  "data": [
+   {
+    "Railroad": "*",
+    "Union": "*",
+    "ZIP from": "",
+    "ZIP to": "",
+    "Administrator": "[Sample administrator]",
+    "Plan": "Managed Medical Care Program (MMCP)",
+    "Plan link": "/benefits-coverage/medical-plans/mmcp",
+    "SBC title": "[Sample SBC - test data]",
+    "SBC link": "/drafts/sample.pdf"
+   },
+   {
+    "Railroad": "*",
+    "Union": "[Sample union B - test data]",
+    "ZIP from": "10000",
+    "ZIP to": "19999",
+    "Administrator": "[Sample administrator]",
+    "Plan": "High Deductible Health Plan (HDHP)",
+    "Plan link": "/benefits-coverage/medical-plans/hdhp",
+    "SBC title": "[Sample SBC - test data]",
+    "SBC link": "/drafts/sample.pdf"
+   }
+  ]
+ }
+}

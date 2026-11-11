@@ -204,6 +204,10 @@ function applyUnprocessedMetadata(main) {
       const text = value?.textContent.trim() || '';
       if (!key || !text) return;
       if (key === 'title') document.title = text;
+      if (key === 'template' || key === 'theme') {
+        text.split(',').map((t) => toClassName(t.trim())).filter(Boolean)
+          .forEach((cls) => document.body.classList.add(cls));
+      }
       const name = toClassName(key);
       if (!document.head.querySelector(`meta[name="${name}"]`)) {
         const meta = document.createElement('meta');
@@ -215,6 +219,71 @@ function applyUnprocessedMetadata(main) {
     const section = block.parentElement;
     block.remove();
     if (!section.children.length) section.remove();
+  });
+}
+
+const PHONE_PATTERN = /(?:\b1-)?(?:\(\d{3}\)\s?|\b\d{3}[-.])\d{3}[-.]\d{4}\b/g;
+
+/**
+ * Turns phone numbers in running text into tel: links.
+ * @param {Element} root The container to scan
+ */
+export function linkPhoneNumbers(root) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: (n) => (n.parentElement.closest('a, button, script, style, h1, h2, h3, h4, h5, h6')
+      ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+  });
+  const nodes = [];
+  while (walker.nextNode()) {
+    PHONE_PATTERN.lastIndex = 0;
+    if (PHONE_PATTERN.test(walker.currentNode.nodeValue)) nodes.push(walker.currentNode);
+  }
+  nodes.forEach((node) => {
+    const text = node.nodeValue;
+    const frag = document.createDocumentFragment();
+    let last = 0;
+    PHONE_PATTERN.lastIndex = 0;
+    text.replace(PHONE_PATTERN, (match, offset) => {
+      frag.append(text.slice(last, offset));
+      const a = document.createElement('a');
+      a.href = `tel:+1${match.replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '')}`;
+      a.className = 'link-phone';
+      a.textContent = match;
+      frag.append(a);
+      last = offset + match.length;
+      return match;
+    });
+    frag.append(text.slice(last));
+    node.replaceWith(frag);
+  });
+}
+
+/**
+ * Marks links that leave the site or open a PDF: new tab, an icon, and hidden text for
+ * screen readers.
+ * @param {Element} root The container to scan
+ */
+export function decorateLinkTypes(root) {
+  root.querySelectorAll('a[href]').forEach((a) => {
+    let url;
+    try {
+      url = new URL(a.href, window.location.href);
+    } catch {
+      return;
+    }
+    if (!/^https?:$/.test(url.protocol)) return;
+    const pdf = /\.pdf$/i.test(url.pathname);
+    const external = url.origin !== window.location.origin;
+    if (!pdf && !external) return;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    // buttons, image links and bold (emphasized) links keep their designed look: no icon
+    if (a.classList.contains('button') || a.querySelector('img, picture, .icon') || a.closest('header, footer, strong')) return;
+    a.classList.add(pdf ? 'link-pdf' : 'link-external');
+    const hint = document.createElement('span');
+    hint.className = 'visually-hidden';
+    hint.textContent = pdf ? ' (PDF, opens in a new tab)' : ' (opens in a new tab)';
+    a.append(hint);
   });
 }
 
@@ -231,6 +300,13 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  // page content only: header and footer fragments are decorated detached and style their own links
+  if (main.isConnected) {
+    main.querySelectorAll('.default-content-wrapper').forEach((wrapper) => {
+      linkPhoneNumbers(wrapper);
+      decorateLinkTypes(wrapper);
+    });
+  }
 }
 
 /**

@@ -137,10 +137,16 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
   max-width: 560px;
 }
 
+/* content and article pages carry longer titles */
+body:is(.content, .article) .hero.navy .hero-text {
+  max-width: var(--container-text);
+}
+
 .hero.navy h1 {
   margin: 0;
   color: var(--color-white);
 }
+
 
 @media (width >= 900px) {
   main > .section:has(> .hero-wrapper) {
@@ -388,4 +394,12 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
 /* the homepage hero sits directly on the quick-links band */
 main > .section:has(> .hero-wrapper .hero.home) {
   margin-bottom: 0;
+}
+
+/* inner pages: an optional intro sentence under the title */
+.hero.navy .hero-text h1 + p {
+  margin: 16px 0 0;
+  font-size: var(--body-font-size-xl);
+  font-weight: var(--lead-font-weight);
+  line-height: var(--body-line-height-xl);
 }

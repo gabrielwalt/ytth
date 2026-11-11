@@ -269,7 +269,7 @@ header .nav-tools a.nav-link:hover {
   text-decoration: underline;
 }
 
-@media (width >= 900px) {
+@media (width >= 1200px) {
   header nav {
     gap: 0;
     padding: 0 20px 0 18px;
@@ -390,5 +390,17 @@ header .nav-tools a.nav-link:hover {
     font-size: var(--body-font-size-m);
     line-height: var(--body-line-height-m);
     white-space: nowrap;
+  }
+}
+
+/* small phones: tighten the gaps so logo, sign in, search and menu fit in one row */
+@media (width < 420px) {
+  header nav {
+    gap: 12px;
+    padding-right: 14px;
+  }
+
+  header .nav-tools .default-content-wrapper {
+    gap: 14px;
   }
 }

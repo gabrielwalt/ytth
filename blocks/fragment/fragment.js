@@ -20,9 +20,11 @@ import {
  */
 export async function loadFragment(path) {
   if (path && path.startsWith('/') && !path.startsWith('//')) {
-    let resp = await fetch(`${path}.plain.html`);
-    // local preview serves documents under /content/; production serves them at the root
-    if (!resp.ok && window.location.hostname === 'localhost' && !path.startsWith('/content/')) {
+    // the local preview serves documents under /content/; production serves them at the root
+    const underContent = window.location.pathname.startsWith('/content/') && !path.startsWith('/content/');
+    let resp = await fetch(`${underContent ? '/content' : ''}${path}.plain.html`);
+    if (!resp.ok && underContent) resp = await fetch(`${path}.plain.html`);
+    if (!resp.ok && !underContent && !path.startsWith('/content/')) {
       resp = await fetch(`/content${path}.plain.html`);
     }
     if (resp.ok) {

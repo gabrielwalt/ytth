@@ -8,7 +8,7 @@ footer {
 footer .footer-inner {
   max-width: calc(var(--container-wide) + (2 * var(--gutter-footer, 30px)));
   margin: 0 auto;
-  padding: 45px var(--gutter-footer, 30px) 48px;
+  padding: 45px var(--gutter-footer, 30px) 80px;
 }
 
 footer ul {
@@ -166,7 +166,7 @@ footer .footer-meta p:last-child {
   font-weight: var(--font-weight-bold);
 }
 
-@media (width >= 900px) {
+@media (width >= 1200px) {
   footer {
     --gutter-footer: var(--gutter);
   }

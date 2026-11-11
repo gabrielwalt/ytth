@@ -92,5 +92,7 @@ Pages built so far, each with its document path:
 5. **"New hire"** has no dropdown children in the nav yet.
 6. **Final PDF address:** links point to `www.yourtracktohealth.com/PDF_Files/…` until the legacy address is chosen. That must happen before the domain switches.
 7. **Lookup data:** the railroad / union / ZIP → plan document data for the benefit lookup tool. Extract it from the current form, or get an export from the owner.
+   - **FSA calculator values:** the current site still uses a $3,500 maximum contribution (plan year 2019). Confirm the current limit and the RRTA and Medicare rates.
+   - **Feedback form backend:** choose where submissions of the webmaster feedback form should go.
 8. **Images for DA:** pictures are referenced from `migration-work/assets/`. Upload them to DA media before the pages go to DA.
 9. **Homepage mobile header:** the mobile design hides "Sign in" in the header on the homepage only. We keep it, for consistency with the inner pages.

@@ -41,6 +41,14 @@ Sizes are mobile first. The desktop values apply from `900px`. They were measure
 | `--color-surface-1` | `#f7f7f7` | `light` section |
 | `--gradient-badge` | lime → teal-light, 135° | Hexagon badge |
 
+## Breakpoints
+
+- **Base (mobile):** follows the 425 px artboards. Verified at 375, 425 and 768 px.
+- **`900px`:** the desktop type scale, desktop gutters and section spacing, and the desktop layout of most blocks.
+- **`1200px`:** the full desktop **header** (inline menu, search, sign-in and contact) and the full desktop **footer** grid. The homepage **quick-links** band switches to its desktop row here too. Below 1200 px these use their mobile layouts, because the desktop versions need about 1250 px of width.
+  - The quick-links band has its own tablet layout from 768 to 1199 px: four tiles in one row, with the intro below.
+- Every page is checked for horizontal overflow at 1440, 1280, 1024, 768, 425 and 375 px.
+
 ## Typography
 
 Roboto in three weights: 400, 500 and 700.
@@ -134,6 +142,15 @@ Set them with Section Metadata "Style". Several can be combined, for example `li
 
 The live pipeline renders Section Metadata as classes on the section. The local preview doesn't, so `scripts/scripts.js` (`applyUnprocessedMetadata`) does the same in the browser.
 
+## Long-form content and links
+
+- Content images are block-level and never wider than their column. An image followed by an italic paragraph shows that paragraph as a caption (14/20, muted).
+- Blockquotes have a 4 px teal left rule and lead text size. List bullets are teal.
+- On `content` and `article` pages, default text and tables keep an 860 px width (`--container-text`).
+- Phone numbers in running text become `tel:` links (bold, no underline).
+- External and PDF links open in a new tab. They get a 12 px trailing icon (`external.svg` or `file-pdf.svg`, drawn in the link colour) and screen-reader text.
+- `.visually-hidden` hides text visually but keeps it for screen readers.
+
 ## Icons
 
 SVGs live in `/icons`. In documents, write them as `:name:` text; `decorateIconTokens` in `scripts/scripts.js` turns that text into an icon.
@@ -141,7 +158,7 @@ SVGs live in `/icons`. In documents, write them as `:name:` text; `decorateIconT
 | Group | Icons |
 |---|---|
 | Brand | `logo`, `logo-white` |
-| UI | `search`, `search-teal`, `send`, `menu`, `user` (white), `user-navy`, `user-circle`, `external`, `info`, `plus-circle`, `minus-circle`, `check-circle` |
+| UI | `file-pdf`, `search`, `search-teal`, `send`, `menu`, `user` (white), `user-navy`, `user-circle`, `external`, `info`, `plus-circle`, `minus-circle`, `check-circle` |
 | Inline | `rx`, `headset`, `heart`, `question` |
 | Hexagon, indigo outline (68.5 × 59.6) | `hex-find`, `hex-calendar`, `hex-document`, `hex-heart`, `hex-family`, `hex-dumbbell`, `hex-devices` |
 | Hexagon, on navy / sand | `hex-bandage` (lavender and white), `hex-syringe` (dark grey) |

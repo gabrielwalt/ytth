@@ -1,0 +1,168 @@
+/* FSA calculator: expenses form + results card (card look of the MMCP plan table) */
+main > .section > .fsa-calculator-wrapper {
+  margin-top: var(--space-l);
+}
+
+.fsa-calculator .fsa-calculator-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.fsa-calculator fieldset {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+.fsa-calculator legend {
+  margin-bottom: 16px;
+  padding: 0;
+  color: var(--color-navy);
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-m);
+}
+
+.fsa-calculator .fsa-calculator-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.fsa-calculator .fsa-calculator-row label {
+  font-weight: var(--font-weight-medium);
+}
+
+.fsa-calculator .fsa-calculator-money {
+  display: flex;
+  flex: 0 0 140px;
+  align-items: center;
+  height: var(--button-height);
+  border: var(--border);
+  border-radius: var(--radius-s);
+  padding: 0 10px;
+  background: var(--color-white);
+}
+
+.fsa-calculator .fsa-calculator-money:focus-within {
+  border-color: var(--color-teal);
+  outline: 2px solid var(--color-teal);
+  outline-offset: 1px;
+}
+
+.fsa-calculator .fsa-calculator-money > span {
+  color: var(--color-text-muted);
+}
+
+.fsa-calculator .fsa-calculator-money input {
+  width: 100%;
+  min-width: 0;
+  margin-left: 4px;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--color-text);
+  text-align: right;
+}
+
+.fsa-calculator .fsa-calculator-money input:focus {
+  outline: none;
+}
+
+/* results card */
+.fsa-calculator .fsa-calculator-results {
+  overflow: hidden;
+  border: var(--border);
+  border-radius: var(--radius-l);
+  background: var(--color-white);
+}
+
+.fsa-calculator .fsa-calculator-results-title {
+  margin: 0;
+  padding: 20px 16px 16px;
+  background: var(--color-navy);
+  color: var(--color-white);
+  font-weight: var(--font-weight-medium);
+}
+
+.fsa-calculator .fsa-calculator-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+}
+
+.fsa-calculator .fsa-calculator-line:nth-of-type(even) {
+  background: var(--color-surface-2);
+}
+
+.fsa-calculator .fsa-calculator-value {
+  flex: 0 0 auto;
+  font-weight: var(--font-weight-bold);
+}
+
+.fsa-calculator .is-key .fsa-calculator-value {
+  color: var(--color-teal);
+  font-size: var(--heading-font-size-m);
+}
+
+.fsa-calculator .is-total {
+  border-top: 2px solid var(--color-border);
+  background: none;
+  font-weight: var(--font-weight-bold);
+}
+
+.fsa-calculator .is-total .fsa-calculator-value {
+  color: var(--color-navy);
+  font-size: var(--phone-font-size);
+  line-height: var(--phone-line-height);
+}
+
+.fsa-calculator .fsa-calculator-line select {
+  max-width: 100%;
+  height: var(--button-height);
+  border: var(--border);
+  border-radius: var(--radius-s);
+  padding: 0 8px;
+  background: var(--color-white);
+  color: var(--color-text);
+}
+
+.fsa-calculator .fsa-calculator-max,
+.fsa-calculator .fsa-calculator-note {
+  margin: 0;
+  padding: 4px 16px 12px;
+  color: var(--color-text-muted);
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-line-height-s);
+}
+
+.fsa-calculator .fsa-calculator-note > * {
+  margin: 0;
+}
+
+.fsa-calculator .fsa-calculator-note {
+  padding-top: 16px;
+  border-top: 1px solid var(--color-divider);
+}
+
+.fsa-calculator .fsa-calculator-subtitle {
+  margin: 0;
+  padding: 16px 16px 6px;
+  border-top: 1px solid var(--color-divider);
+  font-size: var(--heading-font-size-xs);
+  line-height: var(--heading-line-height-xs);
+}
+
+@media (width >= 900px) {
+  .fsa-calculator .fsa-calculator-form {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+  }
+}

@@ -55,8 +55,9 @@ main > .section > .quick-links-wrapper {
 }
 
 .quick-links .quick-links-tile .icon {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
+  margin: -4px 0;
 }
 
 .quick-links .quick-links-label {
@@ -126,7 +127,17 @@ main > .section > .quick-links-wrapper {
   margin-right: 8px;
 }
 
-@media (width >= 900px) {
+/* tablets: the four tiles in one row, intro below */
+@media (width >= 768px) and (width < 1200px) {
+  .quick-links .quick-links-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (width >= 1200px) {
   .quick-links {
     flex-direction: row;
     align-items: center;
@@ -139,12 +150,13 @@ main > .section > .quick-links-wrapper {
 
   .quick-links .quick-links-list {
     display: flex;
+    flex: 0 0 auto;
     gap: 16px;
     padding: 0;
   }
 
   .quick-links .quick-links-list li {
-    width: 180px;
+    width: clamp(150px, calc((100vw - 640px) / 4.4), 180px);
   }
 
   .quick-links a.quick-links-tile:any-link {
@@ -153,12 +165,16 @@ main > .section > .quick-links-wrapper {
   }
 
   .quick-links .quick-links-tile .icon {
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
+    margin: -3px 0;
   }
 
   .quick-links .quick-links-intro {
     display: flex;
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
     gap: 21px;
     order: 0;
     padding: 0 24px 0 0;
@@ -166,8 +182,15 @@ main > .section > .quick-links-wrapper {
     text-align: left;
   }
 
+  .quick-links .quick-links-badge {
+    flex: 0 0 45px;
+  }
+
   .quick-links .quick-links-text {
     display: block;
+    flex: 0 1 396px;
+    min-width: 0;
+    margin-top: 8px; /* the design sits the text 4px below the badge's centre line */
   }
 
   .quick-links .quick-links-text p {

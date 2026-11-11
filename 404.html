@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta
@@ -7,7 +7,7 @@
     content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
     move-to-http-header="true"
   >
-  <title>Page not found</title>
+  <title>Page not found | Your Track to Health</title>
   <script nonce="aem" type="text/javascript">
     window.isErrorPage = true;
     window.errorCode = '404';
@@ -21,12 +21,12 @@
         const { origin, pathname } = new URL(document.referrer);
         if (origin === window.location.origin) {
           const backBtn = document.createElement('a');
-          backBtn.classList.add('button', 'error-button-back');
+          backBtn.classList.add('button', 'primary', 'error-button-back');
           backBtn.href = pathname;
           backBtn.textContent = 'Go back';
           backBtn.title = 'Go back';
-          const btnContainer = document.querySelector('.button-container');
-          btnContainer.append(backBtn);
+          const btnContainer = document.querySelector('main.error .button-container');
+          btnContainer.prepend(backBtn);
         }
       }
     });
@@ -37,18 +37,76 @@
   </script>
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
+    /* 404 in the redesign: navy page header with track lines, a search field and ways back */
     main.error {
-      min-height: calc(100vh - var(--nav-height));
+      padding-top: 0;
+    }
+
+    main.error .error-hero {
+      padding: calc(var(--nav-height) + 72px) 30px 72px;
+      background: var(--color-navy) url('/styles/images/bg-tracks-navy.svg') center top / 1440px auto no-repeat;
+      color: var(--color-white);
+    }
+
+    main.error .error-inner,
+    main.error .error-body {
+      max-width: calc(var(--container) + 60px);
+      margin: 0 auto;
+    }
+
+    main.error .eyebrow {
+      margin: 0 0 12px;
+      color: var(--color-mint);
+    }
+
+    main.error h1 {
+      max-width: var(--container-text);
+      margin: 0;
+      color: var(--color-white);
+    }
+
+    main.error .error-hero p:not(.eyebrow) {
+      max-width: var(--container-text);
+      margin: 16px 0 0;
+      font-size: var(--body-font-size-xl);
+      line-height: var(--body-line-height-xl);
+    }
+
+    main.error .error-body {
+      padding: 48px 30px 80px;
+    }
+
+    main.error .error-search {
       display: flex;
-      align-items: center;
+      gap: 12px;
+      max-width: var(--container-text);
+      margin: 0 0 32px;
     }
 
-    main.error .error-number {
-      width: 100%;
+    main.error .error-search input {
+      flex: 1;
+      min-width: 0;
+      height: var(--button-height);
+      border: var(--border);
+      border-radius: var(--radius-s);
+      padding: 0 14px;
     }
 
-    main.error .error-number text {
-      font-family: monospace;
+    main.error .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin: 0;
+    }
+
+    @media (width >= 900px) {
+      main.error .error-hero {
+        padding: calc(var(--nav-height) + 85px) var(--gutter) 92px;
+      }
+
+      main.error .error-body {
+        padding: 56px var(--gutter) 108px;
+      }
     }
   </style>
   <link rel="stylesheet" href="/styles/lazy-styles.css">
@@ -57,13 +115,21 @@
 <body>
   <header></header>
   <main class="error">
-    <div class="section">
-      <svg viewBox="1 0 38 18" class="error-number">
-        <text x="0" y="17">404</text>
-      </svg>
-      <h2 class="error-message">Page Not Found</h2>
+    <div class="error-hero">
+      <div class="error-inner">
+        <p class="eyebrow">Error 404</p>
+        <h1>We can’t find that page</h1>
+        <p>The page may have moved when the site was redesigned. Try a search, or start again from the homepage.</p>
+      </div>
+    </div>
+    <div class="error-body">
+      <form class="error-search" action="/search" method="get" role="search">
+        <label class="visually-hidden" for="error-q">Search the site</label>
+        <input id="error-q" type="search" name="q" placeholder="How can we help you today?">
+        <button type="submit" class="button primary">Search</button>
+      </form>
       <p class="button-container">
-        <a href="/" class="button secondary error-button-home">Go home</a>
+        <a href="/" class="button secondary error-button-home">Go to the homepage</a>
       </p>
     </div>
   </main>

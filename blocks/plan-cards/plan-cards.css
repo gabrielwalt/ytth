@@ -3,6 +3,10 @@ main > .section > .plan-cards-wrapper {
   margin-top: 24px;
 }
 
+main > .section.plan-cards-container {
+  margin-bottom: 82px;
+}
+
 @media (width >= 900px) {
   main > .section.plan-cards-container {
     margin-bottom: 72px;

@@ -22,6 +22,8 @@ The `/nav` document has three sections:
 
 Escape, a click outside and moving focus away all close the menus.
 
+The full desktop bar appears from 1200 px; below that the header uses the hamburger menu.
+
 ### Footer (`/footer` fragment)
 The `/footer` document has three sections:
 1. The logo link plus the `Sign in` (primary) and `Register` (secondary) buttons.
@@ -130,8 +132,89 @@ On mobile, the rows stack: the label first, then each value with its column labe
 ### Accordion
 One row per item: `| question | answer |`. It is built from `details` and `summary` elements with plus and minus icons. The first item starts open; the `closed` variant starts every item closed.
 
+## Inner-page and content blocks (Phase 3)
+
+These blocks have no design in the PDFs; they are built from the design tokens. All of them appear on the test page `/drafts/phase3-blocks.html`.
+
+### Page template
+Set Metadata `Template: content` (inner pages) or `Template: article` (wellness articles and news). On those pages:
+- default text and tables keep an 860 px width
+- the navy hero title may run 860 px wide
+
+The page header is `hero (navy)`:
+- the section name as the eyebrow (for example "Health programs")
+- the H1
+- an optional intro sentence
+
+### Section nav (`section-nav`) — "In this section"
+Replaces the current site's side menu. Put it at the end of the page.
+- Leave the block empty to build it from the page index: it lists the pages below the current page, or the pages next to it.
+- Or author a list of links.
+
+The current page is shown in bold without an arrow. The block removes itself when it has no links.
+
+### Table (`table`)
+One row per table row; the first row is the header.
+- Variants: `no-header` and `compact`.
+- Tables with 4 or more columns scroll sideways on phones.
+
+### Documents (`documents`)
+| Cell | Contents |
+|---|---|
+| 1 | Link to the file (its text is the title) |
+| 2 | Optional description |
+
+A row holding only a heading starts a group. Each document shows a PDF icon and a file-type tag, and opens in a new tab.
+
+### Videos (`videos`)
+| Cell | Contents |
+|---|---|
+| 1 | Thumbnail picture |
+| 2 | Video link (its text is the title), optional description, optional transcript link (a PDF) |
+
+The cards open the video (Brightcove or YouTube share links) in a new tab. There are no embedded players.
+
+### Article list (`article-list`)
+Rows `Folder | /news`, `Limit | 12`, and optionally `Source | …`. It lists the pages below the folder from the page index, newest first, with a "Show more" button.
+
+### Search (`search`)
+An empty block on `/search`; `Source | …` is optional. It reads `?q=` and searches titles, descriptions and paths in the page index, with highlighted matches. The homepage hero and the 404 page submit to it.
+
+### FSA calculator (`fsa-calculator`)
+The same formula as the current site:
+- suggested contribution = min(sum of expenses, maximum)
+- savings = contribution × (federal + state + RRTA Tier 1 + Tier 2 + Medicare)
+
+Optional rows:
+- `Maximum contribution` (default 3500)
+- `Tier 1 rate` (6.2%), `Tier 2 rate` (4.9%), `Medicare rate` (1.45%)
+- `Expenses` (a list)
+- `Note` (the disclaimer)
+
+### Benefit lookup (`benefit-lookup`)
+One row: `Data | <link to the lookup spreadsheet>`. The spreadsheet has three sheets:
+- `railroads`: Code, Name
+- `unions`: Railroad (or `*`), Union
+- `options`: Railroad, Union, ZIP from, ZIP to, Administrator, Plan, Plan link, SBC title, SBC link
+
+Members pick a railroad, then a union (filtered by railroad), and enter a ZIP code. The block lists the matching plan options with their SBC documents.
+
+### Contact directory
+No new block:
+- vendor contact panels use `benefit-cards` (logo, phone, hours)
+- service topics use `accordion`
+
+### Automatic link handling (all default content)
+- Phone numbers become `tel:` links.
+- Links to other sites and to PDFs open in a new tab, with a trailing icon and screen-reader text ("opens in a new tab", "PDF").
+
+### 404 page
+`404.html`: navy header, search field, homepage link, and a "Go back" button when the visitor came from this site.
+
 ### Fragment
-The boilerplate fragment loader. On localhost it falls back to `/content/…` paths, to match how the local preview serves documents.
+The boilerplate fragment loader.
+- When the page itself is served under `/content/` (the local preview), it loads `/content/<path>` first.
+- If that fails, it tries the other location. This works on any host, so the header and footer appear in every preview.
 
 ## Which page uses which block
 
@@ -140,3 +223,6 @@ The boilerplate fragment loader. On localhost it falls back to `/content/…` pa
 | Homepage `/index` | hero (home), quick-links, cards (feature), teaser, cards (outline) |
 | Benefits & coverage | hero (split), plan-cards, benefit-cards, benefit-cards (two-up), cards (resource), cards (outline) |
 | MMCP | hero (navy), columns (intro), plan-details, columns (terms), accordion |
+| Inner content pages (planned) | hero (navy), default content, cards (resource), accordion, benefit-cards, table, documents, videos, section-nav |
+| Articles and news (planned) | hero (navy), default content, table, section-nav; the archives use article-list |
+| Tools | `/benefits-coverage/benefit-lookup` (benefit-lookup), `…/fsa/calculator` (fsa-calculator), `/search` (search) |

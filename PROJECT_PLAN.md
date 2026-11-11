@@ -94,27 +94,27 @@ Decided 2026-11-10. The details are in `PROJECT_OVERVIEW.md` → Decisions.
 
 ## Phase 3: blocks the designs don't cover
 
-These derive from the existing tokens. Each one gets documented in `PROJECT_BLOCKS.md` and `PROJECT_DESIGN_SYSTEM.md`.
+Built 2026-11-10. These derive from the existing tokens and are documented in `PROJECT_BLOCKS.md` and `PROJECT_DESIGN_SYSTEM.md`. All of them are on the test page `/drafts/phase3-blocks.html`, which uses real current-site content. They were checked at 1440, 1024 and 425 px with no overflow and no script errors.
 
-- [ ] **Page hero for inner pages:** use `hero (navy)`, with the section name as the eyebrow. The current banners have text baked in and are not reused.
-- [ ] **Long-form default content:** the rhythm of H2 and H3, lists, inline images with captions, and blockquotes. Use the `readable` width.
-- [ ] **Table:** data tables on 8 pages, including the 209-row "How the plan works" table. Style it after the `plan-details` look, with horizontal scrolling or stacking on mobile.
-- [ ] **Document list:** forms, SPD library and essential forms. PDF icon, title and optional description; grouped.
-- [ ] **Video:** Brightcove share links. Use a thumbnail card that opens the video (no autoplay embed), plus a transcript link (the transcript PDFs exist).
-- [ ] **Infographic article:** an image with a long text alternative, and the image-map links rendered as a link list.
-- [ ] **"In this section" related links:** sibling pages, generated from the query index or authored as a fragment per section; replaces the sidebar.
-- [ ] **Article list:** the news archive and the wellness archive, built from the query index.
-- [ ] **Search:** a `/search` results page and a search block (query index). The home hero's search field already submits to `/search?q=`.
-- [ ] **Contact directory:** a contact panel per vendor (logo, phone, hours), reusing `benefit-cards`. Service topics go in an `accordion`, replacing `ContactUs.aspx?Service=X`.
-- [ ] **Phone numbers:** auto-link them as `tel:` across default content (91 pages, 214 numbers).
-- [ ] **External-link marker:** an icon on links to vendor sites that open in a new tab.
-- [ ] **404 page** in the new design.
-- [ ] **Webmaster feedback form:** the current site has a feedback box (1 page) with a thank-you page. Rebuild it with an EDS form or a form service (owner to choose the backend).
-- [ ] **Benefit lookup tool:**
-  - Extract the railroad / union / ZIP → plan options and plan documents (SBC PDFs) from `BenefitLookup.aspx`: scrape its option lists and responses, or get an export from the owner.
-  - Store the data as a spreadsheet (JSON) in DA.
-  - Build a `benefit-lookup` block at `/benefits-coverage/benefit-lookup`.
-- [ ] **FSA calculator:** capture the current formula and its inputs from `FSAcalculator.aspx`, then build an `fsa-calculator` block.
+- [x] **Page hero for inner pages:** `hero (navy)` with the section name as eyebrow and an optional intro sentence. On `content` and `article` pages the title runs up to 860 px wide.
+- [x] **Long-form default content:** images, image captions, blockquotes, nested lists and teal bullets. On pages with the `content` or `article` template, text and tables keep an 860 px width.
+- [x] **Table** (`table`): navy header row, zebra rows, rounded card. Tables with 4 or more columns scroll sideways on phones. Variants: `no-header`, `compact`.
+- [x] **Document list** (`documents`): PDF icon, title, file-type tag and optional description; heading rows group the documents.
+- [x] **Video** (`videos`): thumbnail cards with a play button that open the video in a new tab, plus a transcript link.
+- [x] **Infographic article:** no new block. The importer writes the image plus a link list made from the image-map areas, and long-form styles cover it (Phase 4).
+- [x] **"In this section"** (`section-nav`): authored links, or built from the page index (sub-pages, else sibling pages).
+- [x] **Article list** (`article-list`): built from the page index. Takes a folder and a limit; newest first; "Show more" button.
+- [x] **Search** (`search`): reads `?q=`, scores title, description and path, highlights the matches.
+- [x] **Contact directory:** no new block. It reuses `benefit-cards` (logo, phone, hours) and `accordion` for the service topics.
+- [x] **Phone numbers:** auto-linked as `tel:` in default content (`scripts/scripts.js` → `linkPhoneNumbers`).
+- [x] **External and PDF links:** open in a new tab, with a trailing icon and screen-reader text (`decorateLinkTypes`).
+- [x] **404 page** in the new design (`404.html`): navy header, search field, homepage link and a "Go back" button.
+- [x] **FSA calculator** (`fsa-calculator`): the same formula as `FSAcalculator.aspx` (verified with the same inputs). The maximum contribution and the RRTA and Medicare rates are authorable.
+- [x] **Benefit lookup** (`benefit-lookup`): railroad → union → ZIP form, plan option cards and SBC links. It reads a spreadsheet with `railroads`, `unions` and `options` sheets. The 48 railroads are taken from the current form; the test data in `/drafts/benefit-lookup-sample.json` carries clearly marked sample unions and options.
+- [ ] **Lookup data:** the owner exports the real union and option data (railroad × union × ZIP → administrator, plan and SBC PDF) into the lookup spreadsheet in DA. The current form loads unions per railroad through a server round trip, and the results depend on the ZIP, so the data can't be scraped reliably.
+- [ ] **FSA values:** the owner confirms the current maximum contribution (the current site still uses $3,500 with plan year 2019) and the tax rates.
+- [ ] **Webmaster feedback form:** rebuild the feedback box and its thank-you page. Waiting for the owner to choose a form backend.
+- [ ] **Page index:** configure the query index (Phase 7) with the columns `title`, `description`, `date`, `navTitle` and `lastModified`. Search, the article list and "In this section" read it.
 
 ## Phase 4: import infrastructure
 
@@ -261,3 +261,5 @@ See `PROJECT_OVERVIEW.md` → Open items:
 | 2026-11-10 | Phase 1 decisions recorded. Phase 2 started. |
 | 2026-11-10 | Phase 2: URL map (187 rows), draft redirects (257 rules) and the link-target check generated. Nav "Important announcements" now points to its PDF. Owner review of the map pending. |
 | 2026-11-10 | Owner confirmed the mapping points (heart health new page, telemedicine merged, forms under Contact & forms). Phase 2 done; next is Phase 3. |
+| 2026-11-10 | Design QA pass on Homepage, Benefits & coverage and MMCP (1440, 1280, 1024, 768, 425, 375 px). The header and footer now load under any preview address. The header and footer use their mobile layouts below 1200 px; the full desktop versions overflowed between 900 and 1250 px. Fixed: the quick-links intro layout, plus a new tablet layout; the redrawn syringe icon; bigger tile icons; the MMCP summary figures at narrow desktop widths; the mobile footer bottom spacing; the mobile Benefits spacing (gap after the plan cards, card headers, contact panels, body text width). Remaining differences come from the designs themselves: the mobile artboards carry different copy, and some mobile text runs past the card edge. |
+| 2026-11-10 | Phase 3 built: section-nav, table, documents, videos, search, article-list, fsa-calculator, benefit-lookup, the 404 page, auto phone links, external and PDF link markers, long-form styles, and an inner-page hero intro. Test page `/drafts/phase3-blocks.html`. Waiting on the owner for: lookup data, FSA values, the feedback-form backend. |

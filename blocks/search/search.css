@@ -1,0 +1,72 @@
+/* search: field + results list, built from the design tokens */
+.search .search-form {
+  display: flex;
+  gap: 12px;
+  max-width: var(--container-text);
+}
+
+.search .search-form input {
+  flex: 1;
+  min-width: 0;
+  height: var(--button-height);
+  border: var(--border);
+  border-radius: var(--radius-s);
+  padding: 0 14px;
+  color: var(--color-text);
+}
+
+.search .search-form input:focus {
+  border-color: var(--color-teal);
+  outline: none;
+}
+
+.search .search-status {
+  margin: 24px 0 0;
+  color: var(--color-text-muted);
+}
+
+.search .search-results {
+  max-width: var(--container-text);
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.search .search-results li {
+  margin: 0;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.search .search-results h2 {
+  margin: 0;
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-m);
+}
+
+.search .search-results h2 a:any-link {
+  color: var(--color-navy);
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.search .search-results h2 a:hover {
+  text-decoration: underline;
+}
+
+.search .search-results p {
+  margin: 6px 0 0;
+}
+
+.search .search-results .search-path {
+  color: var(--color-text-subtle);
+  font-size: var(--body-font-size-s);
+  line-height: var(--body-line-height-s);
+}
+
+.search mark {
+  background: var(--color-mint);
+  color: inherit;
+}

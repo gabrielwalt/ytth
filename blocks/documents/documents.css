@@ -1,0 +1,81 @@
+/* documents: downloadable file list, built from the design tokens */
+main > .section > .documents-wrapper {
+  margin-top: var(--space-m);
+}
+
+.documents .documents-group {
+  margin: var(--space-xl) 0 var(--space-xs);
+  font-size: var(--heading-font-size-m);
+  line-height: var(--heading-line-height-m);
+}
+
+.documents .documents-group:first-child {
+  margin-top: 0;
+}
+
+.documents .documents-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.documents .documents-list li {
+  margin: 0;
+  padding: 18px 0 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.documents a.documents-link:any-link {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--color-navy);
+  font-size: var(--heading-font-size-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-xs);
+  text-decoration: none;
+}
+
+.documents a.documents-link:hover .documents-title {
+  text-decoration: underline;
+}
+
+.documents .documents-icon {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  background-color: var(--color-teal);
+  mask: url('../../icons/file-pdf.svg') center / contain no-repeat;
+}
+
+.documents .documents-type {
+  flex: 0 0 auto;
+  align-self: center;
+  border-radius: var(--radius-leaf-s);
+  padding: 2px 6px;
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: var(--eyebrow-font-size);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--eyebrow-line-height);
+  letter-spacing: var(--eyebrow-letter-spacing);
+}
+
+.documents .documents-description {
+  margin: 8px 0 0 32px;
+  max-width: var(--container-text);
+}
+
+.documents .documents-description > * {
+  margin: 0;
+}
+
+.documents .documents-description > * + * {
+  margin-top: 8px;
+}
+
+.documents .documents-description ul {
+  padding-inline-start: 20px;
+}

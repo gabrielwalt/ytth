@@ -1,6 +1,12 @@
 /* benefit cards: measured from the Benefits & coverage design (1440 / 425 px) */
 main > .section > .benefit-cards-wrapper {
-  margin-top: 26px;
+  margin-top: 22px;
+}
+
+@media (width >= 900px) {
+  main > .section > .benefit-cards-wrapper {
+    margin-top: 26px;
+  }
 }
 
 main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
@@ -29,7 +35,7 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
 .benefit-cards .benefit-card-header {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20.4px;
   padding: 25.8px 24px 24.5px;
   background: var(--color-surface-2);
 }
@@ -45,8 +51,8 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
   margin: 0;
 }
 
-.benefit-cards .benefit-card-subtitle {
-  margin-top: 8px;
+.benefit-cards .benefit-card-title p.benefit-card-subtitle {
+  margin-top: 6.8px;
   color: var(--color-text-muted);
 }
 
@@ -60,7 +66,7 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
   flex: 1;
   flex-direction: column-reverse;
   justify-content: flex-end;
-  gap: 26px;
+  gap: 20px;
   padding: 31.5px 24px 41.5px;
 }
 
@@ -75,6 +81,11 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
   flex: 0 0 22px;
   width: 22px;
   height: 22px;
+}
+
+/* mobile: body text runs a little narrower than the contact aside, as in the design */
+.benefit-cards .benefit-card-body {
+  padding-right: 5px;
 }
 
 .benefit-cards .benefit-card-body > * {
@@ -139,7 +150,7 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
 .benefit-cards .benefit-contact {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 23px;
   color: var(--color-text-muted);
 }
 
@@ -192,6 +203,7 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
 
 @media (width >= 900px) {
   .benefit-cards .benefit-card-header {
+    gap: 24px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -200,6 +212,18 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
 
   .benefit-cards .benefit-card-action {
     flex: 0 0 auto;
+  }
+
+  .benefit-cards .benefit-card-title p.benefit-card-subtitle {
+    margin-top: 0;
+  }
+
+  .benefit-cards .benefit-contact {
+    gap: 16px;
+  }
+
+  .benefit-cards .benefit-card-body {
+    padding-right: 0;
   }
 
   /* full width: text left, contact right-aligned */

@@ -1,0 +1,109 @@
+/* benefit lookup: railroad / union / ZIP form and plan option cards, built from the tokens */
+main > .section > .benefit-lookup-wrapper {
+  margin-top: var(--space-l);
+}
+
+.benefit-lookup .benefit-lookup-required {
+  margin: 0 0 12px;
+  color: var(--color-text-muted);
+  font-size: var(--body-font-size-s);
+}
+
+.benefit-lookup .benefit-lookup-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: end;
+  border-radius: var(--radius-leaf-l);
+  padding: 24px;
+  background: var(--color-surface-1);
+}
+
+.benefit-lookup .benefit-lookup-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: var(--font-weight-bold);
+}
+
+.benefit-lookup .benefit-lookup-field :is(select, input) {
+  width: 100%;
+  height: var(--button-height);
+  border: var(--border);
+  border-radius: var(--radius-s);
+  padding: 0 10px;
+  background: var(--color-white);
+  color: var(--color-text);
+}
+
+.benefit-lookup .benefit-lookup-field :is(select, input):focus {
+  border-color: var(--color-teal);
+  outline: 2px solid var(--color-teal);
+  outline-offset: 1px;
+}
+
+.benefit-lookup .benefit-lookup-message {
+  margin: 12px 0 0;
+  color: #b3261e;
+  font-weight: var(--font-weight-medium);
+}
+
+.benefit-lookup .benefit-lookup-message:empty {
+  display: none;
+}
+
+.benefit-lookup .benefit-lookup-title {
+  margin: 32px 0 16px;
+  font-size: var(--heading-font-size-l);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-l);
+}
+
+.benefit-lookup .benefit-lookup-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.benefit-lookup .benefit-lookup-list li {
+  margin: 0;
+  border-radius: var(--radius-leaf-s);
+  padding: 24px;
+  box-shadow: 0 0 0 1px var(--color-lavender);
+}
+
+.benefit-lookup .benefit-lookup-list li > * {
+  margin: 0;
+}
+
+.benefit-lookup .benefit-lookup-admin {
+  margin-bottom: 8px;
+  color: var(--color-teal);
+}
+
+.benefit-lookup .benefit-lookup-list h3 {
+  font-size: var(--heading-font-size-m);
+  line-height: var(--heading-line-height-m);
+}
+
+.benefit-lookup .benefit-lookup-sbc {
+  margin-top: 12px;
+}
+
+.benefit-lookup .benefit-lookup-none {
+  margin-top: 24px;
+}
+
+@media (width >= 900px) {
+  .benefit-lookup .benefit-lookup-form {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr) auto;
+    padding: 32px;
+  }
+
+  .benefit-lookup .benefit-lookup-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px;
+  }
+}

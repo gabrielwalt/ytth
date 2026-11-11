@@ -1,0 +1,62 @@
+/* article list: news / article archives, built from the design tokens (outline cards look) */
+main > .section > .article-list-wrapper {
+  margin-top: var(--space-m);
+}
+
+.article-list ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.article-list li {
+  margin: 0;
+  border-radius: var(--radius-leaf-s);
+  padding: 24px 24px 26px;
+  background: var(--color-white);
+  box-shadow: 0 0 0 1px var(--color-lavender);
+}
+
+.article-list li > * {
+  margin: 0;
+}
+
+.article-list .article-list-date {
+  margin-bottom: 8px;
+  color: var(--color-teal);
+}
+
+.article-list h2 {
+  font-size: var(--heading-font-size-m);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-m);
+}
+
+.article-list h2 a:any-link {
+  color: var(--color-navy);
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.article-list h2 a:hover {
+  text-decoration: underline;
+}
+
+.article-list h2 + p {
+  margin-top: 10px;
+}
+
+.article-list .article-list-more {
+  margin-top: 32px;
+  text-align: center;
+}
+
+@media (width >= 768px) {
+  .article-list ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px;
+  }
+}
