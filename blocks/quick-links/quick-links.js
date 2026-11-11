@@ -40,6 +40,15 @@ export default function decorate(block) {
         });
       });
       intro.insertBefore(text, intro.querySelector('.quick-links-cta'));
+      // the heading leads where the button leads (the button only shows on small screens)
+      const cta = intro.querySelector('.quick-links-cta a');
+      if (cta && !heading.querySelector('a')) {
+        const link = document.createElement('a');
+        link.href = cta.href;
+        link.className = 'quick-links-heading-link';
+        link.append(...heading.childNodes);
+        heading.append(link);
+      }
       return;
     }
 
@@ -50,12 +59,22 @@ export default function decorate(block) {
     const a = document.createElement('a');
     a.className = 'quick-links-tile';
     a.href = link.href;
-    if (link.target) a.target = link.target;
+    const external = new URL(link.href, window.location.href).origin !== window.location.origin;
+    if (external) {
+      a.target = '_blank';
+      a.rel = 'noopener';
+    }
     if (icon) a.append(icon);
     const label = document.createElement('span');
     label.className = 'quick-links-label';
     label.textContent = link.textContent.trim();
     a.append(label);
+    if (external) {
+      const hint = document.createElement('span');
+      hint.className = 'visually-hidden';
+      hint.textContent = ' (opens in a new tab)';
+      a.append(hint);
+    }
     li.append(a);
     list.append(li);
   });

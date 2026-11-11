@@ -57,6 +57,8 @@ The homepage navy band. Use it in a section styled `navy`.
   - The button shows on mobile only; on desktop the header's sign-in does the same job.
 - Every other row is a tile: an icon paragraph and a link paragraph, for example `| :ql-rx: Estimate drug costs (link) |`.
 
+The intro heading links to the button's target (the member portal), so the action stays available on desktop where the button is hidden. Tiles that link to other sites open in a new tab.
+
 Desktop: the intro on the left and four tiles of 180 × 94 on the right. Mobile: tiles in a 2 × 2 grid, then the intro centered below a divider.
 
 ### Cards
@@ -122,6 +124,8 @@ The benefits table of a plan page (MMCP). The block reads each row's type from i
 | One cell with an ordered list | Footnotes |
 
 On mobile, the rows stack: the label first, then each value with its column label.
+
+**Info icons** (`:info:` next to Annual deductible, Coinsurance, Copays, Out-of-pocket) become tooltips. Each explains its term with the definition from the page's "Common terms" (the `columns (terms)` block). On a page without that block the icons stay decorative. The tooltip code is shared with `plan-cards` (`scripts/tooltip.js`; styles in `styles.css`). Hover, focus, click or tap opens it; a second click or Escape closes it.
 
 ### Columns
 | Variant | Use |
@@ -220,6 +224,10 @@ No new block:
 
 ### 404 page
 `404.html`: navy header, search field, homepage link, and a "Go back" button when the visitor came from this site.
+
+### Site-wide link behaviour
+- **Local preview:** the preview serves documents under `/content/`. Internal links and GET forms (the search fields) keep that prefix automatically (`keepPreviewPrefix` in `scripts/scripts.js`), so every call to action works in the preview. Nothing changes on the live site.
+- **Page index:** search, the article lists and other index readers read `/query-index.json`. Until it is configured (Phase 7) they fall back to `/search-index.json`, which `migration-work/url-map/build-search-index.cjs` generates from the migrated content.
 
 ### Fragment
 The boilerplate fragment loader.

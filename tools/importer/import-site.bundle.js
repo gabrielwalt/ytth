@@ -96,7 +96,7 @@ var CustomImportScript = (() => {
     });
     const restore = (out) => out.replace(/§(\d+)§/g, (m, i) => kept[Number(i)]);
     const allCaps = t === t.toUpperCase() && /[A-Z]{3}/.test(t);
-    const base = allCaps ? t.charAt(0) + t.slice(1).toLowerCase() : t;
+    const base = allCaps ? (t.charAt(0) + t.slice(1).toLowerCase()).replace(/([.?!]\s+)([a-z])/g, (m, a, b) => a + b.toUpperCase()) : t;
     let afterBreak = true;
     const result = base.split(" ").map((w) => {
       const bare = w.replace(/^[("“'‘]+|[)"”'’.,:;!?]+$/g, "");

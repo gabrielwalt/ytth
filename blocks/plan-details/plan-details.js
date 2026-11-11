@@ -12,6 +12,7 @@
  *   - 1 cell with an ordered list: footnotes
  * @param {Element} block The block
  */
+import attachTooltip from '../../scripts/tooltip.js';
 
 const HEADING = 'h1, h2, h3, h4, h5, h6';
 
@@ -41,6 +42,57 @@ function valueCell(cell, label) {
   v.append(...cell.childNodes);
   div.append(v);
   return div;
+}
+
+// info icons explain the plan term of their row, using the page's "Common terms"
+const TERMS = [
+  [/deductible/i, /deductible/i],
+  [/coinsurance/i, /coinsurance/i],
+  [/copay/i, /copay/i],
+  [/out-of-pocket/i, /out-of-pocket/i],
+];
+
+/**
+ * Reads the "Common terms" definitions on the page (columns terms block: heading + text).
+ * @returns {Array<{term: string, content: Element}>} The definitions
+ */
+function pageTerms() {
+  return [...document.querySelectorAll('main .columns.terms :is(h3, h4, h5, h6)')].map((h) => {
+    const content = document.createElement('div');
+    // a bold paragraph, not a heading: the table's "heading + helper text" styles must not apply
+    const title = document.createElement('p');
+    title.className = 'plan-tooltip-title';
+    const strong = document.createElement('strong');
+    strong.textContent = h.textContent.trim();
+    title.append(strong);
+    content.append(title);
+    let n = h.nextElementSibling;
+    while (n && !/^H[1-6]$/.test(n.tagName)) {
+      content.append(n.cloneNode(true));
+      n = n.nextElementSibling;
+    }
+    return { term: h.textContent.trim(), content };
+  });
+}
+
+/**
+ * Turns the :info: icons of the table into tooltips with the matching term definition.
+ * @param {Element} root The decorated table
+ */
+function attachTermTooltips(root) {
+  const icons = [...root.querySelectorAll('.icon-info')];
+  if (!icons.length) return;
+  const defs = pageTerms();
+  icons.forEach((icon) => {
+    const label = (icon.closest('h1, h2, h3, h4, h5, h6, p') || icon.parentElement).textContent.trim();
+    const pair = TERMS.find(([re]) => re.test(label));
+    const def = pair && defs.find((d) => pair[1].test(d.term));
+    if (!def) return;
+    const term = def.term.toLowerCase();
+    // "coinsurance" takes no article; the other plan terms are countable
+    const article = /^coinsurance/.test(term) ? '' : `${/^[aeiou]/.test(term) ? 'an' : 'a'} `;
+    attachTooltip(icon, def.content, `What is ${article}${term}?`);
+  });
 }
 
 export default function decorate(block) {
@@ -150,4 +202,5 @@ export default function decorate(block) {
   });
 
   block.replaceChildren(out);
+  attachTermTooltips(out);
 }

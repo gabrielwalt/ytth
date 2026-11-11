@@ -203,3 +203,26 @@ main > .section > .quick-links-wrapper {
     display: none;
   }
 }
+
+/* "Manage your benefits" heading links to the member portal */
+.quick-links a.quick-links-heading-link:any-link {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+
+.quick-links a.quick-links-heading-link:hover,
+.quick-links a.quick-links-heading-link:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.quick-links a.quick-links-heading-link::after {
+  content: '';
+  display: inline-block;
+  margin-left: 10px;
+  border-block: 5px solid transparent;
+  border-inline-start: 5px solid var(--color-lime);
+  vertical-align: 3px;
+}

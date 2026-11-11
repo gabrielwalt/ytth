@@ -82,7 +82,8 @@ What it does on each page:
 After every import:
 1. Run `node tools/importer/merge-pages.cjs` (merges 24/7 Telemedicine into the 24/7 nurses & telemedicine page).
 2. Run `node migration-work/url-map/check-content.cjs` (missing pages, broken internal links, links left on the old site).
-3. When pages were added or renamed, regenerate the section menu with `node migration-work/url-map/build-section-nav.cjs`, then import `section-nav.html` with the design importer. After that it is maintained in DA (`/fragments/section-nav`).
+3. Run `node migration-work/url-map/build-search-index.cjs` (refreshes `/search-index.json`, the page index search uses until the query index exists).
+4. When pages were added or renamed, regenerate the section menu with `node migration-work/url-map/build-section-nav.cjs`, then import `section-nav.html` with the design importer. After that it is maintained in DA (`/fragments/section-nav`).
 
 Pages with no single source are design-source pages too:
 - `chcb.html` and `hdhp.html`: MMCP layout, from the "How the plan works: at a glance" tables. The HDHP explainer and FAQ are merged in.

@@ -376,7 +376,43 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+/**
+ * The local preview serves documents under /content/ while the content links to site paths
+ * (/benefits-coverage). Keeps visitors inside the preview by adding the prefix to internal
+ * links and GET forms. Does nothing on the live site.
+ */
+function keepPreviewPrefix() {
+  if (!window.location.pathname.startsWith('/content/')) return;
+  const codePaths = /^\/(content|icons|styles|scripts|blocks|fonts|media|drafts|tools|migration-work)\//;
+  const fix = (url) => {
+    if (url.origin !== window.location.origin || codePaths.test(url.pathname)) return false;
+    if (/\.[a-z0-9]+$/i.test(url.pathname)) return false; // files (json, pdf, …)
+    url.pathname = `/content${url.pathname === '/' ? '/index' : url.pathname}`;
+    return true;
+  };
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
+    const url = new URL(a.href, window.location.href);
+    if (fix(url)) {
+      e.preventDefault();
+      window.location.assign(url.href);
+    }
+  });
+  document.addEventListener('submit', (e) => {
+    const form = e.target;
+    if (e.defaultPrevented || (form.method || 'get').toLowerCase() !== 'get' || !form.getAttribute('action')) return;
+    const url = new URL(form.getAttribute('action'), window.location.href);
+    if (fix(url)) {
+      e.preventDefault();
+      url.search = new URLSearchParams(new FormData(form)).toString();
+      window.location.assign(url.href);
+    }
+  });
+}
+
 async function loadPage() {
+  keepPreviewPrefix();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

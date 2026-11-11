@@ -21,6 +21,12 @@ export function cleanTitle(title) {
  */
 export async function fetchIndex(source = '/query-index.json') {
   if (cache.has(source)) return cache.get(source);
+  // until the site's query index is configured, the default source falls back to the
+  // index generated from the migrated content (/search-index.json, served from the code)
+  if (source === '/query-index.json') {
+    const probe = await fetch('/query-index.json?limit=1').catch(() => null);
+    if (!probe || !probe.ok) return fetchIndex('/search-index.json');
+  }
   const load = (async () => {
     const rows = [];
     const pageSize = 500;

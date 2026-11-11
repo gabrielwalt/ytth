@@ -16,8 +16,16 @@ main > .section:has(> .plan-details-wrapper) {
 .plan-details .plan-details-card {
   border: var(--border);
   border-radius: var(--radius-l);
-  overflow: hidden;
   background: var(--color-white);
+}
+
+/* no overflow clipping (the info tooltips open above the table): round the edge rows instead */
+.plan-details .plan-details-card > :first-child {
+  border-radius: 15px 15px 0 0;
+}
+
+.plan-details .plan-details-card > :last-child {
+  border-radius: 0 0 15px 15px;
 }
 
 /* header */
@@ -86,6 +94,25 @@ main > .section:has(> .plan-details-wrapper) {
 
 .plan-details .plan-details-stat .icon-info {
   margin-left: 12px;
+}
+
+/* an info icon with a definition becomes a tooltip button: the spacing moves to the wrapper */
+.plan-details .plan-tooltip {
+  margin-left: 8px;
+  vertical-align: -3px;
+}
+
+.plan-details .plan-details-stat .plan-tooltip {
+  margin-left: 12px;
+}
+
+.plan-details .plan-tooltip .icon-info {
+  margin: 0;
+  vertical-align: top;
+}
+
+.plan-details .plan-tooltip-popover {
+  text-align: left;
 }
 
 /* group bars */
@@ -365,4 +392,18 @@ main > .section:has(> .plan-details-wrapper) {
   .plan-details .plan-details-footnotes li + li {
     margin-top: 16px;
   }
+}
+
+
+/* the popover keeps the tooltip text style inside summary stats and row labels */
+.plan-details .plan-tooltip .plan-tooltip-popover p {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--body-font-size-s);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--body-line-height-s);
+}
+
+.plan-details .plan-tooltip .plan-tooltip-popover p + p {
+  margin-top: 8px;
 }

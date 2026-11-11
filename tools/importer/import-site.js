@@ -85,7 +85,10 @@ function sentenceCase(text) {
   const restore = (out) => out.replace(/§(\d+)§/g, (m, i) => kept[Number(i)]);
   // ALL CAPS -> capitalize first letter only (acronyms are restored below)
   const allCaps = t === t.toUpperCase() && /[A-Z]{3}/.test(t);
-  const base = allCaps ? t.charAt(0) + t.slice(1).toLowerCase() : t;
+  // ALL CAPS: lower everything, then capitalize each sentence start ("One tap. All your …")
+  const base = allCaps
+    ? (t.charAt(0) + t.slice(1).toLowerCase()).replace(/([.?!]\s+)([a-z])/g, (m, a, b) => a + b.toUpperCase())
+    : t;
   let afterBreak = true;
   const result = base.split(' ').map((w) => {
     const bare = w.replace(/^[("“'‘]+|[)"”'’.,:;!?]+$/g, '');

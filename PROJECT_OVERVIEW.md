@@ -86,11 +86,14 @@ Pages built so far (175 documents in `content/`; the full list with old and new 
 ## Open items
 
 1. **Homepage hero and teaser photos are low resolution** (599 px wide, from the current site). They need high-resolution replacements.
-2. **Homepage quick-link destinations need confirming:**
-   - Request ID card → member sign-in
-   - Find a doctor → Medical plans
-   - Estimate drug costs → Prescription drugs
+2. **Homepage targets (reviewed 2026-11-11 against the migrated content; owner to confirm):**
+   - Request ID card → Benefits directory (every administrator's member site and phone, where ID cards are requested)
+   - Find a doctor / Find your doctor → the new Find a doctor page (Aetna, Highmark and UnitedHealthcare provider directories)
+   - Estimate drug costs → optumrx.com (where medication costs are checked)
    - 24/7 Nurseline → 24/7 nurses & telemedicine
+   - Manage your benefits → member portal (heading link; the button shows on phones)
+   - See your options (open enrollment) → the plan comparison on Benefits & coverage
+   - Find a location (flu) → the flu-shot flyer used by the current site
 3. **MMCP FAQ:** three answers are placeholders, waiting on the benefits team.
 4. **MMCP mobile line:** the mobile design has an extra line under "How the plan works" (the names of the two health and welfare plans). Desktop doesn't have it, so it is left out.
 5. **"New hire"** has no dropdown children in the nav yet.

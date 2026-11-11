@@ -118,7 +118,7 @@ Built 2026-11-10. These derive from the existing tokens and are documented in `P
 - [ ] **Lookup data:** the owner exports the real union and option data (railroad × union × ZIP → administrator, plan and SBC PDF) into the lookup spreadsheet in DA. The current form loads unions per railroad through a server round trip, and the results depend on the ZIP, so the data can't be scraped reliably.
 - [ ] **FSA values:** the owner confirms the current maximum contribution (the current site still uses $3,500 with plan year 2019) and the tax rates.
 - [ ] **Webmaster feedback form:** rebuild the feedback box and its thank-you page. Waiting for the owner to choose a form backend.
-- [ ] **Page index:** configure the query index (Phase 7) with the columns `title`, `description`, `date`, `navTitle` and `lastModified`. Search, the article list and "In this section" read it.
+- [ ] **Page index:** configure the query index (Phase 7) with the columns `title`, `description`, `date`, `navTitle` and `lastModified`. Search and the article lists read it; until then they fall back to the generated `/search-index.json`.
 
 ## Phase 4: import infrastructure
 
@@ -243,3 +243,11 @@ See `PROJECT_OVERVIEW.md` → Open items:
 | 2026-11-10 | Phase 3 built: section-nav, table, documents, videos, search, article-list, fsa-calculator, benefit-lookup, the 404 page, auto phone links, external and PDF link markers, long-form styles, and an inner-page hero intro. Test page `/drafts/phase3-blocks.html`. Waiting on the owner for: lookup data, FSA values, the feedback-form backend. |
 | 2026-11-11 | Phases 4–5. Site importer built and piloted; all 163 remaining current pages imported, plus 7 new pages (CHCB, HDHP, heart health, fitness memberships, savings & spending accounts, New hire placeholder, search). Finding: PDFs only work through the old viewer page, so every PDF link was switched to it. Telemedicine merged into 24/7 nurses & telemedicine. QA: 0 missing pages, 0 broken links, 0 render issues on 173 pages at 1440/425 px. |
 | 2026-11-11 | Navigation audit: the old site's side menu (160 pages), breadcrumbs (155), "Resources for" (wellness), "Jump to" / "Go to top" (video library) and footer utility links had no full replacement. Built the section menu (sticky tree on desktop, collapsible bar on small screens, "On this page" links, eyebrow link to the section) from the `/fragments/section-nav` document (111 entries, generated from the URL map, editable in DA). Added News, Video library, Site map and Accessibility to the footer. Fixed sentence casing of possessives ("Aetna’s") and re-imported all pages. |
+| 2026-11-11 | Interaction review of the Homepage, Benefits & coverage and MMCP (also CHCB and HDHP):
+- Every element now has a target chosen from the migrated content, and a new Find a doctor page sends visitors to each administrator's provider directory.
+- Fixed a broken anchor ("Drug cost estimates" → OptumRx).
+- MMCP/CHCB/HDHP info icons became term tooltips (Common terms added to CHCB and HDHP), and the MMCP partner logos link to the administrator pages.
+- The "Manage your benefits" heading links to the member portal.
+- Internal links and search fields now work in the `/content/` preview, and search and the article lists fall back to a generated page index.
+- Tooltip click/tap behaviour fixed.
+- Clicked through all 48 links of the three pages in the preview: all resolve. |

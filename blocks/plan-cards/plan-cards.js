@@ -10,42 +10,7 @@
  *   "Tooltip" | content: popover text for every :info: icon in the block
  * @param {Element} block The block
  */
-
-let tooltipCount = 0;
-
-/**
- * Builds the info button + popover for an :info: icon.
- * @param {Element} icon The icon span
- * @param {Element} content The tooltip content
- */
-function attachTooltip(icon, content) {
-  tooltipCount += 1;
-  const id = `plan-tooltip-${tooltipCount}`;
-  const wrap = document.createElement('span');
-  wrap.className = 'plan-tooltip';
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'plan-tooltip-button';
-  button.setAttribute('aria-expanded', 'false');
-  button.setAttribute('aria-controls', id);
-  const heading = content.querySelector('h1, h2, h3, h4, h5, h6, strong');
-  button.setAttribute('aria-label', heading ? heading.textContent.trim() : 'More information');
-  icon.replaceWith(wrap);
-  button.append(icon);
-  const pop = document.createElement('span');
-  pop.className = 'plan-tooltip-popover';
-  pop.id = id;
-  pop.setAttribute('role', 'tooltip');
-  pop.innerHTML = content.innerHTML;
-  wrap.append(button, pop);
-
-  const set = (open) => button.setAttribute('aria-expanded', open ? 'true' : 'false');
-  button.addEventListener('click', () => set(button.getAttribute('aria-expanded') !== 'true'));
-  wrap.addEventListener('mouseenter', () => set(true));
-  wrap.addEventListener('mouseleave', () => set(false));
-  button.addEventListener('blur', () => set(false));
-  button.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
-}
+import attachTooltip from '../../scripts/tooltip.js';
 
 /**
  * Turns "**$350** Individual **$700** Family" into price groups.
