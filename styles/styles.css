@@ -39,8 +39,13 @@
   --color-surface-2: #eeeeed;
   --color-surface-1: #f7f7f7;
   --color-border-on-navy: #8ea4cd; /* homepage quick-link tiles */
+  --color-error: #b3261e;
 
-  /* gradients */
+  /* section washes (homepage card rows) */
+  --color-shaded: #f3f3f3;
+  --color-shaded-light: #fafaf8;
+  --gradient-shaded: linear-gradient(90deg, #ececec 0%, #fafafa 100%);
+  --gradient-shaded-light: linear-gradient(90deg, #f4f5f0 0%, var(--color-white) 100%);
   --gradient-badge: linear-gradient(135deg, var(--color-lime) 0%, var(--color-teal-light) 100%);
 
   /* ---------- semantic colors (boilerplate names kept for blocks) ---------- */
@@ -52,6 +57,24 @@
   --link-color: var(--color-teal);
   --link-hover-color: var(--color-navy);
   --focus-color: var(--color-teal);
+
+  /* color context: these switch on dark surfaces (see "color contexts" below) */
+  --text-muted-color: var(--color-text-muted);
+  --marker-color: var(--color-teal);
+  --rule-color: var(--color-divider);
+  --link-arrow-color: var(--color-indigo);
+  --button-primary-bg: var(--color-teal);
+  --button-primary-color: var(--color-white);
+  --button-primary-hover-bg: var(--color-navy);
+  --button-primary-hover-color: var(--color-white);
+  --button-secondary-bg: var(--color-white);
+  --button-secondary-color: var(--color-navy);
+  --button-secondary-border: var(--color-navy);
+  --button-secondary-hover-bg: var(--color-surface-2);
+  --button-accent-bg: var(--color-navy);
+  --button-accent-color: var(--color-white);
+  --button-accent-hover-bg: var(--color-teal);
+  --button-accent-hover-color: var(--color-white);
 
   /* ---------- typography ---------- */
   --body-font-family: roboto, roboto-fallback, sans-serif;
@@ -120,6 +143,8 @@
   --section-spacing: 40px;
   --heading-spacing-after: 8px;
   --paragraph-spacing: 24px;
+  --flow-space: var(--space-s); /* between elements inside block content slots */
+  --flow-space-button: var(--space-m);
 
   /* ---------- shape ---------- */
   --radius-xs: 4px;
@@ -127,6 +152,8 @@
   --radius-m: 10px;
   --radius-l: 16px;
   --radius-header: 12px;
+  --radius-pill: 999px;
+  --radius-round: 50%;
 
   /* "leaf" corner: top-left + bottom-right rounded */
   --radius-leaf-s: var(--radius-s) 0;
@@ -137,6 +164,8 @@
   --border-on-dark: var(--border-width) solid rgb(255 255 255 / 50%);
   --shadow-header: 0 2px 10px rgb(0 0 0 / 27%);
   --shadow-card: 0 2px 8px rgb(0 0 0 / 8%);
+  --shadow-field: 0 2px 10px rgb(0 0 0 / 15%);
+  --shadow-popover: 0 2px 16px rgb(0 0 0 / 25%);
 
   /* ---------- components ---------- */
   --button-height: 37px;
@@ -170,6 +199,28 @@
     --header-offset: 30px;
     --header-height: 70px;
     --radius-header: var(--radius-m);
+  }
+}
+
+/*
+ * Wide-gamut screens: the design PDFs store their colors without a color profile, and PDF
+ * viewers show those numbers in the screen's own (wider, Display P3) gamut. Using the same
+ * numbers as Display P3 reproduces the vibrance of the designs on those screens; other screens
+ * keep the sRGB values above (the teal is already at the edge of the sRGB gamut there).
+ * Neutrals are unchanged.
+ */
+@media (color-gamut: p3) {
+  :root {
+    --color-navy: color(display-p3 0.1098 0.2078 0.3686);
+    --color-teal: color(display-p3 0 0.4941 0.502);
+    --color-teal-light: color(display-p3 0.1176 0.5608 0.5647);
+    --color-mint: color(display-p3 0.7725 0.8784 0.8549);
+    --color-indigo: color(display-p3 0.2784 0.3216 0.6824);
+    --color-indigo-dark: color(display-p3 0.1608 0.2118 0.5098);
+    --color-lavender: color(display-p3 0.6157 0.6314 0.7647);
+    --color-lime: color(display-p3 0.6431 0.7529 0.1843);
+    --color-sand: color(display-p3 0.898 0.8863 0.851);
+    --color-border-on-navy: color(display-p3 0.5569 0.6431 0.8039);
   }
 }
 
@@ -232,6 +283,10 @@ h6 {
   color: var(--heading-color);
   font-family: var(--heading-font-family);
   scroll-margin: calc(var(--nav-height) + 16px);
+}
+
+:is(h1, h2, h3, h4, h5, h6):last-child {
+  margin-bottom: 0;
 }
 
 h1 {
@@ -330,7 +385,7 @@ hr {
   height: 0;
   margin: var(--space-l) 0;
   border: 0;
-  border-top: var(--border-width) solid var(--color-divider);
+  border-top: var(--border-width) solid var(--rule-color);
 }
 
 code,
@@ -366,7 +421,7 @@ button {
 }
 
 .text-muted {
-  color: var(--color-text-muted);
+  color: var(--text-muted-color);
 }
 
 .eyebrow {
@@ -473,7 +528,7 @@ a.link-arrow:any-link {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: var(--color-indigo);
+  color: var(--link-arrow-color);
   text-decoration: none;
 }
 
@@ -486,7 +541,7 @@ a.link-arrow::after {
 }
 
 a.link-arrow:hover {
-  color: var(--color-navy);
+  color: var(--link-hover-color);
   text-decoration: underline;
 }
 
@@ -526,8 +581,8 @@ button.button {
   border: 0;
   border-radius: var(--radius-leaf-s);
   padding: 0 var(--button-padding-inline);
-  background-color: var(--color-teal);
-  color: var(--color-white);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-color);
   font-family: var(--body-font-family);
   font-size: var(--button-font-size);
   font-weight: var(--font-weight-medium);
@@ -543,56 +598,44 @@ button.button {
   transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
-a.button[aria-disabled="true"],
-button.button:disabled {
-  cursor: not-allowed;
-  pointer-events: none;
+/* primary: teal (the default) */
+a.button:any-link:hover,
+a.button:any-link:focus-visible,
+button.button:hover,
+button.button:focus-visible {
+  background-color: var(--button-primary-hover-bg);
+  color: var(--button-primary-hover-color);
 }
 
-/* primary: teal */
-a.button.primary,
-button.button.primary {
-  background-color: var(--color-teal);
-  color: var(--color-white);
-}
-
-a.button.primary:hover,
-a.button.primary:focus-visible,
-button.button.primary:hover,
-button.button.primary:focus-visible {
-  background-color: var(--color-navy);
-  color: var(--color-white);
-}
-
-/* secondary: white with navy label (e.g. "Register") */
-a.button.secondary,
+/* secondary: white with navy label and border (e.g. "Register") */
+a.button.secondary:any-link,
 button.button.secondary {
-  background-color: var(--color-white);
-  box-shadow: inset 0 0 0 1px var(--color-navy);
-  color: var(--color-navy);
+  background-color: var(--button-secondary-bg);
+  box-shadow: inset 0 0 0 1px var(--button-secondary-border);
+  color: var(--button-secondary-color);
 }
 
-a.button.secondary:hover,
-a.button.secondary:focus-visible,
+a.button.secondary:any-link:hover,
+a.button.secondary:any-link:focus-visible,
 button.button.secondary:hover,
 button.button.secondary:focus-visible {
-  background-color: var(--color-surface-2);
-  color: var(--color-navy);
+  background-color: var(--button-secondary-hover-bg);
+  color: var(--button-secondary-color);
 }
 
 /* accent: navy (e.g. "Sign in • Register") */
-a.button.accent,
+a.button.accent:any-link,
 button.button.accent {
-  background-color: var(--color-navy);
-  color: var(--color-white);
+  background-color: var(--button-accent-bg);
+  color: var(--button-accent-color);
 }
 
-a.button.accent:hover,
-a.button.accent:focus-visible,
+a.button.accent:any-link:hover,
+a.button.accent:any-link:focus-visible,
 button.button.accent:hover,
 button.button.accent:focus-visible {
-  background-color: var(--color-teal);
-  color: var(--color-white);
+  background-color: var(--button-accent-hover-bg);
+  color: var(--button-accent-hover-color);
 }
 
 a.button[aria-disabled="true"],
@@ -602,6 +645,8 @@ button.button:disabled:hover {
   background-color: var(--color-surface-2);
   box-shadow: none;
   color: var(--color-text-subtle);
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* ---------- media & icons ---------- */
@@ -635,7 +680,7 @@ main img {
   height: 20px;
   margin: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   padding: 0;
   background: none;
   cursor: pointer;
@@ -653,10 +698,10 @@ main img {
   left: 50%;
   display: none;
   width: 269px;
-  border-radius: 5px;
+  border-radius: var(--radius-xs);
   padding: 12px 16px 16px;
   background: var(--color-white);
-  box-shadow: 0 2px 16px rgb(0 0 0 / 25%);
+  box-shadow: var(--shadow-popover);
   color: var(--color-text);
   font-size: var(--body-font-size-s);
   font-weight: var(--font-weight-regular);
@@ -720,29 +765,50 @@ main .default-content-wrapper p:has(> picture:only-child) + p > em:only-child {
   line-height: var(--body-line-height-s);
 }
 
-main .default-content-wrapper blockquote {
+/* rich text inside blocks too (card bodies, accordion answers, columns…); zero specificity so
+   any block can restyle it */
+:where(main) blockquote {
   margin: var(--space-l) 0;
   padding: 4px 0 4px 20px;
-  border-left: 4px solid var(--color-teal);
+  border-left: 4px solid var(--marker-color);
   font-size: var(--body-font-size-xl);
   line-height: var(--body-line-height-xl);
 }
 
-main .default-content-wrapper li > ul,
-main .default-content-wrapper li > ol {
+:where(main) :is(blockquote):first-child {
+  margin-top: 0;
+}
+
+:where(main) :is(blockquote):last-child {
+  margin-bottom: 0;
+}
+
+:where(main) li > :is(ul, ol) {
   margin-top: var(--space-xs);
 }
 
-main .default-content-wrapper ul > li::marker {
-  color: var(--color-teal);
+:where(main) ul > li::marker {
+  color: var(--marker-color);
 }
 
-/* inner pages: text at a readable measure inside the 1220 px column */
+/* the first and last element of any block cell sit flush with the cell */
+:where(main .block) :where(div, li, td, th, dd, details) > :first-child {
+  margin-top: 0;
+}
+
+:where(main .block) :where(div, li, td, th, dd, details) > :last-child {
+  margin-bottom: 0;
+}
+
+/* inner pages: text at a readable measure inside the content column */
 body:is(.content, .article) main > .section > .default-content-wrapper > * {
   max-width: var(--container-text);
 }
 
 /* ---------- sections ---------- */
+
+/* section styles combine freely; their rules are ordered by concern, not by specificity */
+/* stylelint-disable no-descending-specificity */
 main > .section {
   margin: var(--section-spacing) 0;
 }
@@ -773,42 +839,21 @@ main > .section:is(.light, .highlight, .grey, .sand, .navy) {
   padding: var(--section-spacing) 0;
 }
 
-main > .section:is(.light, .highlight) {
+/* when an author combines several background styles, navy wins, then the washes */
+main > .section:is(.light, .highlight):not(.navy) {
   background-color: var(--color-surface-1);
 }
 
-main > .section.grey {
+main > .section.grey:not(.navy) {
   background-color: var(--color-surface-2);
 }
 
-main > .section.sand {
+main > .section.sand:not(.navy) {
   background-color: var(--color-sand);
 }
 
 main > .section.navy {
-  --text-color: var(--color-white);
-  --heading-color: var(--color-white);
-  --link-color: var(--color-white);
-  --link-hover-color: var(--color-mint);
-  --focus-color: var(--color-mint);
-
   background-color: var(--color-navy);
-  color: var(--text-color);
-}
-
-/* buttons on navy: secondary stays white/navy, primary uses the lighter teal */
-main > .section.navy a.button.primary {
-  background-color: var(--color-teal-light);
-}
-
-main > .section.navy a.button.primary:hover,
-main > .section.navy a.button.primary:focus-visible {
-  background-color: var(--color-white);
-  color: var(--color-navy);
-}
-
-main > .section.navy a.button.secondary {
-  box-shadow: none;
 }
 
 /* "small-heading": section titles at block-title size (24/28 bold), e.g. "Medical plans" */
@@ -823,36 +868,48 @@ main > .section.small-heading .default-content-wrapper > p {
   max-width: 1050px;
 }
 
-/* decorative backgrounds */
-main > .section.hexagons {
+/* "shaded" / "shaded-light": soft left-to-right grey wash (homepage card rows) */
+main > .section:is(.shaded, .shaded-light, .hexagons) {
   margin: 0;
   padding: var(--section-spacing) 0;
-  background: url('images/bg-hexagons.svg') center top / 1440px auto no-repeat;
 }
 
-/* "shaded" / "shaded-light": soft left-to-right grey wash (homepage card rows) */
-main > .section.shaded {
-  background-color: #f3f3f3;
-  background-image: linear-gradient(90deg, #ececec 0%, #fafafa 100%);
+main > .section.shaded:not(.navy) {
+  background-color: var(--color-shaded);
+  background-image: var(--gradient-shaded);
 }
 
-main > .section.shaded-light {
-  background-color: #fafaf8;
-  background-image: linear-gradient(90deg, #f4f5f0 0%, #fff 100%);
+main > .section.shaded-light:not(.navy) {
+  background-color: var(--color-shaded-light);
+  background-image: var(--gradient-shaded-light);
 }
 
-main > .section.hexagons:is(.shaded, .shaded-light) {
+/* "hexagons": faint line art over whatever background the section has (images only, so the
+   background color of any combined style stays) */
+main > .section.hexagons {
+  background-image: url('images/bg-hexagons.svg');
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 1440px auto;
+}
+
+main > .section.hexagons.shaded:not(.navy) {
+  background-image: url('images/bg-hexagons.svg'), var(--gradient-shaded);
+}
+
+main > .section.hexagons.shaded-light:not(.navy) {
+  background-image: url('images/bg-hexagons.svg'), var(--gradient-shaded-light);
+}
+
+main > .section.hexagons:is(.shaded, .shaded-light):not(.navy) {
   background-position: center top, 0 0;
   background-repeat: no-repeat;
   background-size: 1440px auto, auto;
 }
 
-main > .section.hexagons.shaded {
-  background-image: url('images/bg-hexagons.svg'), linear-gradient(90deg, #ececec 0%, #fafafa 100%);
-}
-
-main > .section.hexagons.shaded-light {
-  background-image: url('images/bg-hexagons.svg'), linear-gradient(90deg, #f4f5f0 0%, #fff 100%);
+/* on navy the line art is drawn light */
+main > .section.hexagons.navy {
+  background-blend-mode: soft-light;
 }
 
 /* section padding presets (used where the design deviates from the default rhythm) */
@@ -894,12 +951,111 @@ main > .section.padding-xxl {
   }
 }
 
-/* centered section heading ("Additional plan resources") */
+/* centered section heading ("Additional plan resources"); narrow text columns, lists and
+   buttons are centered too */
 main > .section.center .default-content-wrapper {
   text-align: center;
 }
 
+main > .section.center .default-content-wrapper > * {
+  margin-inline: auto;
+}
+
+main > .section.center .default-content-wrapper > :is(ul, ol) {
+  width: fit-content;
+  max-width: 100%;
+  text-align: left;
+}
+
 /* keep default text at a readable measure inside wide containers */
 main > .section.readable .default-content-wrapper {
-  max-width: var(--container-text);
+  max-width: calc(var(--container-text) + (2 * var(--gutter)));
+  margin-inline: 0;
+}
+
+main > .section.readable.center .default-content-wrapper {
+  margin-inline: auto;
+}
+
+/*
+ * Every dark surface switches the content colors through the context variables, so whatever an
+ * author puts there (any heading level, links, lists, buttons, rules) stays legible; every light
+ * card inside a dark area switches them back. Blocks register their surfaces in these two lists
+ * (zero specificity, so a block can still set a color explicitly).
+ */
+:where(
+  main > .section.navy,
+  .surface-dark,
+  .hero.navy,
+  .hero.home,
+  .cards.feature > ul > li:nth-child(even),
+  .plan-cards .plan-card-header,
+  .plan-details .plan-details-header,
+  .plan-details .plan-details-group.navy,
+  .table thead,
+  .fsa-calculator .fsa-calculator-results
+) {
+  --text-color: var(--color-white);
+  --text-muted-color: var(--color-mint);
+  --heading-color: var(--color-white);
+  --link-color: var(--color-white);
+  --link-hover-color: var(--color-mint);
+  --link-arrow-color: var(--color-mint);
+  --focus-color: var(--color-mint);
+  --marker-color: var(--color-mint);
+  --rule-color: rgb(255 255 255 / 30%);
+  --button-primary-hover-bg: var(--color-white);
+  --button-primary-hover-color: var(--color-navy);
+  --button-secondary-border: transparent;
+  --button-secondary-hover-bg: var(--color-mint);
+  --button-accent-bg: var(--color-white);
+  --button-accent-color: var(--color-navy);
+  --button-accent-hover-bg: var(--color-mint);
+  --button-accent-hover-color: var(--color-navy);
+
+  color: var(--text-color);
+}
+
+:where(
+  .surface-light,
+  .hero.split,
+  .cards.outline > ul > li,
+  .cards.feature > ul > li:nth-child(odd),
+  .teaser .teaser-card,
+  .plan-cards .plan-card-body,
+  .benefit-cards .benefit-card,
+  .plan-details .plan-details-card,
+  .table tbody,
+  .benefit-lookup :is(.benefit-lookup-form, .benefit-lookup-handoff),
+  .section-nav,
+  .search-suggest,
+  .plan-tooltip-popover
+) {
+  --text-color: var(--color-text);
+  --text-muted-color: var(--color-text-muted);
+  --heading-color: var(--color-navy);
+  --link-color: var(--color-teal);
+  --link-hover-color: var(--color-navy);
+  --link-arrow-color: var(--color-indigo);
+  --focus-color: var(--color-teal);
+  --marker-color: var(--color-teal);
+  --rule-color: var(--color-divider);
+  --button-primary-bg: var(--color-teal);
+  --button-primary-hover-bg: var(--color-navy);
+  --button-primary-hover-color: var(--color-white);
+  --button-secondary-border: var(--color-navy);
+  --button-secondary-hover-bg: var(--color-surface-2);
+  --button-accent-bg: var(--color-navy);
+  --button-accent-color: var(--color-white);
+  --button-accent-hover-bg: var(--color-teal);
+  --button-accent-hover-color: var(--color-white);
+
+  color: var(--text-color);
+}
+
+/* sand surfaces only change the link color: teal on sand is below 4.5:1 (after the light list,
+   so sand cards keep it) */
+:where(main > .section.sand, .cards.feature > ul > li:nth-child(odd):not(:first-child)) {
+  --link-color: var(--color-navy);
+  --link-hover-color: var(--color-navy);
 }

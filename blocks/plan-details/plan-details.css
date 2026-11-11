@@ -21,11 +21,11 @@ main > .section:has(> .plan-details-wrapper) {
 
 /* no overflow clipping (the info tooltips open above the table): round the edge rows instead */
 .plan-details .plan-details-card > :first-child {
-  border-radius: 15px 15px 0 0;
+  border-radius: calc(var(--radius-l) - var(--border-width)) calc(var(--radius-l) - var(--border-width)) 0 0;
 }
 
 .plan-details .plan-details-card > :last-child {
-  border-radius: 0 0 15px 15px;
+  border-radius: 0 0 calc(var(--radius-l) - var(--border-width)) calc(var(--radius-l) - var(--border-width));
 }
 
 /* header */
@@ -50,7 +50,7 @@ main > .section:has(> .plan-details-wrapper) {
   text-transform: uppercase;
 }
 
-.plan-details .plan-details-header :is(h2, h3) {
+.plan-details .plan-details-header :is(h1, h2, h3, h4, h5, h6) {
   color: var(--color-white);
   font-size: var(--heading-font-size-l);
   font-weight: var(--font-weight-medium);
@@ -71,7 +71,7 @@ main > .section:has(> .plan-details-wrapper) {
   margin: 0;
 }
 
-.plan-details .plan-details-stat :is(h3, h4) {
+.plan-details .plan-details-stat :is(h1, h2, h3, h4, h5, h6) {
   min-height: 42px;
   color: var(--color-text);
   font-size: var(--heading-font-size-m);
@@ -162,14 +162,14 @@ main > .section:has(> .plan-details-wrapper) {
   margin: 0;
 }
 
-.plan-details .plan-details-label :is(h3, h4, h5) {
+.plan-details .plan-details-label :is(h1, h2, h3, h4, h5, h6) {
   color: var(--color-text);
   font-size: var(--heading-font-size-m);
   font-weight: var(--font-weight-bold);
   line-height: 24px;
 }
 
-.plan-details .plan-details-label :is(h3, h4, h5) + p {
+.plan-details .plan-details-label :is(h1, h2, h3, h4, h5, h6) + p {
   margin-top: 7.8px;
   color: var(--color-text-subtle);
   font-weight: var(--font-weight-medium);
@@ -262,7 +262,7 @@ main > .section:has(> .plan-details-wrapper) {
     padding: 8px 16px;
   }
 
-  .plan-details .plan-details-label :is(h3, h4, h5) + p {
+  .plan-details .plan-details-label :is(h1, h2, h3, h4, h5, h6) + p {
     margin-top: 4px;
   }
 

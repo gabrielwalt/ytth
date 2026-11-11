@@ -40,7 +40,7 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
   background: var(--color-surface-2);
 }
 
-.benefit-cards .benefit-card-title :is(h2, h3, h4) {
+.benefit-cards .benefit-card-title :is(h1, h2, h3, h4, h5, h6) {
   margin: 0;
   font-size: var(--heading-font-size-l);
   font-weight: var(--font-weight-bold);

@@ -51,7 +51,7 @@ main > .section > .quick-links-wrapper {
 .quick-links a.quick-links-tile:hover,
 .quick-links a.quick-links-tile:focus-visible {
   border-color: var(--color-white);
-  background-color: rgb(255 255 255 / 8%);
+  background-color: color-mix(in srgb, var(--color-white) 8%, transparent);
 }
 
 .quick-links .quick-links-tile .icon {
@@ -93,7 +93,7 @@ main > .section > .quick-links-wrapper {
   display: contents;
 }
 
-.quick-links .quick-links-text :is(h2, h3) {
+.quick-links .quick-links-text :is(h1, h2, h3, h4, h5, h6) {
   margin: 0;
   color: var(--color-white);
   font-size: var(--heading-font-size-l);

@@ -17,6 +17,7 @@ main > .section > .table-wrapper {
 
 .table table {
   width: 100%;
+  background: var(--color-white); /* rows stay white on any section background */
   border-collapse: collapse;
   font-size: var(--body-font-size-m);
   line-height: 22px;

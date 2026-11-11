@@ -17,7 +17,7 @@ main > .section > .accordion-wrapper {
   justify-content: space-between;
   gap: 24px;
   padding: 16px 25px 18px 4px;
-  color: var(--color-navy);
+  color: var(--heading-color);
   font-size: var(--heading-font-size-xs);
   font-weight: var(--font-weight-bold);
   line-height: 28px;
@@ -34,11 +34,12 @@ main > .section > .accordion-wrapper {
   flex: 0 0 26px;
   width: 26px;
   height: 26px;
-  background: url('../../icons/plus-circle.svg') center / contain no-repeat;
+  background-color: var(--heading-color); /* navy on light surfaces, white on dark ones */
+  mask: url('../../icons/plus-circle.svg') center / contain no-repeat;
 }
 
 .accordion .accordion-item[open] > .accordion-item-label::after {
-  background-image: url('../../icons/minus-circle.svg');
+  mask-image: url('../../icons/minus-circle.svg');
 }
 
 .accordion .accordion-item-label:hover span {

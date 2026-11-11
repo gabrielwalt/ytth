@@ -60,7 +60,7 @@ Decided 2026-11-10. The details are in `PROJECT_OVERVIEW.md` → Decisions.
   - News → `/news`, linked from the footer
 - [x] **New hire:** a placeholder page in the new design.
 - [x] **Side menu:** first "In this section" links at the end of the page. Revised 2026-11-11 to a full section menu (see Phase 3). No breadcrumb bar, no print button.
-- [x] **PDFs:** they stay on the current server and links keep `www.yourtracktohealth.com/PDF_Files/…` for now. Choose the final legacy address before launch (Phase 9).
+- [x] **PDFs:** they stay on the current server. Links use its viewer (`www.yourtracktohealth.com/Common/PDFViewer.aspx?fileName=/PDF_Files/…`; direct `/PDF_Files/` addresses return 404). Choose the final legacy address before launch (Phase 9).
 - [x] **PDF-only pages (13):** no page; redirect to the PDF.
 - [x] **Interactive tools:** rebuild the benefit lookup and the FSA calculator now as native blocks.
 - [x] **Redirects:** CDN rules matching the path plus `MenuId`/`MenuName`; we generate the list.
@@ -108,7 +108,7 @@ Built 2026-11-10. These derive from the existing tokens and are documented in `P
   - Replaces the old side menu, breadcrumbs, "Resources for" and "Jump to".
 - [x] **Footer:** added News, Video library, Site map and Accessibility (the old footer's utility links).
 - [x] **Article list** (`article-list`): built from the page index. Takes a folder and a limit; newest first; "Show more" button.
-- [x] **Search** (`search`): reads `?q=`, scores title, description and path, highlights the matches.
+- [x] **Search** (`search`, rebuilt 2026-11-11): full-text search over every page and the 318 linked PDFs, with stems, a few synonyms, excerpts, section and PDF filters and "Show more". Live suggestions in the header search panel, the homepage hero and the 404 page. Details in `PROJECT_BLOCKS.md`.
 - [x] **Contact directory:** no new block. It reuses `benefit-cards` (logo, phone, hours) and `accordion` for the service topics.
 - [x] **Phone numbers:** auto-linked as `tel:` in default content (`scripts/scripts.js` → `linkPhoneNumbers`).
 - [x] **External and PDF links:** open in a new tab, with a trailing icon and screen-reader text (`decorateLinkTypes`).
@@ -150,7 +150,7 @@ Done 2026-11-11. Details are in `PROJECT_CONTENT_IMPORT.md` §3.
 
 ## Phase 5: page migration
 
-Done 2026-11-11. **175 documents** are in `content/`:
+Done 2026-11-11. **175 documents** were in `content/` at the end of this phase (177 today, after the Find a doctor page and the section-menu fragment were added; the site map replaced its imported version):
 - 163 pages imported from the current site (157 pages plus 6 merge sources)
 - the 3 designed pages, plus nav and footer
 - 7 new pages
@@ -180,7 +180,15 @@ QA results:
   - the Rx hub banner text still mentions Express Scripts
   - titles that repeat across sections ("Forms", "Contact us")
 - [ ] **Infographic pages (16):** they are images with text baked in. Write text alternatives, or keep the PDF/image as is (owner choice).
-- [ ] **Lookup data:** `/benefits-coverage/benefit-lookup-data.json` doesn't exist yet. Until the owner exports it (railroads, unions, and the plan options per railroad/union/ZIP range from Railroad Enrollment Services), the lookup page sends members to the current `BenefitLookup.aspx`.
+- [ ] **Lookup data:** see Phase 3. Until it exists, the lookup page sends members to the current `BenefitLookup.aspx`.
+
+## Phase 5b: design-system hardening and content reuse (requested 2026-11-11)
+
+- [x] **Colors:** checked every token's source. The vector values are exact and the JPEG-sampled ones come from large flat areas, where compression keeps the color; the extra vibrance in the PDFs comes from untagged colors shown in the screen's wide gamut. Brand colors now use the same numbers as Display P3 on wide-gamut screens (`PROJECT_DESIGN_SYSTEM.md` → Color).
+- [x] **Token audit:** colors, gradients, shadows and radii in the blocks now come from tokens (new: error, section washes, field and popover shadows, pill and round radii, inner corner, hero veils and scrims as hero-level tokens, color-mix for translucent navy/white). Some blocks still carry measured type metrics from the designs (for example plan-details line heights) as literal values.
+- [x] **Style cascade:** buttons, links, bullets, rules and arrow links run on context variables; dark and light surfaces are registered in two zero-specificity lists; navy sections no longer need their own button overrides; section backgrounds can't cancel each other (`hexagons` uses background images only, navy wins). The specificity-order exception is limited to the section-style block. The designed pages are pixel-identical before and after (1440 and 425 px).
+- [x] **Robustness for any author content:** test page `/drafts/author-combinations` (every section style and combination, the main blocks with any heading level, lists, quotes, images and all button types, light blocks inside navy sections). Fixed: titles of any level, navy/sand card colors, accordion and table on navy, spacing inside card and teaser bodies, centered lists, default cards filling the row, link contrast on sand, primary button contrast on navy. An automatic contrast check of the page passes at 1440 and 425 px.
+- [ ] **Reusable fragments:** find content repeated on three or more pages (for example contact panels, plan notices, disclaimers), move each into a `/fragments/…` document, and reference it from the pages with the `fragment` block so it is edited once.
 
 ## Phase 6: assets
 
@@ -199,6 +207,8 @@ QA results:
 
 ## Phase 8: quality
 
+- [x] Alignment: every page in the index measured at 1440, 1200, 1024, 768 and 425 px against the content frame (2026-11-11; `migration-work/qa/measure-alignment.js` + `sweep-report.cjs`). Re-run after layout changes.
+- [x] Navigation reachability: every page reachable from a menu or the site map (`check-navigation.cjs`).
 - [ ] Accessibility: WCAG 2.1 AA (contrast, focus order, keyboard use of the header, accordion, tooltips and search; alt text; heading order).
 - [ ] Performance: Lighthouse scores of 100 on the homepage and on one page per template; check the LCP image and font loading.
 - [ ] Browsers: Chrome, Safari, Firefox and Edge; iOS and Android; at 1440, 1024, 768 and 425 px.
@@ -210,7 +220,7 @@ QA results:
 
 ## Phase 9: review, publish, launch
 
-- [ ] Commit the code to a branch and open a PR with a `{branch}--ytth--gabrielwalt.aem.page/{path}` preview link.
+- [ ] Commit the code to a branch and open a PR with a `{branch}--ytth--gabrielwalt.aem.page/{path}` preview link. (Everything since commit `5f2f1d3` is uncommitted in the working tree.)
 - [ ] Upload the content to DA, when explicitly requested. `content/` must hold exactly what is uploaded.
 - [ ] Preview, then stakeholder review on the preview site.
 - [ ] Publish, when explicitly requested.
@@ -225,13 +235,16 @@ QA results:
 ## Open items carried from the earlier phases
 
 See `PROJECT_OVERVIEW.md` → Open items:
-- homepage photos
-- quick-link destinations
+- homepage photos (the teaser photo is still 599 px; the stock hero needs the owner's OK)
+- homepage targets (owner to confirm)
 - MMCP FAQ answers
 - the MMCP mobile line
 - New hire
-- image upload
+- the final PDF address
+- lookup data, FSA values, feedback-form backend
+- image upload to DA
 - the homepage mobile header
+- query index with a `content` column; the PDF search list after launch
 
 ## Progress log
 
@@ -262,3 +275,5 @@ See `PROJECT_OVERVIEW.md` → Open items:
 | 2026-11-11 | Homepage hero photo: the 599 px stand-in was blurry at full width and the face sat behind the headline. Checked every current-site image (carousel banners 5833 px but with baked-in text and hexagon crops; 26 page banners 2800 × 700 with only ~1260 px of clean photo, families/doctors). Chose a free-licensed Unsplash photo (2880 × 1920) of two workers in hard hats and safety vests, close to the design's worker; subjects right of the headline. Desktop crop set to the top of the photo. Checked at 1440, 1024 and 425. |
 | 2026-11-11 | Alignment pass: one content frame (the header bar: 1320 px max, `--gutter` 20/40 on the sides) for header, every section, block and footer. Removed the 1288 px (`medium`), 1220 px (`narrow`) and 30 px mobile (`inset`) offsets; quick links, hero text and search, teaser card and resource cards sit on the frame; footer columns end on the right edge (no overflow at 1200); desktop header menu tightened between 1200 and 1319 px. Side-menu layout now 280 + 80 + content column = 1320. Measured every page in the index (168) at 1440, 1200, 1024, 768 and 425: no block edges off the frame except deliberate ones (list indents, text measure, narrow images). Side-menu current page restyled (straight teal bar, gap to dividers). |
 | 2026-11-11 | Dynamic features review. Current site: search is a server page (`SiteSearch.aspx?SearchTerm=`, no cross-site access, no framing, results point to old addresses), the benefit lookup is a server form with results per railroad/union/ZIP, the feedback form posts back to the server. Rebuilt search on our own content: full-text page index plus 318 PDFs, ranking with stems and synonyms, live results with section/PDF filters and excerpts, a header search panel, and suggestions in the header, the homepage hero and the 404 page (pre-filled from the missing address). Benefit lookup now hands members to the current lookup until its data is published. Fixed the 404 page loading a non-existent block. |
+| 2026-11-11 | Docs brought up to date with the implementation: status, content counts (177 documents: 168 pages, 3 fragments, 6 merge sources), decisions of the day, open items, and the requested next steps (Phase 5b). The alignment check and the current-site probes (search, benefit lookup) are kept in `migration-work/qa/` and `migration-work/research/`. |
+| 2026-11-11 | Phase 5b design-system pass. Colors: traced every token to its source; the PDFs' extra vibrance comes from untagged colors shown in wide gamut, so brand colors use Display P3 on wide-gamut screens. Tokens added for the remaining literals. Cascade: context variables for text, links, bullets, rules and buttons with registered dark and light surfaces; section-style combinations can't break each other. Author robustness: new test page `/drafts/author-combinations`; fixed heading levels in title slots, card colors, accordion and table on navy, body spacing, centered lists, link and button contrast. Designed pages unchanged (pixel diff 0 at 1440 and 425). Reusable fragments still to do. |

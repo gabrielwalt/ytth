@@ -38,8 +38,19 @@
   margin: 0;
 }
 
-.cards .cards-card-body :is(h2, h3, h4) {
-  color: var(--color-text);
+/* any further content an author adds keeps a readable rhythm (design rules below are more specific) */
+.cards .cards-card-body > * + * {
+  margin-top: var(--flow-space);
+}
+
+.cards .cards-card-body > * + p.button-wrapper {
+  margin-top: var(--flow-space-button);
+}
+
+/* card titles take the text color of their surface (grey on white, white on navy); the sand
+   card switches them to the heading color */
+.cards .cards-card-body :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--card-title-color, var(--text-color));
   font-size: var(--heading-font-size-l);
   font-weight: var(--font-weight-medium);
   line-height: var(--heading-line-height-l);
@@ -49,7 +60,7 @@
   font-weight: var(--font-weight-medium);
 }
 
-.cards .cards-card-body > :is(h2, h3, h4) + p {
+.cards .cards-card-body > :is(h1, h2, h3, h4, h5, h6) + p {
   margin-top: 17.7px;
 }
 
@@ -106,7 +117,7 @@ main > .section > div + .cards-wrapper:has(.cards.outline) {
 
 @media (width >= 900px) {
   .cards > ul {
-    grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(257px, 1fr));
   }
 
   /* 3 columns spanning the content frame (the design's 96 px gaps) */
@@ -135,7 +146,7 @@ main > .section:has(> .cards-wrapper .cards.feature) {
   border-radius: var(--radius-leaf-l);
 }
 
-.cards.feature .cards-card-body :is(h2, h3) {
+.cards.feature .cards-card-body :is(h1, h2, h3, h4, h5, h6) {
   font-size: var(--heading-font-size-l);
   line-height: 25px;
 }
@@ -159,7 +170,7 @@ main > .section:has(> .cards-wrapper .cards.feature) {
   padding: 25px 19px 20px;
 }
 
-.cards.feature > ul > li:first-child .cards-card-body > :is(h2, h3) + p {
+.cards.feature > ul > li:first-child .cards-card-body > :is(h1, h2, h3, h4, h5, h6) + p {
   margin-top: 10px;
 }
 
@@ -174,32 +185,26 @@ main > .section:has(> .cards-wrapper .cards.feature) {
   padding: 28px 28px 27px;
 }
 
+/* the navy card is a dark surface, the sand card a light one (styles.css → color contexts) */
 .cards.feature > ul > li:nth-child(even) {
   background: var(--color-navy);
-  color: var(--color-white);
-}
-
-.cards.feature > ul > li:nth-child(even) .cards-card-body :is(h2, h3) {
-  color: var(--color-white);
 }
 
 .cards.feature > ul > li:nth-child(odd):not(:first-child) {
-  background: var(--color-sand);
-}
+  --card-title-color: var(--heading-color);
 
-.cards.feature > ul > li:nth-child(odd):not(:first-child) .cards-card-body :is(h2, h3) {
-  color: var(--color-navy);
+  background: var(--color-sand);
 }
 
 .cards.feature > ul > li:not(:first-child) .cards-card-body {
   margin-top: 25px;
 }
 
-.cards.feature > ul > li:not(:first-child) .cards-card-body :is(h2, h3) {
+.cards.feature > ul > li:not(:first-child) .cards-card-body :is(h1, h2, h3, h4, h5, h6) {
   font-weight: var(--font-weight-bold);
 }
 
-.cards.feature > ul > li:not(:first-child) .cards-card-body > :is(h2, h3) + p {
+.cards.feature > ul > li:not(:first-child) .cards-card-body > :is(h1, h2, h3, h4, h5, h6) + p {
   margin-top: 20px;
 }
 
@@ -226,12 +231,12 @@ main > .section:has(> .cards-wrapper .cards.feature) {
     padding: 40px 40px 41px;
   }
 
-  .cards.feature > ul > li:first-child .cards-card-body :is(h2, h3) {
+  .cards.feature > ul > li:first-child .cards-card-body :is(h1, h2, h3, h4, h5, h6) {
     font-size: var(--heading-font-size-xl);
     line-height: var(--heading-line-height-xl);
   }
 
-  .cards.feature > ul > li:first-child .cards-card-body > :is(h2, h3) + p {
+  .cards.feature > ul > li:first-child .cards-card-body > :is(h1, h2, h3, h4, h5, h6) + p {
     margin-top: 14.7px;
   }
 
@@ -239,7 +244,7 @@ main > .section:has(> .cards-wrapper .cards.feature) {
     margin-top: 24px;
   }
 
-  .cards.feature .cards-card-body :is(h2, h3) {
+  .cards.feature .cards-card-body :is(h1, h2, h3, h4, h5, h6) {
     line-height: var(--heading-line-height-l);
   }
 
@@ -248,7 +253,7 @@ main > .section:has(> .cards-wrapper .cards.feature) {
     padding: 0 28px;
   }
 
-  .cards.feature > ul > li:not(:first-child) .cards-card-body > :is(h2, h3) + p {
+  .cards.feature > ul > li:not(:first-child) .cards-card-body > :is(h1, h2, h3, h4, h5, h6) + p {
     margin-top: 18px;
   }
 

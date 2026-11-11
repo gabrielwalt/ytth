@@ -42,7 +42,7 @@ main > .section.plan-cards-container {
 
 .plan-cards .plan-card-header {
   min-height: 116px;
-  border-radius: 15px 0 0;
+  border-radius: calc(var(--radius-l) - var(--border-width)) 0 0;
   padding: 20px 16px 16px;
   background: var(--color-navy);
   color: var(--color-white);
@@ -58,7 +58,7 @@ main > .section.plan-cards-container {
   text-transform: uppercase;
 }
 
-.plan-cards .plan-card-header :is(h2, h3, h4) {
+.plan-cards .plan-card-header :is(h1, h2, h3, h4, h5, h6) {
   margin: 0;
   color: var(--color-white);
   font-size: var(--heading-font-size-l);

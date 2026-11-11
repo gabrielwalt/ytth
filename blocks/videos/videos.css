@@ -44,8 +44,8 @@ main > .section > .videos-wrapper {
   left: 50%;
   width: 56px;
   height: 56px;
-  border-radius: 50%;
-  background: rgb(28 53 94 / 85%);
+  border-radius: var(--radius-round);
+  background: color-mix(in srgb, var(--color-navy) 85%, transparent);
   transform: translate(-50%, -50%);
 }
 

@@ -73,7 +73,7 @@
 .search .search-filter {
   margin: 0;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 6px 14px;
   background: var(--color-white);
   color: var(--color-navy);
@@ -170,7 +170,7 @@
 }
 
 .search mark {
-  border-radius: 2px;
+  border-radius: var(--radius-xs);
   background: var(--color-mint);
   color: inherit;
 }

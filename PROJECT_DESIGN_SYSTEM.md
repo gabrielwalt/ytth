@@ -24,7 +24,7 @@ Sizes are mobile first. The desktop values apply from `900px`. They were measure
 |---|---|---|
 | `--color-navy` | `#1c355e` | Headings, header sign-in, footer, navy hero, plan card headers, quick-links band, navy cards |
 | `--color-teal` | `#007e80` | Primary buttons, links |
-| `--color-teal-light` | `#1e8f90` | Nav chevrons, teal table group bar, primary buttons on navy |
+| `--color-teal-light` | `#1e8f90` | Nav chevrons, teal table group bar, badge gradient |
 | `--color-mint` | `#c5e0da` | Eyebrows on navy |
 | `--color-indigo` | `#4752ae` | Hexagon icon outlines, arrow links |
 | `--color-indigo-dark` | `#293682` | Small inline icons |
@@ -40,12 +40,21 @@ Sizes are mobile first. The desktop values apply from `900px`. They were measure
 | `--color-surface-2` | `#eeeeed` | Benefit card header, zebra rows, search button |
 | `--color-surface-1` | `#f7f7f7` | `light` section |
 | `--gradient-badge` | lime → teal-light, 135° | Hexagon badge |
+| `--color-error` | `#b3261e` | Form errors |
+| `--color-shaded`, `--gradient-shaded` | `#f3f3f3`, `#ececec → #fafafa` | `shaded` section |
+| `--color-shaded-light`, `--gradient-shaded-light` | `#fafaf8`, `#f4f5f0 → white` | `shaded-light` section |
+
+**Where the colors come from, and why they look more vibrant in the PDFs (checked 2026-11-11):**
+- Every brand color except lime, sand and the tile border on navy was read from the vector PDF's drawing operators, so the numbers are exact. Lime and sand come from large flat areas of the homepage JPEG, where compression keeps the color (sampled navy `#1c345c` vs `#1c355e`, sand `#e4e2d8` vs `#e5e2d9`). The JPEG does dull small and thin features (a nav triangle reads `#208273` instead of `#1e8f90`), but no token was sampled from those.
+- The PDFs store all colors as untagged device RGB (no output profile). PDF viewers on wide-gamut screens show those numbers in the screen's Display P3 gamut, which is why the buttons and triangles look more vibrant there than in a browser, which shows them as sRGB. The sRGB teal `#007e80` has no red at all: it is already at the edge of the sRGB gamut.
+- **So on wide-gamut screens (`@media (color-gamut: p3)`) the brand colors use the same numbers as Display P3** (`color(display-p3 0 0.4941 0.502)` for the teal, and so on), which reproduces what the PDFs show. Other screens keep the sRGB values. Neutrals are unchanged. Contrast stays the same (white on P3 teal ≈ 5:1).
 
 ## Breakpoints
 
 - **Base (mobile):** follows the 425 px artboards. Verified at 375, 425 and 768 px.
 - **`900px`:** the desktop type scale, desktop gutters and section spacing, and the desktop layout of most blocks.
-- **`1200px`:** the full desktop **header** (inline menu, search, sign-in and contact) and the full desktop **footer** grid. The homepage **quick-links** band switches to its desktop row here too. Below 1200 px these use their mobile layouts, because the desktop versions need about 1250 px of width.
+- **`1200px`:** the full desktop **header** (inline menu, search, sign-in and contact) and the full desktop **footer** grid. The homepage **quick-links** band switches to its desktop row here too, and inner pages get the side-menu column. Below 1200 px these use their mobile layouts.
+  - Between 1200 and 1319 px the header menu spacing tightens (the bar keeps the 40 px gutter).
   - The quick-links band has its own tablet layout from 768 to 1199 px: four tiles in one row, with the intro below.
 - Every page is checked for horizontal overflow at 1440, 1280, 1024, 768, 425 and 375 px.
 
@@ -105,9 +114,16 @@ Blocks override sizes where the design does, for example the hero split H1 24/25
 | `--radius-s` | 8 | Search field |
 | `--border` | `1px solid --color-border` | |
 | `--border-accent` | `1px solid --color-lavender` | |
-| `--shadow-header` | `0 2px 10px rgb(0 0 0 / 27%)` | Header bar |
+| `--shadow-header` | `0 2px 10px rgb(0 0 0 / 27%)` | Header bar, dropdowns, search panel |
+| `--shadow-card` | `0 2px 8px rgb(0 0 0 / 8%)` | Cards |
+| `--shadow-field` | `0 2px 10px rgb(0 0 0 / 15%)` | Homepage search field |
+| `--shadow-popover` | `0 2px 16px rgb(0 0 0 / 25%)` | Tooltips |
+| `--radius-pill`, `--radius-round` | 999px, 50% | Filter pills, round buttons |
+| inner corner | `calc(var(--radius-l) - var(--border-width))` | A colored header inside a bordered card |
 
 ## Buttons
+
+Buttons are drawn from tokens (`--button-primary-bg`, `-color`, `-hover-bg`, `-hover-color`, and the same for `secondary` and `accent`, plus `--button-secondary-border`). The color contexts below change them, so a button looks right on any surface.
 
 How to author them in a document:
 - `**link**` gives a primary button (teal; navy on hover).
@@ -137,12 +153,26 @@ Set them with Section Metadata "Style". Several can be combined, for example `li
 | `padding-xl` | 64/72 mobile, 100/108 desktop |
 | `padding-xxl` | 46/48 mobile, 110/111 desktop |
 
+Styles combine freely. When several background styles are combined, `navy` wins over `light`, `grey`, `sand` and the washes; `hexagons` only adds its line art (images only), so it works with any background, including navy.
+
 The live pipeline renders Section Metadata as classes on the section. The local preview doesn't, so `scripts/scripts.js` (`applyUnprocessedMetadata`) does the same in the browser.
+
+## Color contexts (any content on any surface)
+
+The text, heading, link, arrow-link, bullet, rule, focus and button colors are context variables (`--text-color`, `--heading-color`, `--link-color`, `--link-arrow-color`, `--marker-color`, `--rule-color`, `--focus-color`, `--text-muted-color`, `--button-*`). Two lists at the end of `styles/styles.css` set them:
+- **Dark surfaces:** navy sections, `.surface-dark`, the navy and home heroes, the navy feature card, plan-card headers, plan-details headers and navy group bars, table headers, the FSA result panel. Text, headings and links turn white, bullets and arrow links mint, secondary buttons lose their border, accent buttons turn white, and hover states use white or mint.
+- **Light surfaces:** `.surface-light` and every white or light card (outline and feature cards, teaser card, plan and benefit cards, plan details, table rows, lookup panels, section menu, suggestions, tooltips). They switch back, so a white card in a navy section keeps dark text.
+- **Sand** (section and card) keeps the light colors but uses navy links (teal on sand is 3.8:1).
+
+Both lists use zero specificity (`:where`), so a block can still set a color on purpose. A new block with a dark or light surface adds its selector to the matching list.
+
+Primary buttons stay teal on every surface (white on teal passes 4.5:1; the lighter teal did not).
 
 ## Long-form content and links
 
 - Content images are block-level and never wider than their column. An image followed by an italic paragraph shows that paragraph as a caption (14/20, muted).
-- Blockquotes have a 4 px teal left rule and lead text size. List bullets are teal.
+- Blockquotes have a 4 px teal left rule and lead text size. List bullets are teal (mint on dark surfaces). These rules apply inside blocks too, so quotes and lists in card bodies, accordion answers or columns look the same.
+- Inside any block cell, the first element has no top margin and the last no bottom margin. Content slots that reset their margins (card bodies, the teaser card) space further elements with `--flow-space` (16) and buttons with `--flow-space-button` (24); the design's own spacing rules are more specific and win.
 - On `content` and `article` pages, default text keeps an 860 px measure (`--container-text`); blocks (tables, accordions, documents, cards) fill the column up to the frame's right edge.
 - Phone numbers in running text become `tel:` links (bold, no underline).
 - External and PDF links open in a new tab. They get a 12 px trailing icon (`external.svg` or `file-pdf.svg`, drawn in the link colour) and screen-reader text.
@@ -159,7 +189,10 @@ Built from the existing tokens; no new colours or sizes.
 | Section menu, small screens | Inner pages below 1200 px | A bar in `--color-surface-1` with a 1 px border and leaf corners. Eyebrow "In this section" (muted) over the current page (18/26 bold navy); plus/minus circle icon as on the accordion |
 | On this page | Under the current menu item | Eyebrow "On this page" (muted). 14/20 links with a 1 px `--color-border` rule on the left; the heading in view turns teal and bold |
 | Eyebrow link | Navy hero | The section name links to the section's main page (white, underline on hover) — breadcrumb information without a breadcrumb bar |
-| Footer | Every page | The first column has New hire, Retirement, then Contact & forms, News and Video library. The meta row has © and "Last updated", plus Site map and Accessibility links at its end |
+| Footer | Every page | The first column has New hire, Retirement, then Contact & forms, News and Video library. The last column fits its links and ends on the frame's right edge. The meta row has © and "Last updated", plus Site map, Notice of privacy practices and Accessibility at its end |
+| Header search panel | Every page | White panel under the header bar, full bar width, `--radius-leaf-l` and `--shadow-header`. Field with the teal search icon (focus: teal border, mint ring) and a primary Search button. The open search icon gets a `--color-surface-1` square |
+| Search suggestions | Header panel, homepage hero, 404 page | A list under the field: title navy 500 with the matched words bold, a muted 14/20 label (section › parent page · PDF), a PDF icon for documents. The highlighted row uses the section-menu look (`--color-surface-1` with a 3 px teal bar); "See all results" in teal under a divider |
+| Search results | `/search` | Pill filters (border `--color-border`, pressed = navy fill), an eyebrow label in teal, 20/28 bold navy title, an excerpt with mint-marked words, the address in subtle 14/20 |
 
 ## Icons
 

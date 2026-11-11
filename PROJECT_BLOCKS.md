@@ -2,6 +2,8 @@
 
 Every block below was measured against the design PDFs at 1440 and 425 px (see `PROJECT_DESIGN_SYSTEM.md`). Block JavaScript reads the rows and cells defensively: rows and cells an author leaves out are skipped.
 
+**Authoring freedom:** title slots (card, teaser, quick-links, plan-card, benefit-card and plan-details titles, the hero heading) accept any heading level, H1–H6, with the same look. Lists, quotes, several paragraphs and up to three buttons are fine in any content slot. Any block can sit in any section style: dark and light surfaces switch the content colors automatically (`PROJECT_DESIGN_SYSTEM.md` → Color contexts). The test page `/drafts/author-combinations` puts every section style and the main blocks under unusual content; check it at 1440, 768 and 425 px after style changes.
+
 Authoring notation:
 - `| a | b |` is one row of the block table.
 - `:name:` is an icon.
@@ -33,7 +35,7 @@ The `/footer` document has three sections:
 2. Lists. A list of plain links forms the first column. A list item with a nested list is a group: a heading link plus its sub-links.
 3. The legal links (external links open in a new tab) and the © and "Last updated" paragraphs.
 
-Desktop: a five-column grid. Mobile: stacked rows with dividers.
+Desktop: a five-column grid; the columns share the width in the design's proportions, never get narrower than their links, and the last one ends on the frame's right edge. Mobile: stacked rows with dividers.
 
 ## Page blocks
 
@@ -145,7 +147,7 @@ These blocks have no design in the PDFs; they are built from the design tokens. 
 
 ### Page template
 Set Metadata `Template: content` (inner pages) or `Template: article` (wellness articles and news). On those pages:
-- default text and tables keep an 860 px width
+- default text keeps an 860 px measure; blocks (tables, documents, accordions, cards) fill the content column
 - the navy hero title may run 860 px wide
 
 The page header is `hero (navy)`:
@@ -234,7 +236,7 @@ No new block:
 - Links to other sites and to PDFs open in a new tab, with a trailing icon and screen-reader text ("opens in a new tab", "PDF").
 
 ### 404 page
-`404.html`: navy header, search field, homepage link, and a "Go back" button when the visitor came from this site.
+`404.html`: navy header, search field with suggestions (pre-filled with the words of the missing address), homepage link, and a "Go back" button when the visitor came from this site. Its inner box is a `<section>`, not a `<div>`, so the page decoration doesn't mistake it for a block.
 
 ### Site-wide link behaviour
 - **Local preview:** the preview serves documents under `/content/`. Internal links and GET forms (the search fields) keep that prefix automatically (`keepPreviewPrefix` in `scripts/scripts.js`), so every call to action works in the preview. Nothing changes on the live site.
@@ -252,6 +254,10 @@ The boilerplate fragment loader.
 | Homepage `/index` | hero (home), quick-links, cards (feature), teaser, cards (outline) |
 | Benefits & coverage | hero (split), plan-cards, benefit-cards, benefit-cards (two-up), cards (resource), cards (outline) |
 | MMCP | hero (navy), columns (intro), plan-details, columns (terms), accordion |
-| Inner content pages (planned) | hero (navy), default content, cards (resource), accordion, benefit-cards, table, documents, videos, section-nav |
-| Articles and news (planned) | hero (navy), default content, table, section-nav; the archives use article-list |
+| CHCB, HDHP | as MMCP |
+| Inner content pages | hero (navy), default content, cards (resource), accordion, benefit-cards, table, documents, videos, section-nav |
+| Articles and news | hero (navy), default content, table, section-nav; the archives use article-list |
+| Site map | hero (navy), default content (nested lists, generated) |
 | Tools | `/benefits-coverage/benefit-lookup` (benefit-lookup), `…/fsa/calculator` (fsa-calculator), `/search` (search) |
+
+`widget` is a boilerplate block that no page uses.
