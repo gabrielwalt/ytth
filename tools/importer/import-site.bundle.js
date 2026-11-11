@@ -370,6 +370,70 @@ var CustomImportScript = (() => {
     });
     flush(null);
   }
+  function typedBulletLists(root, document) {
+    const BULLET = /^\s*[•·▪●◦]\s*/;
+    root.querySelectorAll("p").forEach((p) => {
+      const lines = [[]];
+      [...p.childNodes].forEach((n) => {
+        if (n.nodeName === "BR") lines.push([]);
+        else lines[lines.length - 1].push(n);
+      });
+      const used = lines.filter((l) => l.some((n) => n.textContent.trim() || n.nodeName === "IMG"));
+      const first = (l) => {
+        const w = document.createTreeWalker(l.find((n) => n.textContent.trim()) || l[0], 4);
+        let t = l[0].nodeType === 3 ? l[0] : w.nextNode();
+        while (t && !t.textContent.trim()) t = w.nextNode();
+        return t;
+      };
+      if (!used.length || !used.every((l) => {
+        var _a;
+        return BULLET.test(((_a = first(l)) == null ? void 0 : _a.textContent) || "");
+      })) return;
+      const ul = document.createElement("ul");
+      used.forEach((l) => {
+        const t = first(l);
+        t.textContent = t.textContent.replace(BULLET, "");
+        const li = document.createElement("li");
+        li.append(...l);
+        ul.append(li);
+      });
+      p.replaceWith(ul);
+    });
+    const DASH = /^\s*[-–]\s+/;
+    const starts = (el) => (el == null ? void 0 : el.tagName) === "P" && DASH.test(el.textContent) && !el.querySelector("br");
+    root.querySelectorAll("p").forEach((p) => {
+      if (!p.isConnected || !starts(p) || starts(p.previousElementSibling)) return;
+      const run = [p];
+      while (starts(run[run.length - 1].nextElementSibling)) {
+        run.push(run[run.length - 1].nextElementSibling);
+      }
+      if (run.length < 2) return;
+      const ul = document.createElement("ul");
+      p.before(ul);
+      run.forEach((item) => {
+        const w = document.createTreeWalker(item, 4);
+        let t = w.nextNode();
+        while (t && !t.textContent.trim()) t = w.nextNode();
+        if (t) t.textContent = t.textContent.replace(DASH, "");
+        const li = document.createElement("li");
+        li.append(...item.childNodes);
+        ul.append(li);
+        item.remove();
+      });
+    });
+    root.querySelectorAll(":is(ul, ol) > :is(ul, ol)").forEach((sub) => {
+      const prev = sub.previousElementSibling;
+      if ((prev == null ? void 0 : prev.nodeName) === "LI") prev.append(sub);
+    });
+    root.querySelectorAll("li").forEach((li) => {
+      const kids = [...li.childNodes].filter((n) => n.nodeType === 1 || n.textContent.trim());
+      const prev = li.previousElementSibling;
+      if (kids.length === 1 && /^(UL|OL)$/.test(kids[0].nodeName) && (prev == null ? void 0 : prev.nodeName) === "LI") {
+        prev.append(kids[0]);
+        li.remove();
+      }
+    });
+  }
   var block = (name, rows, document) => {
     const t = WebImporter.DOMUtils.createTable([[name], ...rows], document);
     t.dataset.blockTable = "true";
@@ -1076,6 +1140,7 @@ var CustomImportScript = (() => {
       rewriteLinks(root);
       if (!videos) {
         paragraphize(root, document);
+        typedBulletLists(root, document);
         transformDocumentLists(root, document);
       }
       if (/interactive tool/.test(entry.template)) {

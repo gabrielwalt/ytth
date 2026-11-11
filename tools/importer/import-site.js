@@ -228,6 +228,79 @@ function paragraphize(container, document) {
 }
 
 /**
+ * Lists typed as text ("• FSA Claim Form<br>• Health FSA Calculator"): a paragraph whose lines
+ * all start with a bullet character becomes a real list, so it gets the site's bullets and
+ * indent like every other list (also inside blocks, e.g. resource tiles).
+ * @param {Element} root The content root
+ * @param {Document} document The document
+ */
+function typedBulletLists(root, document) {
+  const BULLET = /^\s*[•·▪●◦]\s*/;
+  root.querySelectorAll('p').forEach((p) => {
+    const lines = [[]];
+    [...p.childNodes].forEach((n) => {
+      if (n.nodeName === 'BR') lines.push([]);
+      else lines[lines.length - 1].push(n);
+    });
+    const used = lines.filter((l) => l.some((n) => n.textContent.trim() || n.nodeName === 'IMG'));
+    const first = (l) => {
+      const w = document.createTreeWalker(l.find((n) => n.textContent.trim()) || l[0], 4);
+      let t = l[0].nodeType === 3 ? l[0] : w.nextNode();
+      while (t && !t.textContent.trim()) t = w.nextNode();
+      return t;
+    };
+    if (!used.length || !used.every((l) => BULLET.test(first(l)?.textContent || ''))) return;
+    const ul = document.createElement('ul');
+    used.forEach((l) => {
+      const t = first(l);
+      t.textContent = t.textContent.replace(BULLET, '');
+      const li = document.createElement('li');
+      li.append(...l);
+      ul.append(li);
+    });
+    p.replaceWith(ul);
+  });
+  // two or more consecutive paragraphs typed as dash items ("- The first number is …")
+  const DASH = /^\s*[-–]\s+/;
+  const starts = (el) => el?.tagName === 'P' && DASH.test(el.textContent) && !el.querySelector('br');
+  root.querySelectorAll('p').forEach((p) => {
+    if (!p.isConnected || !starts(p) || starts(p.previousElementSibling)) return;
+    const run = [p];
+    while (starts(run[run.length - 1].nextElementSibling)) {
+      run.push(run[run.length - 1].nextElementSibling);
+    }
+    if (run.length < 2) return;
+    const ul = document.createElement('ul');
+    p.before(ul);
+    run.forEach((item) => {
+      const w = document.createTreeWalker(item, 4);
+      let t = w.nextNode();
+      while (t && !t.textContent.trim()) t = w.nextNode();
+      if (t) t.textContent = t.textContent.replace(DASH, '');
+      const li = document.createElement('li');
+      li.append(...item.childNodes);
+      ul.append(li);
+      item.remove();
+    });
+  });
+  // a sub-list placed directly in a list (the dash items above were a <dl> inside a <ul>), or
+  // a list item that holds nothing but a sub-list, belongs to the item before it (otherwise it
+  // shows as an empty bullet)
+  root.querySelectorAll(':is(ul, ol) > :is(ul, ol)').forEach((sub) => {
+    const prev = sub.previousElementSibling;
+    if (prev?.nodeName === 'LI') prev.append(sub);
+  });
+  root.querySelectorAll('li').forEach((li) => {
+    const kids = [...li.childNodes].filter((n) => n.nodeType === 1 || n.textContent.trim());
+    const prev = li.previousElementSibling;
+    if (kids.length === 1 && /^(UL|OL)$/.test(kids[0].nodeName) && prev?.nodeName === 'LI') {
+      prev.append(kids[0]);
+      li.remove();
+    }
+  });
+}
+
+/**
  * Builds a block table.
  * @param {string} name Block name (with variant)
  * @param {Array<Array>} rows Rows of cells
@@ -1045,6 +1118,7 @@ export default {
     rewriteLinks(root);
     if (!videos) {
       paragraphize(root, document);
+      typedBulletLists(root, document);
       transformDocumentLists(root, document);
     }
     // tools: replace the old server forms with the new blocks

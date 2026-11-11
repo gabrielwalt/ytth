@@ -80,6 +80,7 @@ What it does on each page:
 - **Content patterns:**
   - icon card grids (`.contentbox`) and sibling icon columns → `Cards (resource)`; each tile keeps its icon: the old icon-font class is mapped to the hexagon library (`ICONS` in the script, `migration-work/icons/icon-map.json`) and written as a `:hex-…:` paragraph
   - a page whose content starts at h3 (no h2) gets its headings moved up one level
+  - lists typed as text become real lists: a paragraph whose lines all start with "•" (FSA "Forms & tools", Retirement "Coverage options"), and two or more consecutive paragraphs starting with "- "; a sub-list placed directly in a list joins the item before it (no empty bullets)
   - the Contact Us side box "Website feedback & technical issues?" follows the content (only boxes outside the content column)
   - the Retirement side box is dropped: its gradient image and photo (the photo is a header photo now) and its phone line, which becomes a reference to `/fragments/retirement-specialist-contact` after the content; side-box gradients (`linkimgbk*`) are dropped everywhere
   - collapsible panels (`.content-panel-default`) → `Accordion (closed)`
