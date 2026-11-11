@@ -64,6 +64,17 @@ main > .section > .accordion-wrapper {
   margin-top: 16px;
 }
 
+/* headings inside an answer stay below the question's size (any level an author uses) */
+.accordion .accordion-item-body :is(h1, h2, h3, h4, h5, h6) {
+  font-size: var(--heading-font-size-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--heading-line-height-xs);
+}
+
+.accordion .accordion-item-body > * + :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 24px;
+}
+
 @media (width >= 900px) {
   main > .section > .accordion-wrapper {
     margin-top: 24px;

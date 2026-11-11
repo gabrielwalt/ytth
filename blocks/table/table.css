@@ -41,6 +41,11 @@ main > .section > .table-wrapper {
   background: var(--color-surface-2);
 }
 
+/* a title cell spanning the table may wrap */
+.table th[colspan] {
+  white-space: normal;
+}
+
 .table td > :is(p, ul, ol) {
   margin: 0;
 }
@@ -54,6 +59,13 @@ main > .section > .table-wrapper {
   padding: 8px 12px;
   font-size: var(--body-font-size-s);
   line-height: var(--body-line-height-s);
+}
+
+/* a one-cell row inside the table is a subheading */
+.table tbody tr.table-subheading td {
+  background: var(--color-white);
+  color: var(--color-navy);
+  font-weight: var(--font-weight-bold);
 }
 
 /* wide tables keep readable columns and scroll on small screens */

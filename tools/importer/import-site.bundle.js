@@ -226,6 +226,35 @@ var CustomImportScript = (() => {
     root.querySelectorAll("a").forEach((a) => {
       if (!a.textContent.trim() && !a.querySelector("img")) a.remove();
     });
+    root.querySelectorAll('[style*="font-weight"]').forEach((el) => {
+      const style = el.getAttribute("style").toLowerCase();
+      if (!/font-weight\s*:\s*(bold|[6-9]00)/.test(style) || el.closest("h1, h2, h3, h4, h5, h6, strong, th")) return;
+      const doc = el.ownerDocument;
+      const size = style.match(/font-size\s*:\s*([\d.]+)(em|rem|px)/);
+      const larger = size && (size[2] === "px" && Number(size[1]) >= 18 || size[2] !== "px" && Number(size[1]) >= 1.1);
+      const words = el.textContent.trim().split(/\s+/).length;
+      if (/^(DIV|P)$/.test(el.nodeName) && larger && words <= 14 && !el.querySelector("div, p, ul, ol, table")) {
+        const h = doc.createElement("h3");
+        h.append(...el.childNodes);
+        el.replaceWith(h);
+      } else if (el.nodeName === "SPAN" || el.nodeName === "FONT") {
+        const BLOCK = /^(DIV|P|UL|OL|LI|TABLE|DL|DT|DD|H[1-6]|BLOCKQUOTE)$/;
+        const nodes = [...el.childNodes];
+        const firstBlock = nodes.findIndex((n) => n.nodeType === 1 && (BLOCK.test(n.nodeName) || n.querySelector("div, p, ul, ol, li, table, dl, dt, dd, h1, h2, h3, h4, h5, h6")));
+        const inline = firstBlock < 0 ? nodes : nodes.slice(0, firstBlock);
+        const s = doc.createElement("strong");
+        s.append(...inline);
+        if (firstBlock < 0) {
+          el.replaceWith(s);
+        } else {
+          el.replaceWith(...s.textContent.trim() ? [s] : [], ...el.childNodes);
+        }
+      } else if (!el.querySelector("div, p, ul, ol, table, h1, h2, h3, h4, h5, h6")) {
+        const s = doc.createElement("strong");
+        s.append(...el.childNodes);
+        el.append(s);
+      }
+    });
     root.querySelectorAll("[style]").forEach((el) => el.removeAttribute("style"));
   }
   function rewriteLinks(root) {
@@ -715,6 +744,29 @@ var CustomImportScript = (() => {
       } = findContent(document);
       if (h1El && root.contains(h1El)) h1El.remove();
       root.querySelectorAll('.h2PageHeader, [id$="PageCntnt_divHeader"]').forEach((el) => el.remove());
+      document.querySelectorAll(".webfeedback").forEach((box) => {
+        if (root.contains(box)) return;
+        const out = document.createElement("div");
+        const heading = box.querySelector("h2, h3");
+        if (heading) {
+          const h = document.createElement("h2");
+          h.textContent = heading.textContent.replace(/\s+/g, " ").trim();
+          out.append(h);
+        }
+        box.querySelectorAll(":scope span").forEach((s) => {
+          if (s.closest("h2, h3") || !s.textContent.trim()) return;
+          const p = document.createElement("p");
+          p.append(...s.childNodes);
+          out.append(p);
+        });
+        box.querySelectorAll("a[href]").forEach((a) => {
+          if (out.contains(a) || !a.textContent.trim() || a.closest("span")) return;
+          const p = document.createElement("p");
+          p.append(a);
+          out.append(p);
+        });
+        root.append(out);
+      });
       cleanup(root);
       const isArticle = /wellness article|news|image-only|campaign/.test(entry.template || "");
       const title = entry.forceTitle ? entry.title : sentenceCase(h1 && !/^yourtracktohealth$/i.test(h1) ? h1 : entry.title);

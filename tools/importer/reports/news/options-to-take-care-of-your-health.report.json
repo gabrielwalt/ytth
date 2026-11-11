@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/NewsPage.aspx?menuname=LatestNewsKnowWhereToGo",
   "path": "news/options-to-take-care-of-your-health",
-  "timestamp": "2026-11-11T13:23:17.733Z",
+  "timestamp": "2026-11-11T14:19:02.275Z",
   "source": "https://yourtracktohealth.com/NewsPage.aspx?menuname=LatestNewsKnowWhereToGo",
   "template": "news / announcement",
   "merged": false,
   "title": "Options to take care of your health",
-  "importScript": "cd2d61278477"
+  "importScript": "a5013cda4e22"
 }

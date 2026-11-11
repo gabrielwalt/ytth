@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/NewsPage.aspx?menuname=LatestNews2020Form1095",
   "path": "news/form-1095-b-notice",
-  "timestamp": "2026-11-11T13:35:45.873Z",
+  "timestamp": "2026-11-11T14:31:49.105Z",
   "source": "https://yourtracktohealth.com/NewsPage.aspx?menuname=LatestNews2020Form1095",
   "template": "news / announcement",
   "merged": false,
   "title": "Important notice regarding form 1095-b",
-  "importScript": "cd2d61278477"
+  "importScript": "a5013cda4e22"
 }

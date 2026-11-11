@@ -2,10 +2,10 @@
   "status": "success",
   "url": "https://yourtracktohealth.com/WellnessPageContent.aspx?menuname=BackJointPain",
   "path": "health-programs/back-joint-pain",
-  "timestamp": "2026-11-11T13:22:16.778Z",
+  "timestamp": "2026-11-11T14:18:02.572Z",
   "source": "https://yourtracktohealth.com/WellnessPageContent.aspx?menuname=BackJointPain",
   "template": "wellness article",
   "merged": false,
   "title": "A map for helping manage pain",
-  "importScript": "cd2d61278477"
+  "importScript": "a5013cda4e22"
 }
