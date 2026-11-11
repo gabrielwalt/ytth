@@ -108,25 +108,45 @@ main > .section.has-section-nav > .section-nav-wrapper.has-toc {
 
 /* ---------- tree ---------- */
 
-/* the column's titles: the section (a link) and "On this page" */
+/*
+ * The column's titles, "On this page" and "In this section": the small-screen bars' label
+ * (muted uppercase) over a rule. Shown on wide screens; on small screens the bar names it.
+ */
 .toc .toc-title,
-.section-nav a.section-nav-root:any-link {
-  display: block;
-  margin: 8px 0 0;
+.section-nav .section-nav-title {
+  display: none;
+  margin: 0;
   border-bottom: 2px solid var(--color-border);
   padding: 0 0 12px;
-  color: var(--color-navy);
+  color: var(--color-text-muted);
   font-size: var(--eyebrow-font-size);
   font-weight: var(--font-weight-bold);
   line-height: var(--eyebrow-line-height);
   letter-spacing: var(--eyebrow-letter-spacing);
-  text-decoration: none;
   text-transform: uppercase;
+}
+
+/* the section's main page: the tree's first row, bold navy (all screens) */
+.section-nav a.section-nav-root:any-link {
+  display: block;
+  margin: 3px 0;
+  border-bottom: 1px solid var(--color-divider);
+  padding: 9px 8px 9px 12px;
+  color: var(--color-navy);
+  font-weight: var(--font-weight-bold);
+  line-height: 22px;
+  text-decoration: none;
 }
 
 .section-nav a.section-nav-root:hover {
   color: var(--color-teal);
   text-decoration: underline;
+}
+
+.section-nav a.section-nav-root[aria-current='page'] {
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+  background: var(--color-surface-1);
+  box-shadow: inset 3px 0 0 var(--color-teal);
 }
 
 .section-nav ul {
@@ -247,11 +267,6 @@ main > .section.has-section-nav > .section-nav-wrapper.has-toc {
 }
 
 /* ---------- "On this page" rows: the tree's rows, one level, regular weight ---------- */
-.toc .toc-title {
-  /* the title is the panel's first line on small screens: hidden there (the bar names it) */
-  display: none;
-}
-
 .toc .toc-list {
   margin: 0;
   padding: 4px 0 0;
@@ -351,9 +366,9 @@ main > .section.has-section-nav > .section-nav-wrapper.has-toc {
     display: block;
   }
 
-  .toc .toc-title {
+  .toc .toc-title,
+  .section-nav .section-nav-title {
     display: block;
-    margin-top: 0;
   }
 
   .toc:not([hidden]) + .section-nav {
@@ -361,6 +376,6 @@ main > .section.has-section-nav > .section-nav-wrapper.has-toc {
   }
 
   .section-nav a.section-nav-root:any-link {
-    margin-top: 0;
+    margin-top: 4px;
   }
 }

@@ -179,7 +179,7 @@ Replaces the current site's left-hand menu, its breadcrumbs, the wellness "Resou
 - **On this page** (`scripts/toc.js`), following the usual practice for tables of contents:
   - **Only on long pages:** at least 3 entries, and the content is more than 1.75 window heights long (rechecked on resize). A page of tiles such as FSA has none on desktop, where everything is in view, and a collapsed one on phones, where the tiles stack.
   - **Entries:** the h2 headings, including those inside blocks (plan tables, tiles, fragments) but not inside accordion items (hidden until opened); with fewer than 3 h2s, the h3s.
-  - **Desktop (1200 px and up):** the top of the sticky side column, above the section tree, always open, with the tree's look (eyebrow title over a rule, the same rows and dividers, the section in view marked like the current page). It doesn't push the content down and stays in view while reading.
+  - **Desktop (1200 px and up):** the top of the sticky side column, above the section tree, always open, with the tree's look (the same rows and dividers, the section in view marked like the current page). Both parts of the column carry the small-screen bars' titles, "On this page" and "In this section" (muted uppercase over a rule); the section's main page is the tree's first row (bold navy), on all screens. It doesn't push the content down and stays in view while reading.
   - **Single column:** a collapsed bar identical to "In this section" ("On this page" + "7 sections"); the two bars sit side by side from 600 px and stack on phones. A chosen link closes the bar.
 - **Skip link:** "Skip to content" is the first focus stop of every page.
 

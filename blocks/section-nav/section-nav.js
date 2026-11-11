@@ -140,7 +140,11 @@ export default async function decorate(block) {
   head.href = root.href;
   head.textContent = root.label;
   if (root === current) head.setAttribute('aria-current', 'page');
-  panel.append(head, renderList(root.children, open, current, 1));
+  // wide screens: the column's title, as the small-screen bar names it
+  const title = document.createElement('p');
+  title.className = 'section-nav-title';
+  title.textContent = 'In this section';
+  panel.append(title, head, renderList(root.children, open, current, 1));
   nav.append(toggle, panel);
   block.replaceChildren(nav);
 
