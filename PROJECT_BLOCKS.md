@@ -176,7 +176,11 @@ Replaces the current site's left-hand menu, its breadcrumbs, the wellness "Resou
 
 ### Breadcrumbs and "On this page" (automatic, not authored)
 - **Breadcrumbs** (`scripts/breadcrumbs.js`): Home › section › … › current page, built from the same `/fragments/section-nav` tree as the side menu (shared code: `scripts/site-tree.js`). They take the place of the section eyebrow in the navy page header; on MMCP/CHCB/HDHP (designed eyebrow "Medical plan details") they sit above it. Not on the homepage or section main pages. Phones show only the parent ("‹ Medical plans"). `nav aria-label="Breadcrumb"`, the current page `aria-current="page"`. Supersedes the earlier "no breadcrumbs" decision.
-- **On this page** (`scripts/toc.js`): a box at the top of the content column of every page with the side menu, first in reading order. Lists the h2 headings of the page including those inside blocks (plan tables, tiles, fragments) but not inside accordion items (hidden until opened); with fewer than 3 h2s it lists the h3s; shown from 3 entries; two columns from 7. Open on desktop, collapsed on phones. The heading in view is marked.
+- **On this page** (`scripts/toc.js`), following the usual practice for tables of contents:
+  - **Only on long pages:** at least 3 entries, and the content is more than 1.75 window heights long (rechecked on resize). A page of tiles such as FSA has none on desktop, where everything is in view, and a collapsed one on phones, where the tiles stack.
+  - **Entries:** the h2 headings, including those inside blocks (plan tables, tiles, fragments) but not inside accordion items (hidden until opened); with fewer than 3 h2s, the h3s.
+  - **Desktop (1200 px and up):** the top of the sticky side column, above the section tree, always open, with the tree's look (eyebrow title over a rule, the same rows and dividers, the section in view marked like the current page). It doesn't push the content down and stays in view while reading.
+  - **Single column:** a collapsed bar identical to "In this section" ("On this page" + "7 sections"); the two bars sit side by side from 600 px and stack on phones. A chosen link closes the bar.
 - **Skip link:** "Skip to content" is the first focus stop of every page.
 
 ### Table (`table`)

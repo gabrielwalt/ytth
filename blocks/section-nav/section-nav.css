@@ -3,6 +3,9 @@
  * Desktop (>= 1200px): 280px sticky column + 80px gap + the content column, together the
  * 1320px content frame. Text keeps its 860px measure; blocks fill the column.
  * Smaller screens: a collapsible bar above the content (accordion look).
+ * "On this page" (scripts/toc.js) lives in the same column and shares every part of this look:
+ * the same disclosure bar and panel on small screens, the same eyebrow title, rows and
+ * current-item mark in the sticky column on desktop.
  */
 
 /* rules are scoped by component part; their order follows the layout, not specificity */
@@ -14,8 +17,23 @@ main > .section.has-section-nav > .section-nav-wrapper {
   margin-bottom: 32px;
 }
 
+/* ---------- single column: "On this page" and "In this section" side by side (tablet) ---------- */
+main > .section.has-section-nav > .section-nav-wrapper.has-toc {
+  display: grid;
+  gap: 12px;
+  align-items: start;
+}
+
+@media (width >= 600px) {
+  main > .section.has-section-nav > .section-nav-wrapper.has-toc {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-m);
+  }
+}
+
 /* ---------- disclosure bar (small screens) ---------- */
-.section-nav .section-nav-disclosure {
+.section-nav .section-nav-disclosure,
+.toc .toc-disclosure {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -33,7 +51,8 @@ main > .section.has-section-nav > .section-nav-wrapper {
   cursor: pointer;
 }
 
-.section-nav .section-nav-disclosure::after {
+.section-nav .section-nav-disclosure::after,
+.toc .toc-disclosure::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -44,16 +63,19 @@ main > .section.has-section-nav > .section-nav-wrapper {
   transform: translateY(-50%);
 }
 
-.section-nav .section-nav-disclosure[aria-expanded='true']::after {
+.section-nav .section-nav-disclosure[aria-expanded='true']::after,
+.toc .toc-disclosure[aria-expanded='true']::after {
   background-image: url('../../icons/minus-circle.svg');
 }
 
-.section-nav .section-nav-disclosure[aria-expanded='true'] {
+.section-nav .section-nav-disclosure[aria-expanded='true'],
+.toc .toc-disclosure[aria-expanded='true'] {
   border-bottom-color: transparent;
   border-radius: var(--radius-s) 0 0;
 }
 
-.section-nav .section-nav-disclosure-label {
+.section-nav .section-nav-disclosure-label,
+.toc .toc-disclosure-label {
   color: var(--color-text-muted);
   font-size: var(--eyebrow-font-size);
   font-weight: var(--font-weight-bold);
@@ -62,13 +84,15 @@ main > .section.has-section-nav > .section-nav-wrapper {
   text-transform: uppercase;
 }
 
-.section-nav .section-nav-disclosure-current {
+.section-nav .section-nav-disclosure-current,
+.toc .toc-disclosure-current {
   font-size: var(--heading-font-size-xs);
   font-weight: var(--font-weight-bold);
   line-height: var(--heading-line-height-xs);
 }
 
-.section-nav .section-nav-panel {
+.section-nav .section-nav-panel,
+.toc .toc-panel {
   display: none;
   border: var(--border);
   border-top: 0;
@@ -77,11 +101,15 @@ main > .section.has-section-nav > .section-nav-wrapper {
   background: var(--color-white);
 }
 
-.section-nav .section-nav-disclosure[aria-expanded='true'] + .section-nav-panel {
+.section-nav .section-nav-disclosure[aria-expanded='true'] + .section-nav-panel,
+.toc .toc-disclosure[aria-expanded='true'] + .toc-panel {
   display: block;
 }
 
 /* ---------- tree ---------- */
+
+/* the column's titles: the section (a link) and "On this page" */
+.toc .toc-title,
 .section-nav a.section-nav-root:any-link {
   display: block;
   margin: 8px 0 0;
@@ -201,8 +229,8 @@ main > .section.has-section-nav > .section-nav-wrapper {
   content: '';
   width: 0;
   height: 0;
-  border-inline: 4.5px solid transparent;
-  border-top: 4px solid var(--color-teal-light);
+  border-inline: 6px solid transparent;
+  border-top: 6px solid var(--color-teal-light);
   transition: transform 0.2s ease;
 }
 
@@ -216,6 +244,51 @@ main > .section.has-section-nav > .section-nav-wrapper {
 
 .section-nav li:has(> .section-nav-item > .section-nav-toggle[aria-expanded='false']) > ul {
   display: none;
+}
+
+/* ---------- "On this page" rows: the tree's rows, one level, regular weight ---------- */
+.toc .toc-title {
+  /* the title is the panel's first line on small screens: hidden there (the bar names it) */
+  display: none;
+}
+
+.toc .toc-list {
+  margin: 0;
+  padding: 4px 0 0;
+  list-style: none;
+}
+
+.toc .toc-list li {
+  margin: 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.toc .toc-list li:last-child {
+  border-bottom: 0;
+}
+
+.toc .toc-list a:any-link {
+  display: block;
+  margin: 3px 0;
+  padding: 6px 8px 6px 12px;
+  color: var(--color-text);
+  font-weight: var(--font-weight-regular);
+  line-height: 22px;
+  text-decoration: none;
+}
+
+.toc .toc-list a:hover {
+  color: var(--color-teal);
+  text-decoration: underline;
+}
+
+/* the section in view: the tree's current-page mark */
+.toc .toc-list a[aria-current] {
+  border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+  background: var(--color-surface-1);
+  box-shadow: inset 3px 0 0 var(--color-teal);
+  color: var(--color-navy);
+  font-weight: var(--font-weight-medium);
 }
 
 /* ---------- desktop: sticky left column ---------- */
@@ -262,14 +335,29 @@ main > .section.has-section-nav > .section-nav-wrapper {
     margin-top: 0;
   }
 
-  .section-nav .section-nav-disclosure {
+  .section-nav .section-nav-disclosure,
+  .toc .toc-disclosure {
     display: none;
   }
 
-  .section-nav .section-nav-panel {
+  .section-nav .section-nav-panel,
+  .toc .toc-panel {
     display: block;
     border: 0;
     padding: 0;
+  }
+
+  main > .section.has-section-nav > .section-nav-wrapper.has-toc {
+    display: block;
+  }
+
+  .toc .toc-title {
+    display: block;
+    margin-top: 0;
+  }
+
+  .toc:not([hidden]) + .section-nav {
+    margin-top: var(--space-l);
   }
 
   .section-nav a.section-nav-root:any-link {

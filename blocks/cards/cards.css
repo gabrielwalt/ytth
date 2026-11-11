@@ -276,7 +276,7 @@ body:is(.content, .article) main > .section > .cards-wrapper:has(.cards.resource
   margin-top: var(--space-xl);
 }
 
-body:is(.content, .article) main > .section.has-section-nav > :is(.section-nav-wrapper, .toc-wrapper) + .cards-wrapper:has(.cards.resource) {
+body:is(.content, .article) main > .section.has-section-nav > .section-nav-wrapper + .cards-wrapper:has(.cards.resource) {
   margin-top: 0;
 }
 
