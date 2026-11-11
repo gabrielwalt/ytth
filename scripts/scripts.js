@@ -306,6 +306,36 @@ export function decorateLinkTypes(root) {
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
+/**
+ * Pictures inside running text (a paragraph or list item that also has text):
+ * - icon-size images (up to 48 px, e.g. "Tap the Share button [icon]") stay in the line,
+ *   at text height: class image-inline
+ * - larger ones (the articles' side images) float beside the text on wide screens and sit
+ *   centered between the paragraphs on small ones: class image-aside
+ * The size comes from the width/height the delivery adds to every image; without them
+ * (local preview) it is read when the image has loaded.
+ * @param {Element} main The main element
+ */
+function decorateInlineImages(main) {
+  main.querySelectorAll('.default-content-wrapper :is(p, li) picture').forEach((picture) => {
+    const parent = picture.closest('p, li');
+    const text = [...parent.childNodes].some((n) => n !== picture && !n.contains?.(picture)
+      && n.textContent.trim() && !n.querySelector?.('picture'));
+    if (!text) return;
+    const img = picture.querySelector('img');
+    if (!img) return;
+    const classify = (w, h) => {
+      if (!w || !h) return;
+      picture.classList.add(w <= 48 && h <= 48 ? 'image-inline' : 'image-aside');
+    };
+    const w = Number(img.getAttribute('width'));
+    const h = Number(img.getAttribute('height'));
+    if (w && h) classify(w, h);
+    else if (img.complete) classify(img.naturalWidth, img.naturalHeight);
+    else img.addEventListener('load', () => classify(img.naturalWidth, img.naturalHeight), { once: true });
+  });
+}
+
 export function decorateMain(main) {
   applyUnprocessedMetadata(main);
   decorateIconTokens(main);
@@ -315,6 +345,7 @@ export function decorateMain(main) {
   decorateBlocks(main);
   decorateButtons(main);
   // page content only: header and footer fragments are decorated detached and style their own links
+  decorateInlineImages(main);
   if (main.isConnected) {
     main.querySelectorAll('.default-content-wrapper').forEach((wrapper) => {
       linkPhoneNumbers(wrapper);

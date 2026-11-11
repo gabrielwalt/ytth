@@ -756,6 +756,44 @@ main .default-content-wrapper p:has(> picture:only-child) {
   margin: var(--space-l) 0;
 }
 
+/* pictures inside running text (scripts.js → decorateInlineImages) */
+main .default-content-wrapper picture.image-inline {
+  display: inline;
+}
+
+main .default-content-wrapper picture.image-inline img {
+  display: inline-block;
+  width: auto;
+  height: 1.5em;
+  margin: 0 0.1em 0 0.2em;
+  vertical-align: -0.4em;
+}
+
+main .default-content-wrapper picture.image-aside {
+  width: fit-content;
+  max-width: min(100%, 280px);
+  margin: var(--space-m) auto;
+}
+
+@media (width >= 900px) {
+  main .default-content-wrapper picture.image-aside {
+    float: right;
+    max-width: 240px;
+    margin: 4px 0 var(--space-m) var(--space-l);
+  }
+
+  /* the next section heading starts below a floated side image */
+  main .default-content-wrapper > :is(h2, h3) {
+    clear: right;
+  }
+
+  main .default-content-wrapper::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
 main .default-content-wrapper p:has(> picture:only-child) + p > em:only-child {
   display: block;
   margin-top: calc(-1 * var(--space-m));

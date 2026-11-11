@@ -253,6 +253,12 @@ No new block:
 - vendor contact panels use `benefit-cards` (logo, phone, hours)
 - service topics use `accordion`
 
+### Images in running text (all default content)
+A picture inside a paragraph or list item that also has text (`scripts.js` → `decorateInlineImages`):
+- **icon-size** (up to 48 × 48 px, e.g. "Tap the **Share** button [icon]"): stays in the line, at text height
+- **larger** (the articles' side images): floats right of the text from 900 px (max 240 px wide), centered between the paragraphs on smaller screens; the next h2/h3 starts below it
+The size comes from the width and height the delivery adds to each image, so nothing moves. A picture alone in its paragraph stays a full-width content image.
+
 ### Automatic link handling (all default content)
 - Phone numbers become `tel:` links.
 - Links to other sites and to PDFs open in a new tab, with a trailing icon and screen-reader text ("opens in a new tab", "PDF").
