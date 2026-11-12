@@ -18,6 +18,10 @@ main > .section > .hero-wrapper {
 /* hero tokens: photo veils and scrims measured from the designs */
 .hero {
   --hero-split-wash: linear-gradient(90deg, #e4e1df 25.7%, #d2d6d9 55.6%);
+
+  /* eased fades (many stops, so the photo dissolves without a visible band) */
+  --hero-navy-fade: linear-gradient(90deg, var(--color-navy) 0%, rgb(28 53 94 / 97%) 10%, rgb(28 53 94 / 90%) 20%, rgb(28 53 94 / 76%) 30%, rgb(28 53 94 / 56%) 40%, rgb(28 53 94 / 36%) 50%, rgb(28 53 94 / 18%) 60%, rgb(28 53 94 / 6%) 70%, rgb(28 53 94 / 0%) 80%);
+  --hero-photo-fade-up: linear-gradient(180deg, #000 45%, rgb(0 0 0 / 85%) 60%, rgb(0 0 0 / 55%) 72%, rgb(0 0 0 / 25%) 84%, transparent 100%);
   --hero-scrim: linear-gradient(180deg, rgb(0 0 0 / 15%) 0%, rgb(0 0 0 / 55%) 100%);
   --hero-scrim-desktop: linear-gradient(90deg, rgb(0 0 0 / 55%) 0%, rgb(0 0 0 / 15%) 55%, rgb(0 0 0 / 0%) 100%);
 
@@ -73,7 +77,7 @@ main > .section > .hero-wrapper {
   flex: 0 0 auto;
   height: 300px;
   overflow: hidden;
-  mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
+  mask-image: var(--hero-photo-fade-up);
 }
 
 .hero.split .hero-media picture,
@@ -120,9 +124,9 @@ main > .section > .hero-wrapper {
  * (depth on wide screens) and the tracks motif (three half-hexagons whose edges run on to the
  * right, bg-hex-tracks.svg). The motif is scaled to the band's height, so a short band shows
  * the whole figure smaller and a tall one larger; its rails reach the right edge at any width.
- * With a photo (a picture row): text always stays on plain navy. Wide screens: the photo fills
- * the right part of the band (from the end of the text column) and fades into the navy on its
- * left edge; the band keeps a minimum height so the photo can be seen. Small screens: the photo
+ * With a photo (a picture row): text always stays on (near) solid navy. Wide screens: the photo
+ * fills the band from about a third of its width and dissolves into the navy over its first
+ * ~80% (eased fade); the band keeps a minimum height so the photo can be seen. Small screens: the photo
  * is a band under the text, fading in from the navy above. An optional "Focus | 40%" row sets
  * the horizontal point of the photo that must stay in view (default: center).
  */
@@ -155,20 +159,21 @@ main > .section > .hero-wrapper {
 
 .hero.navy .hero-media {
   position: relative;
-  order: 2;
-  height: 200px;
+  flex: 0 0 auto;
+  height: 260px;
+  mask-image: var(--hero-photo-fade-up);
 }
 
 .hero.navy .hero-media img {
   object-position: var(--hero-focus, 50%) 30%;
 }
 
-/* the photo fades in from the navy (above it on small screens, left of it on wide ones) */
+/* small screens: the photo band sits on top (behind the floating header) and dissolves into the
+   navy below it (mask); wide screens: a navy veil fades it in from the left (see below) */
 .hero.navy .hero-media::after {
-  content: '';
+  content: none;
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, var(--color-navy) 0%, color-mix(in srgb, var(--color-navy) 0%, transparent) 55%);
 }
 
 .hero.navy .hero-content {
@@ -178,7 +183,8 @@ main > .section > .hero-wrapper {
 }
 
 .hero.navy:has(.hero-media) .hero-content {
-  padding-bottom: 8px;
+  margin-top: -40px;
+  padding-top: 0;
 }
 
 .hero.navy .hero-eyebrow {
@@ -212,7 +218,8 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
     margin-top: 73px;
   }
 
-  /* split: light panel left (two-tone gradient), photo right, fading into the panel */
+  /* split, as in the PDF: the photo fills the band; a light wash, solid behind the text,
+     dissolves into it over most of the width */
   .hero.split {
     display: block;
     min-height: 553px;
@@ -220,14 +227,23 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
 
   .hero.split .hero-media {
     position: absolute;
-    inset: 0 0 0 auto;
-    width: 50%;
+    inset: 0;
     height: auto;
-    mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
+    mask-image: none;
   }
 
   .hero.split .hero-media img {
-    object-position: var(--hero-focus, 50%) 30%;
+    object-position: var(--hero-focus, 80%) 35%;
+  }
+
+  /* the wash stays solid behind the text column (frame + 440 px) and fades out after it */
+  .hero.split .hero-media::after {
+    --hero-fade-start: calc(max(var(--gutter), (100vw - var(--container-wide)) / 2) + 460px);
+
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #e4e1df 0%, rgb(228 225 223 / 97%) var(--hero-fade-start), rgb(228 225 223 / 88%) calc(var(--hero-fade-start) + 80px), rgb(228 225 223 / 70%) calc(var(--hero-fade-start) + 170px), rgb(228 225 223 / 45%) calc(var(--hero-fade-start) + 270px), rgb(228 225 223 / 22%) calc(var(--hero-fade-start) + 380px), rgb(228 225 223 / 7%) calc(var(--hero-fade-start) + 490px), rgb(228 225 223 / 0%) calc(var(--hero-fade-start) + 600px));
   }
 
   .hero.split .hero-content {
@@ -273,7 +289,7 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
   .hero.navy:has(.hero-media) {
     /* the hero is full-bleed, so viewport units place the photo against the content frame */
     --hero-frame-left: max(var(--gutter), (100vw - var(--container-wide)) / 2);
-    --hero-photo-left: clamp(45vw, calc(var(--hero-frame-left) + 780px), 60vw);
+    --hero-photo-left: clamp(35vw, calc(var(--hero-frame-left) + 560px), 50vw);
 
     display: block;
     min-height: 392px;
@@ -283,6 +299,7 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
     position: absolute;
     inset: 0 0 0 var(--hero-photo-left);
     height: auto;
+    mask-image: none;
   }
 
   .hero.navy .hero-media img {
@@ -290,16 +307,19 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
   }
 
   .hero.navy .hero-media::after {
-    background: linear-gradient(90deg, var(--color-navy) 0%, color-mix(in srgb, var(--color-navy) 55%, transparent) 22%, color-mix(in srgb, var(--color-navy) 0%, transparent) 45%);
+    content: '';
+    background: var(--hero-navy-fade);
   }
 
   .hero.navy:has(.hero-media) .hero-content {
+    margin-top: 0;
+    padding-top: 155px;
     padding-bottom: 92px;
   }
 
-  /* the text column ends where the photo starts */
+  /* the text column may reach into the photo's first ~15%, where the navy is still near solid */
   .hero.navy:has(.hero-media) .hero-text {
-    max-width: min(var(--container-text), calc(var(--hero-photo-left) - var(--hero-frame-left) - 24px));
+    max-width: min(var(--container-text), calc(var(--hero-photo-left) - var(--hero-frame-left) + (100vw - var(--hero-photo-left)) * 0.15));
   }
 
   body:is(.content, .article) .hero.navy .hero-content {
