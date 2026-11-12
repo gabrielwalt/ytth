@@ -55,6 +55,10 @@
   line-height: var(--body-line-height-xl);
 }
 
+.columns.intro > div > div:first-child p + p {
+  margin-top: 12px;
+}
+
 .columns.intro > div > div:last-child > p:first-child {
   color: var(--color-black);
   font-weight: var(--font-weight-medium);
