@@ -172,6 +172,7 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
 }
 
 .benefit-cards a.benefit-phone:any-link {
+  white-space: nowrap;
   color: var(--color-navy);
   font-size: var(--phone-font-size);
   font-weight: var(--font-weight-bold);
@@ -229,7 +230,9 @@ main > .section > .benefit-cards-wrapper + .benefit-cards-wrapper {
   /* full width: text left, contact right-aligned */
   .benefit-cards .benefit-card-main {
     display: grid;
-    grid-template-columns: minmax(0, 836px) 1fr;
+
+    /* the contact column keeps room for a phone number on one line; the text gives way */
+    grid-template-columns: minmax(0, 836px) minmax(200px, 1fr);
     gap: 40px;
     padding-right: 36px;
   }
