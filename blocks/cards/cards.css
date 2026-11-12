@@ -64,6 +64,11 @@
   margin-top: 17.7px;
 }
 
+/* long cards (with lists): text after a list is body copy, not a lead-in */
+.cards .cards-card-body > :is(ul, ol) ~ p:not(.button-wrapper) {
+  font-weight: var(--font-weight-regular);
+}
+
 /* ---------- resource: borderless icon cards (on a grey section) ---------- */
 main > .section > .cards-wrapper:has(.cards.resource) {
   margin-top: 56px;

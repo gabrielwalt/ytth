@@ -365,6 +365,15 @@ li + li {
   margin-top: var(--space-xs);
 }
 
+/* a list item with text and a sub-list (DA wraps the text in a p): keep it tight like the others */
+li > p {
+  margin-bottom: 0;
+}
+
+li > :is(ul, ol) {
+  margin: var(--space-xs) 0 0;
+}
+
 strong,
 b {
   font-weight: var(--font-weight-bold);

@@ -418,3 +418,80 @@ main > .section:has(> .plan-details-wrapper) {
 .plan-details .plan-tooltip .plan-tooltip-popover p + p {
   margin-top: 8px;
 }
+
+/*
+ * Small screens: a row keeps its label on top and puts its values side by side (In-network |
+ * Out-of-network), each under a small column label, so the comparison stays visible and the
+ * table about half as long as when every value is stacked.
+ */
+@media (width < 900px) {
+  .plan-details .plan-details-row:has(> .plan-details-value ~ .plan-details-value) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    align-items: start;
+  }
+
+  .plan-details .plan-details-row:has(> .plan-details-value ~ .plan-details-value) > .plan-details-label {
+    grid-column: 1 / -1;
+  }
+
+  .plan-details .plan-details-row .plan-details-value,
+  .plan-details .plan-details-item .plan-details-value,
+  .plan-details .plan-details-item .plan-details-label + .plan-details-value {
+    margin-top: 10px;
+  }
+
+  .plan-details .plan-details-value-label {
+    margin-bottom: 2px;
+    color: var(--color-text-muted);
+    font-size: var(--eyebrow-font-size);
+    line-height: var(--eyebrow-line-height);
+    letter-spacing: var(--eyebrow-letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .plan-details .plan-details-value-text {
+    padding-top: 0;
+    line-height: 20px;
+  }
+
+  .plan-details .plan-details-item {
+    padding: 14px 16px 16px;
+  }
+
+  .plan-details .plan-details-major {
+    padding-bottom: 18px;
+  }
+
+  .plan-details .plan-details-label-only {
+    padding: 22px 16px 10px;
+  }
+}
+
+/* wide screens: a value repeated on consecutive rows shows once, centered across them */
+@media (width >= 900px) {
+  .plan-details .plan-details-merged-start {
+    position: relative;
+    align-self: stretch;
+  }
+
+  .plan-details .plan-details-merged-start .plan-details-value-text {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    height: var(--merge-height, auto);
+    padding-top: 0;
+  }
+
+  .plan-details .plan-details-merged .plan-details-value-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

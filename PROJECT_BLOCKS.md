@@ -128,7 +128,9 @@ The benefits table of a plan page (MMCP). The block reads each row's type from i
 | Item row without values (for example "Retail — 21-day supply") | A label row; on mobile it shows as a subheading |
 | One cell with an ordered list | Footnotes |
 
-On mobile, the rows stack: the label first, then each value with its column label.
+On mobile (below 900 px), the rows stack: the label first, then the values side by side (two columns when a row has two values), each under a small uppercase column label.
+
+**Merged values (desktop):** when consecutive item rows have the same value in a column (for example "Member pays 30% after deductible is met" for six copay rows), the block shows it once, centered over those rows, as the PDF design's merged cells do. Authors type the value in every row; the block merges it, and mobile and screen readers still get it on each row. Rows written as one value spanning both columns are not merged.
 
 **Info icons** (`:info:` next to Annual deductible, Coinsurance, Copays, Out-of-pocket) become tooltips. Each explains its term with the definition from the page's "Common terms" (the `columns (terms)` block). On a page without that block the icons stay decorative. The tooltip code is shared with `plan-cards` (`scripts/tooltip.js`; styles in `styles.css`). Hover, focus, click or tap opens it; a second click or Escape closes it.
 

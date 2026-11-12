@@ -104,6 +104,51 @@ function attachTermTooltips(root) {
   if (pending.length) document.addEventListener('fragment-loaded', attach);
 }
 
+/**
+ * As in the design (and the old grids), a value that repeats on consecutive item rows (the
+ * drug tiers' "Member pays 25% of R&C… costs") is shown once, centered across those rows, on
+ * wide screens. The repeated cells keep their text for screen readers (visually hidden); small
+ * screens show every value in its row.
+ * @param {Element} out The decorated table
+ */
+function mergeRepeatedValues(out) {
+  const runs = [];
+  let run = [];
+  [...out.children].forEach((el) => {
+    const isItem = el.classList.contains('plan-details-item') && !el.classList.contains('plan-details-label-only');
+    if (isItem) run.push(el);
+    else if (run.length) { runs.push(run); run = []; }
+  });
+  if (run.length) runs.push(run);
+  const merges = [];
+  runs.forEach((rows) => {
+    const cols = Math.max(0, ...rows.map((r) => r.querySelectorAll(':scope > .plan-details-value').length));
+    for (let j = 0; j < cols; j += 1) {
+      const cell = (r) => r.querySelectorAll(':scope > .plan-details-value')[j];
+      const text = (r) => (cell(r) && !cell(r).classList.contains('plan-details-value-span') ? cell(r).querySelector('.plan-details-value-text').textContent.trim() : '');
+      for (let a = 0; a < rows.length;) {
+        let b = a + 1;
+        while (b < rows.length && text(rows[b]) && text(rows[b]) === text(rows[a])) b += 1;
+        if (text(rows[a]) && b - a >= 2) {
+          const cells = rows.slice(a, b).map(cell);
+          cells[0].classList.add('plan-details-merged-start');
+          cells.slice(1).forEach((c) => c.classList.add('plan-details-merged'));
+          merges.push(cells);
+        }
+        a = b;
+      }
+    }
+  });
+  if (!merges.length) return;
+  const place = () => merges.forEach((cells) => {
+    const first = cells[0].getBoundingClientRect();
+    const last = cells[cells.length - 1].getBoundingClientRect();
+    cells[0].style.setProperty('--merge-height', `${Math.round(last.bottom - first.top)}px`);
+  });
+  requestAnimationFrame(place);
+  if ('ResizeObserver' in window) new ResizeObserver(place).observe(out);
+}
+
 export default function decorate(block) {
   const rows = [...block.children];
   const out = document.createElement('div');
@@ -218,6 +263,7 @@ export default function decorate(block) {
     if (prev && prev.classList.contains('plan-details-row')) prev.classList.add('plan-details-group-end');
   });
 
+  mergeRepeatedValues(out);
   block.replaceChildren(out);
   attachTermTooltips(out);
 }
