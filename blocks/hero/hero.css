@@ -17,7 +17,6 @@ main > .section > .hero-wrapper {
 
 /* hero tokens: photo veils and scrims measured from the designs */
 .hero {
-  --hero-split-veil: linear-gradient(118deg, rgb(228 225 222 / 92%) 0%, rgb(228 225 222 / 82%) 100%);
   --hero-split-wash: linear-gradient(90deg, #e4e1df 25.7%, #d2d6d9 55.6%);
   --hero-scrim: linear-gradient(180deg, rgb(0 0 0 / 15%) 0%, rgb(0 0 0 / 55%) 100%);
   --hero-scrim-desktop: linear-gradient(90deg, rgb(0 0 0 / 55%) 0%, rgb(0 0 0 / 15%) 55%, rgb(0 0 0 / 0%) 100%);
@@ -57,47 +56,42 @@ main > .section > .hero-wrapper {
   object-fit: cover;
 }
 
-/* ---------- split: Benefits & coverage ---------- */
+/* ---------- split: Benefits & coverage ----------
+ * Light two-tone panel with the text, and the photo. Small screens: the photo is a band at
+ * the top (behind the floating header), fading into the panel, and the text uses the full
+ * width under it (up to a comfortable measure); the band never moves when the text reflows. Wide screens: the photo takes the right part and fades into the panel on its left
+ * edge (no hard seam); it is shown whole (cover), not zoomed in, so nobody is cut off.
+ */
 .hero.split {
-  min-height: 509px;
-  background: var(--color-sand);
+  display: flex;
+  flex-direction: column;
+  background: var(--hero-split-wash);
 }
 
 .hero.split .hero-media {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 0 0 auto;
+  height: 300px;
   overflow: hidden;
+  mask-image: linear-gradient(180deg, #000 55%, transparent 100%);
 }
 
-/* mobile: the photo is a faded background */
-.hero.split .hero-media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--hero-split-veil);
-}
-
-/* photo crop from the design: the image is zoomed and offset inside the media box */
-.hero.split .hero-media picture {
-  position: absolute;
-  inset: 0;
-}
-
+.hero.split .hero-media picture,
 .hero.split .hero-media img {
-  position: absolute;
-  top: -2.02%;
-  left: -65.62%;
-  width: 227.25%;
-  max-width: none;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--hero-focus, 55%) 45%;
 }
 
 .hero.split .hero-content {
-  padding: 131.8px var(--gutter) 48px;
+  width: 100%;
+  margin-top: -40px;
+  padding: 0 var(--gutter) 48px;
 }
 
 .hero.split .hero-text {
-  max-width: 217px;
+  max-width: 560px;
   color: var(--color-navy);
 }
 
@@ -218,28 +212,26 @@ main > .section:has(> .hero-wrapper .hero.navy) + .section {
     margin-top: 73px;
   }
 
-  /* split: light panel left (two-tone gradient), photo right 40.4% */
+  /* split: light panel left (two-tone gradient), photo right, fading into the panel */
   .hero.split {
+    display: block;
     min-height: 553px;
-    background: var(--hero-split-wash);
   }
 
   .hero.split .hero-media {
-    left: auto;
-    width: 40.417%;
-  }
-
-  .hero.split .hero-media::after {
-    content: none;
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 50%;
+    height: auto;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 30%);
   }
 
   .hero.split .hero-media img {
-    top: -14.03%;
-    left: -148.27%;
-    width: 258.74%;
+    object-position: var(--hero-focus, 50%) 30%;
   }
 
   .hero.split .hero-content {
+    margin-top: 0;
     padding: 188px var(--gutter) 60px;
   }
 
